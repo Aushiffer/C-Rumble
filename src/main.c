@@ -172,7 +172,7 @@ int main(void) {
                                         al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
                                 }
                         } else if (character_select) {
-                                al_clear_to_color(al_map_rgb(0, 25, 51));
+                                al_clear_to_color(al_map_rgb(153, 0, 0));
                                 al_draw_text(character_select_header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 - 250, ALLEGRO_ALIGN_CENTRE, "CHOOSE YOUR CHARACTER");
                                 al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_LEFT, "1P");
 
@@ -244,7 +244,7 @@ int main(void) {
                         }
                 } else if (character_select) {
                         if (play_character_select_welcome_sample && play_character_select_sample) {
-                                al_rest(1.0);
+                                al_rest(0.5);
                                 al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
                                 al_play_sample(character_select_sample, 0.35, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
