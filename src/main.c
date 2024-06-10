@@ -11,7 +11,7 @@
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
-#define MENU_OPTIONS 2
+#define MENU_OPTIONS 3
 
 int main(void) {
         if (!al_init()) {
@@ -161,9 +161,15 @@ int main(void) {
                                 if (menu_select == 0) {
                                         al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
                                         al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
+                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
                                 } else if (menu_select == 1) {
                                         al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
                                         al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
+                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
+                                } else if (menu_select == 2) {
+                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
+                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
+                                        al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
                                 }
                         } else if (character_select) {
                                 al_clear_to_color(al_map_rgb(0, 25, 51));
@@ -212,16 +218,23 @@ int main(void) {
                                         if (menu_select < 0)
                                                 menu_select = MENU_OPTIONS - 1;
                                 } else if (evt.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                        al_stop_sample(&menu_sample_id);
-                                        al_play_sample(menu_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                        if (menu_select == 0 || menu_select == 1) {
+                                                al_stop_sample(&menu_sample_id);
+                                                al_play_sample(menu_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
-                                        menu = 0;
-                                        character_select = 1;
+                                                menu = 0;
+                                                character_select = 1;
 
-                                        if (menu_select == 0)
-                                                one_player_game = 1;
-                                        else if (menu_select == 1)
-                                                one_player_game = 0;
+                                                if (menu_select == 0)
+                                                        one_player_game = 1;
+                                                else if (menu_select == 1)
+                                                        one_player_game = 0;
+                                        } else {
+                                                al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                                al_rest(0.5);
+
+                                                break;
+                                        }
                                 } else if (evt.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
                                         al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_rest(0.5);
