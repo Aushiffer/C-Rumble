@@ -47,7 +47,7 @@ int main(void) {
                 printf("[+] main(): initialized display\n");
         }
 
-        ALLEGRO_BITMAP *game_icon = al_load_bitmap("imgs/game_icon.png");
+        ALLEGRO_BITMAP *game_icon = al_load_bitmap("imgs/icons/game_icon.png");
 
         if (!game_icon) {
                 fprintf(stderr, "[-] main(): failed to load the game icon\n");
@@ -103,7 +103,7 @@ int main(void) {
                 printf("[+] main(): loaded character select header font\n");
         }
 
-        if (!al_install_audio() || !al_init_acodec_addon() || !al_reserve_samples(4)) {
+        if (!al_install_audio() || !al_init_acodec_addon() || !al_reserve_samples(5)) {
                 fprintf(stderr, "[-] main(): failed to set audio\n");
                 exit(AL_SET_AUDIO_ERROR);
         } else {
@@ -124,7 +124,9 @@ int main(void) {
         ALLEGRO_SAMPLE *menu_select_sample = al_load_sample("sfx/menu_select_option.ogg");
         ALLEGRO_SAMPLE_ID menu_confirm_sample_id;
         ALLEGRO_SAMPLE *menu_confirm_sample = al_load_sample("sfx/menu_confirm_option.ogg");
-        ALLEGRO_SAMPLE_ID character_select_welcome_id;
+        ALLEGRO_SAMPLE_ID character_select_sample_id;
+        ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/character_select_music.ogg");
+        ALLEGRO_SAMPLE_ID character_select_welcome_sample_id;
         ALLEGRO_SAMPLE *character_select_welcome_sample = al_load_sample("sfx/choose_your_character.ogg");
         ALLEGRO_SAMPLE_ID cancel_sound_sample_id;
         ALLEGRO_SAMPLE *cancel_sound_sample = al_load_sample("sfx/cancel.ogg");
@@ -143,6 +145,7 @@ int main(void) {
         char menu_select = 0; /* default */
         unsigned char character_select = 0; /* default */
         unsigned char play_character_select_welcome_sample = 0; /* default */
+        unsigned char play_character_select_sample = 0; /* default */
         unsigned char one_player_game = 0; /* default */
         unsigned char stage_select = 0; /* default */
         unsigned char rumble = 0; /* default */
@@ -187,10 +190,11 @@ int main(void) {
                 
                 if (menu) {
                         if (play_menu_sample)
-                                al_play_sample(menu_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
+                                al_play_sample(menu_sample, 0.35, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
                         
                         play_menu_sample = 0;
                         play_character_select_welcome_sample = 1;
+                        play_character_select_sample = 1;
 
                         if (evt.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (evt.keyboard.keycode == ALLEGRO_KEY_DOWN) {
@@ -210,7 +214,6 @@ int main(void) {
                                 } else if (evt.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                                         al_stop_sample(&menu_sample_id);
                                         al_play_sample(menu_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
-                                        al_rest(1.0);
 
                                         menu = 0;
                                         character_select = 1;
@@ -227,18 +230,22 @@ int main(void) {
                                 }
                         }
                 } else if (character_select) {
-                        if (play_character_select_welcome_sample)
-                                al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_id);
+                        if (play_character_select_welcome_sample && play_character_select_sample) {
+                                al_rest(1.0);
+                                al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
+                                al_play_sample(character_select_sample, 0.35, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
+                        }
 
                         play_character_select_welcome_sample = 0;
+                        play_character_select_sample = 0;
                         play_menu_sample = 1;
 
                         if (evt.type == ALLEGRO_EVENT_KEY_DOWN && evt.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
                                 menu = 1;
                                 character_select = 0;
 
+                                al_stop_sample(&character_select_sample_id);
                                 al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
-                                al_rest(1.0);
                         }
                 }
         }
