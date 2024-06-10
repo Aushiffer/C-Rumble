@@ -144,6 +144,7 @@ int main(void) {
         unsigned char play_menu_sample = 1; /* default */
         char menu_select = 0; /* default */
         unsigned char character_select = 0; /* default */
+        unsigned char character_select_nav = 0; /* default */
         unsigned char play_character_select_welcome_sample = 0; /* default */
         unsigned char play_character_select_sample = 0; /* default */
         unsigned char one_player_game = 0; /* default */
@@ -180,6 +181,13 @@ int main(void) {
                                         al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "CPU");
                                 else
                                         al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "2P");
+
+                                switch (menu_select) {
+                                        case 0:
+                                        al_draw_rectangle(32, (float)al_get_display_height(display) / 2 + 64, 128, (float)al_get_display_height(display) / 2 + 192, al_map_rgb(255, 255, 255), 2.0);
+
+                                        break;
+                                }
                         } else if (stage_select) {
 
                         } else if (rumble) {
@@ -229,6 +237,8 @@ int main(void) {
                                                         one_player_game = 1;
                                                 else if (menu_select == 1)
                                                         one_player_game = 0;
+
+                                                menu_select = 0;
                                         } else {
                                                 al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                                 al_rest(0.5);
@@ -252,6 +262,7 @@ int main(void) {
                         play_character_select_welcome_sample = 0;
                         play_character_select_sample = 0;
                         play_menu_sample = 1;
+                        menu_select = 0;
 
                         if (evt.type == ALLEGRO_EVENT_KEY_DOWN && evt.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
                                 menu = 1;
