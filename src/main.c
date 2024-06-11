@@ -199,18 +199,51 @@ int main(void) {
                                         al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "CPU");
                                 else
                                         al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "2P");
+                                
 
-                                if (character_select_nav_p1 == 0)
+                                switch (character_select_nav_p1) {
+                                        case 0:
                                         al_draw_rectangle(32, (float)al_get_display_height(display) / 2 + 32, 128, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
-                                else if (character_select_nav_p1 == 1)
+
+                                        break;
+
+                                        case 1:
                                         al_draw_rectangle(138, (float)al_get_display_height(display) / 2 + 32, 238, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
-                                else if (character_select_nav_p1 == 2)
+
+                                        break;
+
+                                        case 2:
                                         al_draw_rectangle(248, (float)al_get_display_height(display) / 2 + 32, 345, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
-                                else if (character_select_nav_p1 == 3)
+
+                                        break;
+
+                                        case 3:
                                         al_draw_rectangle(355, (float)al_get_display_height(display) / 2 + 32, 452, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
 
-                                if (character_select_nav_p2 == 0)
+                                        break;
+                                }
+
+                                switch (character_select_nav_p2) {
+                                        case 0:
+                                        al_draw_rectangle(al_get_display_width(display) - 355, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 452, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+
+                                        break;
+
+                                        case 1:
+                                        al_draw_rectangle(al_get_display_width(display) - 248, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 345, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+
+                                        break;
+
+                                        case 2:
+                                        al_draw_rectangle(al_get_display_width(display) - 138, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 238, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+
+                                        break;
+
+                                        case 3:
                                         al_draw_rectangle(al_get_display_width(display) - 32, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 128, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+
+                                        break;
+                                }
                         } else if (stage_select) {
 
                         } else if (rumble) {
@@ -296,7 +329,9 @@ int main(void) {
 
                                         al_stop_sample(&character_select_sample_id);
                                         al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_D) {
+                                }
+                                
+                                if (evt.keyboard.keycode == ALLEGRO_KEY_D) {
                                         character_select_nav_p1++;
                                 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
@@ -310,6 +345,22 @@ int main(void) {
 
                                         if (character_select_nav_p1 < 0)
                                                 character_select_nav_p1 = NUM_CHARACTERS - 1;
+                                }
+
+                                if (evt.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+                                        character_select_nav_p2++;
+                                
+                                        al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+
+                                        if (character_select_nav_p2 > NUM_CHARACTERS - 1)
+                                                character_select_nav_p2 = 0;
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+                                        character_select_nav_p2--;
+
+                                        al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+
+                                        if (character_select_nav_p2 < 0)
+                                                character_select_nav_p2 = NUM_CHARACTERS - 1;
                                 }
                         }
                 }
