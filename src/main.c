@@ -188,7 +188,7 @@ int main(void) {
         al_register_event_source(evt_queue, al_get_display_event_source(display));
         al_start_timer(timer);
         al_set_window_title(display, "C-Rumble");
-        printf("[+] main(): success, loading game...\n");
+        printf("[+] main(): success, starting game...\n");
 
         /* TODO: criar uma struct contendo esses valores */
         unsigned char menu = 1; /* default */
@@ -460,6 +460,8 @@ int main(void) {
                         }
                 }
         }
+
+        printf("[+] main(): exiting game...\n");
         
         al_destroy_font(menu_header_font);
         al_destroy_font(menu_options_font);
