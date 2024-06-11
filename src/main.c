@@ -13,6 +13,8 @@
 #define WIN_HEIGHT 600
 #define MENU_OPTIONS 3
 #define NUM_CHARACTERS 4
+#define COLOR_WHITE al_map_rgb(255, 255, 255)
+#define COLOR_LIGHT_GRAY al_map_rgb(120, 120, 120)
 
 int main(void) {
         if (!al_init()) {
@@ -175,72 +177,72 @@ int main(void) {
                 if (evt.type == ALLEGRO_EVENT_TIMER) {
                         if (menu) {
                                 al_clear_to_color(al_map_rgb(0, 25, 51));
-                                al_draw_text(menu_header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 - 250, ALLEGRO_ALIGN_CENTRE, "C-RUMBLE");
+                                al_draw_text(menu_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 - 250, ALLEGRO_ALIGN_CENTRE, "C-RUMBLE");
 
                                 if (menu_select == 0) {
-                                        al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
-                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
-                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
+                                        al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
+                                        al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
+                                        al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
                                 } else if (menu_select == 1) {
-                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
-                                        al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
-                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
+                                        al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
+                                        al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
+                                        al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
                                 } else if (menu_select == 2) {
-                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
-                                        al_draw_text(menu_options_font, al_map_rgb(120, 120, 120), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
-                                        al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
+                                        al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. CPU");
+                                        al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 128, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
+                                        al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 + 192, ALLEGRO_ALIGN_CENTRE, "EXIT");
                                 }
                         } else if (character_select) {
                                 al_clear_to_color(al_map_rgb(153, 0, 0));
-                                al_draw_text(character_select_header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 - 250, ALLEGRO_ALIGN_CENTRE, "CHOOSE YOUR CHARACTER");
-                                al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_LEFT, "1P");
+                                al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)WIN_HEIGHT / 2 - 250, ALLEGRO_ALIGN_CENTRE, "CHOOSE YOUR CHARACTER");
+                                al_draw_text(menu_options_font, COLOR_WHITE, 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_LEFT, "1P");
 
                                 if (one_player_game)
-                                        al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "CPU");
+                                        al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "CPU");
                                 else
-                                        al_draw_text(menu_options_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "2P");
+                                        al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "2P");
                                 
 
                                 switch (character_select_nav_p1) {
                                         case 0:
-                                        al_draw_rectangle(32, (float)al_get_display_height(display) / 2 + 32, 128, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+                                        al_draw_rectangle(32, (float)al_get_display_height(display) / 2 + 32, 128, (float)al_get_display_height(display) / 2 + 128, COLOR_WHITE, 2.0);
 
                                         break;
 
                                         case 1:
-                                        al_draw_rectangle(138, (float)al_get_display_height(display) / 2 + 32, 238, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+                                        al_draw_rectangle(138, (float)al_get_display_height(display) / 2 + 32, 238, (float)al_get_display_height(display) / 2 + 128, COLOR_WHITE, 2.0);
 
                                         break;
 
                                         case 2:
-                                        al_draw_rectangle(248, (float)al_get_display_height(display) / 2 + 32, 345, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+                                        al_draw_rectangle(248, (float)al_get_display_height(display) / 2 + 32, 345, (float)al_get_display_height(display) / 2 + 128, COLOR_WHITE, 2.0);
 
                                         break;
 
                                         case 3:
-                                        al_draw_rectangle(355, (float)al_get_display_height(display) / 2 + 32, 452, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+                                        al_draw_rectangle(355, (float)al_get_display_height(display) / 2 + 32, 452, (float)al_get_display_height(display) / 2 + 128, COLOR_WHITE, 2.0);
 
                                         break;
                                 }
 
                                 switch (character_select_nav_p2) {
                                         case 0:
-                                        al_draw_rectangle(al_get_display_width(display) - 355, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 452, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+                                        al_draw_rectangle(al_get_display_width(display) - 355, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 452, (float)al_get_display_height(display) / 2 + 128, COLOR_WHITE, 2.0);
 
                                         break;
 
                                         case 1:
-                                        al_draw_rectangle(al_get_display_width(display) - 248, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 345, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+                                        al_draw_rectangle(al_get_display_width(display) - 248, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 345, (float)al_get_display_height(display) / 2 + 128, COLOR_WHITE, 2.0);
 
                                         break;
 
                                         case 2:
-                                        al_draw_rectangle(al_get_display_width(display) - 138, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 238, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+                                        al_draw_rectangle(al_get_display_width(display) - 138, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 238, (float)al_get_display_height(display) / 2 + 128, COLOR_WHITE, 2.0);
 
                                         break;
 
                                         case 3:
-                                        al_draw_rectangle(al_get_display_width(display) - 32, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 128, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+                                        al_draw_rectangle(al_get_display_width(display) - 32, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 128, (float)al_get_display_height(display) / 2 + 128, COLOR_WHITE, 2.0);
 
                                         break;
                                 }
