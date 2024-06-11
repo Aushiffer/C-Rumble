@@ -1,4 +1,3 @@
-#include <allegro5/display.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -128,8 +127,24 @@ int main(void) {
         ALLEGRO_SAMPLE *menu_confirm_sample = al_load_sample("sfx/menu_confirm_option.ogg");
         ALLEGRO_SAMPLE_ID character_select_sample_id;
         ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/character_select_music.ogg");
+
+        if (!character_select_sample) {
+                fprintf(stderr, "[-] main(): failed to load character select music sample\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded character select music sample\n");
+        }
+
         ALLEGRO_SAMPLE_ID character_select_welcome_sample_id;
         ALLEGRO_SAMPLE *character_select_welcome_sample = al_load_sample("sfx/choose_your_character.ogg");
+
+        if (!character_select_welcome_sample) {
+                fprintf(stderr, "[-] main(): failed to load character select welcome sample\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded character select welcome sample\n");
+        }
+
         ALLEGRO_SAMPLE_ID cancel_sound_sample_id;
         ALLEGRO_SAMPLE *cancel_sound_sample = al_load_sample("sfx/cancel.ogg");
         
@@ -193,6 +208,9 @@ int main(void) {
                                         al_draw_rectangle(248, (float)al_get_display_height(display) / 2 + 32, 345, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
                                 else if (character_select_nav_p1 == 3)
                                         al_draw_rectangle(355, (float)al_get_display_height(display) / 2 + 32, 452, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
+
+                                if (character_select_nav_p2 == 0)
+                                        al_draw_rectangle(al_get_display_width(display) - 32, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 128, (float)al_get_display_height(display) / 2 + 128, al_map_rgb(255, 255, 255), 2.0);
                         } else if (stage_select) {
 
                         } else if (rumble) {
@@ -201,7 +219,7 @@ int main(void) {
 
                         al_flip_display();
                 } else if (evt.type == ALLEGRO_EVENT_DISPLAY_CLOSE || (evt.type == ALLEGRO_EVENT_KEY_DOWN && evt.keyboard.keycode == ALLEGRO_KEY_ESCAPE)) {
-                        al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                        al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                         al_rest(0.5);
 
                         break;
@@ -209,7 +227,7 @@ int main(void) {
                 
                 if (menu) {
                         if (play_menu_sample)
-                                al_play_sample(menu_sample, 0.35, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
+                                al_play_sample(menu_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
                         
                         play_menu_sample = 0;
                         play_character_select_welcome_sample = 1;
@@ -218,24 +236,24 @@ int main(void) {
                         character_select_nav_p2 = 0;
 
                         if (evt.type == ALLEGRO_EVENT_KEY_DOWN) {
-                                if (evt.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+                                if (evt.keyboard.keycode == ALLEGRO_KEY_S || evt.keyboard.keycode == ALLEGRO_KEY_DOWN) {
                                         menu_select++;
                                 
-                                        al_play_sample(menu_select_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+                                        al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
                                         if (menu_select > MENU_OPTIONS - 1)
                                                 menu_select = 0;
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_UP) {
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_W || evt.keyboard.keycode == ALLEGRO_KEY_UP) {
                                         menu_select--;
 
-                                        al_play_sample(menu_select_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+                                        al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
                                         if (menu_select < 0)
                                                 menu_select = MENU_OPTIONS - 1;
                                 } else if (evt.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                                         if (menu_select == 0 || menu_select == 1) {
                                                 al_stop_sample(&menu_sample_id);
-                                                al_play_sample(menu_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                                al_play_sample(menu_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
                                                 menu = 0;
                                                 character_select = 1;
@@ -247,13 +265,13 @@ int main(void) {
 
                                                 menu_select = 0;
                                         } else {
-                                                al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                                al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                                 al_rest(0.5);
 
                                                 break;
                                         }
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
-                                        al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_DELETE) {
+                                        al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_rest(0.5);
 
                                         break;
@@ -263,7 +281,7 @@ int main(void) {
                         if (play_character_select_welcome_sample && play_character_select_sample) {
                                 al_rest(0.5);
                                 al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
-                                al_play_sample(character_select_sample, 0.35, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
+                                al_play_sample(character_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
 
                         play_character_select_welcome_sample = 0;
@@ -272,23 +290,23 @@ int main(void) {
                         menu_select = 0;
 
                         if (evt.type == ALLEGRO_EVENT_KEY_DOWN) {
-                                if (evt.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
+                                if (evt.keyboard.keycode == ALLEGRO_KEY_DELETE) {
                                         menu = 1;
                                         character_select = 0;
 
                                         al_stop_sample(&character_select_sample_id);
-                                        al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+                                        al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_D) {
                                         character_select_nav_p1++;
                                 
-                                        al_play_sample(menu_select_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+                                        al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
                                         if (character_select_nav_p1 > NUM_CHARACTERS - 1)
                                                 character_select_nav_p1 = 0;
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_A) {
                                         character_select_nav_p1--;
 
-                                        al_play_sample(menu_select_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+                                        al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
                                         if (character_select_nav_p1 < 0)
                                                 character_select_nav_p1 = NUM_CHARACTERS - 1;
@@ -308,6 +326,7 @@ int main(void) {
         al_destroy_sample(menu_select_sample);
         al_destroy_sample(cancel_sound_sample);
         al_destroy_sample(character_select_welcome_sample);
+        al_destroy_sample(character_select_sample);
         al_destroy_bitmap(game_icon);
         al_uninstall_audio();
         al_uninstall_keyboard();
