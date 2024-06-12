@@ -1,3 +1,7 @@
+#include <allegro5/bitmap.h>
+#include <allegro5/bitmap_draw.h>
+#include <allegro5/bitmap_io.h>
+#include <allegro5/display.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -51,6 +55,15 @@ int main(void) {
                 printf("[+] main(): initialized display\n");
         }
 
+        ALLEGRO_TIMER *timer = al_create_timer(1.0 / 30.0);
+
+        if (!timer) {
+                fprintf(stderr, "[-] main(): failed to initialize timer\n");
+                exit(AL_CREATE_TIMER_ERROR);
+        } else {
+                printf("[+] main(): initialized timer\n");
+        }
+
         ALLEGRO_BITMAP *game_icon = al_load_bitmap("imgs/icons/game_icon.png");
 
         if (!game_icon) {
@@ -62,13 +75,13 @@ int main(void) {
 
         al_set_display_icon(display, game_icon);
 
-        ALLEGRO_BITMAP *samurai_icon = al_load_bitmap("imgs/icons/samurai_icon.png");
+        ALLEGRO_BITMAP *viking_icon = al_load_bitmap("imgs/icons/viking_icon.png");
 
-        if (!samurai_icon) {
-                fprintf(stderr, "[-] main(): failed to load samurai_icon.png\n");
+        if (!viking_icon) {
+                fprintf(stderr, "[-] main(): failed to load viking_icon.png\n");
                 exit(AL_LOAD_GAME_ICON_ERROR);
         } else {
-                printf("[+] main(): loaded samurai_icon.png\n");
+                printf("[+] main(): loaded viking_icon.png\n");
         }
 
         ALLEGRO_BITMAP *knight_icon = al_load_bitmap("imgs/icons/knight_icon.png");
@@ -80,13 +93,22 @@ int main(void) {
                 printf("[+] main(): loaded knight_icon.png\n");
         }
 
-        ALLEGRO_TIMER *timer = al_create_timer(1.0 / 30.0);
+        ALLEGRO_BITMAP *spearwoman_icon = al_load_bitmap("imgs/icons/spearwoman_icon.png");
 
-        if (!timer) {
-                fprintf(stderr, "[-] main(): failed to initialize timer\n");
-                exit(AL_CREATE_TIMER_ERROR);
+        if (!spearwoman_icon) {
+                fprintf(stderr, "[-] main(): failed to load spearwoman_icon.png\n");
+                exit(AL_LOAD_GAME_ICON_ERROR);
         } else {
-                printf("[+] main(): initialized timer\n");
+                printf("[+] main(): loaded spearwoman_icon.png\n");
+        }
+
+        ALLEGRO_BITMAP *fire_warrior_icon = al_load_bitmap("imgs/icons/fire_warrior_icon.png");
+
+        if (!fire_warrior_icon) {
+                fprintf(stderr, "[-] main(): failed to load fire_warrior_icon.png\n");
+                exit(AL_LOAD_GAME_ICON_ERROR);
+        } else {
+                printf("[+] main(): loaded fire_warrior_icon.png\n");
         }
 
         ALLEGRO_EVENT_QUEUE *evt_queue = al_create_event_queue();
@@ -133,13 +155,13 @@ int main(void) {
         }
 
         ALLEGRO_SAMPLE_ID menu_sample_id;
-        ALLEGRO_SAMPLE *menu_sample = al_load_sample("music/menu_music.ogg");
+        ALLEGRO_SAMPLE *menu_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 02 - The Eternal Fight.ogg");
 
         if (!menu_sample) {
-                fprintf(stderr, "[-] main(): failed to load menu_music.ogg\n");
+                fprintf(stderr, "[-] main(): failed to load menu music\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         } else {
-                printf("[+] main(): loaded menu_music.ogg\n");
+                printf("[+] main(): loaded menu music\n");
         }
 
         ALLEGRO_SAMPLE_ID menu_select_sample_id;
@@ -149,13 +171,13 @@ int main(void) {
         ALLEGRO_SAMPLE *menu_confirm_sample = al_load_sample("sfx/menu_confirm_option.ogg");
 
         ALLEGRO_SAMPLE_ID character_select_sample_id;
-        ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/character_select_music.ogg");
+        ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 13 - Without Me.ogg");
 
         if (!character_select_sample) {
-                fprintf(stderr, "[-] main(): failed to load character_select_music.ogg\n");
+                fprintf(stderr, "[-] main(): failed to load character select screen music\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         } else {
-                printf("[+] main(): loaded character_select_music.ogg\n");
+                printf("[+] main(): loaded character select screen music\n");
         }
 
         ALLEGRO_SAMPLE_ID character_select_welcome_sample_id;
@@ -236,11 +258,20 @@ int main(void) {
                                 else
                                         al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) - 128, (float)WIN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "2P");
                                 
-                                al_draw_scaled_bitmap(samurai_icon, 0.0, 0.0, al_get_bitmap_width(samurai_icon), al_get_bitmap_height(samurai_icon), 32.0, (float)al_get_display_height(display) / 2 + 32, 100, 95, 0);
+                                al_draw_scaled_bitmap(viking_icon, 0.0, 0.0, al_get_bitmap_width(viking_icon), al_get_bitmap_height(viking_icon), 32.0, (float)al_get_display_height(display) / 2 + 32, 100, 95, 0);                    //
+                                al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), 138, (float)al_get_display_height(display) / 2 + 32, 100, 95, 0);                     // coloca os ícones
+                                al_draw_scaled_bitmap(spearwoman_icon, 0.0, 0.0, al_get_bitmap_width(spearwoman_icon), al_get_bitmap_height(spearwoman_icon), 248, (float)al_get_display_height(display) / 2 + 32, 100, 95, 0);         // 
+                                al_draw_scaled_bitmap(fire_warrior_icon, 0.0, 0.0, al_get_bitmap_width(fire_warrior_icon), al_get_bitmap_height(fire_warrior_icon), 355, (float)al_get_display_height(display) / 2 + 32, 100, 95, 0);   //
+
                                 al_draw_rectangle(32, (float)al_get_display_height(display) / 2 + 32, 128, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0);  //
-                                al_draw_rectangle(138, (float)al_get_display_height(display) / 2 + 32, 238, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0); // placeholders dos ícones dos personagens
+                                al_draw_rectangle(138, (float)al_get_display_height(display) / 2 + 32, 238, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0); // placeholders dos ícones dos personagens (P1)
                                 al_draw_rectangle(248, (float)al_get_display_height(display) / 2 + 32, 345, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0); //
                                 al_draw_rectangle(355, (float)al_get_display_height(display) / 2 + 32, 452, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0); //
+
+                                al_draw_rectangle(al_get_display_width(display) - 355, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 452, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0); //
+                                al_draw_rectangle(al_get_display_width(display) - 248, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 345, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0); // placeholders dos ícones dos personagens (P2)
+                                al_draw_rectangle(al_get_display_width(display) - 138, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 238, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0); //
+                                al_draw_rectangle(al_get_display_width(display) - 32, (float)al_get_display_height(display) / 2 + 32, al_get_display_width(display) - 128, (float)al_get_display_height(display) / 2 + 128, COLOR_BLACK, 2.0);  //
 
                                 switch (character_select_nav_p1) {
                                         case 0:
@@ -395,7 +426,7 @@ int main(void) {
 
                                         switch (character_select_nav_p1) {
                                                 case 0:
-                                                printf("\nP1 SELECTED SAMURAI\n");
+                                                printf("\nP1 SELECTED VIKING\n");
 
                                                 break;
 
@@ -405,12 +436,12 @@ int main(void) {
                                                 break;
 
                                                 case 2:
-                                                printf("\nP1 SELECTED SENTINEL\n");
+                                                printf("\nP1 SELECTED SPEARWOMAN\n");
 
                                                 break;
 
                                                 case 3:
-                                                printf("\nP1 SELECTED OGRE\n");
+                                                printf("\nP1 SELECTED FIRE WARRIOR\n");
 
                                                 break;
                                         }
@@ -437,7 +468,7 @@ int main(void) {
 
                                         switch (character_select_nav_p2) {
                                                 case 0:
-                                                printf("\nP2 SELECTED SAMURAI\n");
+                                                printf("\nP2 SELECTED VIKING\n");
 
                                                 break;
 
@@ -447,12 +478,12 @@ int main(void) {
                                                 break;
 
                                                 case 2:
-                                                printf("\nP2 SELECTED SENTINEL\n");
+                                                printf("\nP2 SELECTED SPEARWOMAN\n");
 
                                                 break;
 
                                                 case 3:
-                                                printf("\nP2 SELECTED OGRE\n");
+                                                printf("\nP2 SELECTED FIRE WARRIOR\n");
 
                                                 break;
                                         }
@@ -477,7 +508,7 @@ int main(void) {
         al_destroy_sample(character_select_sample);
         al_destroy_sample(character_confirm_sample);
         al_destroy_bitmap(game_icon);
-        al_destroy_bitmap(samurai_icon);
+        al_destroy_bitmap(viking_icon);
         al_destroy_bitmap(knight_icon);
         al_uninstall_audio();
         al_uninstall_keyboard();

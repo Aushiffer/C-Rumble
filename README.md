@@ -21,3 +21,8 @@
 ## Como limpar os arquivos de compilação (*.o e/ou executável) rapidamente
 - make clean (limpa os arquivos-objeto *.o)
 - make purge (limpa os arquivos-objeto *.o, bem como o executável do jogo)
+
+## Créditos
+- Programação: eu (Caio)
+- Música: DavidKBD
+- Sprites: pixramen (Iron Sentinel A.K.A Knight), Dreamir (Viking, Spearwoman, Fire Warrior)
