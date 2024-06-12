@@ -1,3 +1,6 @@
+#include <allegro5/bitmap.h>
+#include <allegro5/bitmap_draw.h>
+#include <allegro5/display.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -243,10 +246,15 @@ int main(void) {
                                 al_draw_text(menu_options_font, COLOR_WHITE, 128, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_LEFT, "1P");
                                 al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) - 128, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_RIGHT, "2P");
                                 
-                                al_draw_scaled_bitmap(viking_icon, 0.0, 0.0, al_get_bitmap_width(viking_icon), al_get_bitmap_height(viking_icon), 32, (float)al_get_display_height(display) / 2 + 128, 100, 95, 0);                      //
-                                al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), 138, (float)al_get_display_height(display) / 2 + 128, 100, 95, 0);                     // coloca os ícones (P1)
-                                al_draw_scaled_bitmap(spearwoman_icon, 0.0, 0.0, al_get_bitmap_width(spearwoman_icon), al_get_bitmap_height(spearwoman_icon), 248, (float)al_get_display_height(display) / 2 + 128, 100, 95, 0);         // 
-                                al_draw_scaled_bitmap(fire_warrior_icon, 0.0, 0.0, al_get_bitmap_width(fire_warrior_icon), al_get_bitmap_height(fire_warrior_icon), 355, (float)al_get_display_height(display) / 2 + 128, 100, 95, 0);   //
+                                al_draw_scaled_bitmap(viking_icon, 0.0, 0.0, al_get_bitmap_width(viking_icon), al_get_bitmap_height(viking_icon), 32, (float)al_get_display_height(display) / 2 + 128, 95, 95, 0);                      //
+                                al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), 138, (float)al_get_display_height(display) / 2 + 128, 95, 95, 0);                     // coloca os ícones (P1)
+                                al_draw_scaled_bitmap(spearwoman_icon, 0.0, 0.0, al_get_bitmap_width(spearwoman_icon), al_get_bitmap_height(spearwoman_icon), 248, (float)al_get_display_height(display) / 2 + 128, 95, 95, 0);         // 
+                                al_draw_scaled_bitmap(fire_warrior_icon, 0.0, 0.0, al_get_bitmap_width(fire_warrior_icon), al_get_bitmap_height(fire_warrior_icon), 355, (float)al_get_display_height(display) / 2 + 128, 95, 95, 0);   //
+
+                                al_draw_scaled_bitmap(viking_icon, 0.0, 0.0, al_get_bitmap_width(viking_icon), al_get_bitmap_height(viking_icon), al_get_display_width(display) - 452, (float)al_get_display_height(display) / 2 + 128, 95, 95, ALLEGRO_FLIP_HORIZONTAL);                       //
+                                al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), al_get_display_width(display) - 345, (float)al_get_display_height(display) / 2 + 128, 95, 95, ALLEGRO_FLIP_HORIZONTAL);                       // coloca os ícones (P2)
+                                al_draw_scaled_bitmap(spearwoman_icon, 0.0, 0.0, al_get_bitmap_width(spearwoman_icon), al_get_bitmap_height(spearwoman_icon), al_get_display_width(display) - 238, (float)al_get_display_height(display) / 2 + 128, 95, 95, ALLEGRO_FLIP_HORIZONTAL);           //
+                                al_draw_scaled_bitmap(fire_warrior_icon, 0.0, 0.0, al_get_bitmap_width(fire_warrior_icon), al_get_bitmap_height(fire_warrior_icon), al_get_display_width(display) - 128, (float)al_get_display_height(display) / 2 + 128, 95, 95, ALLEGRO_FLIP_HORIZONTAL);     //
 
                                 al_draw_rectangle(32, (float)al_get_display_height(display) / 2 + 128, 128, (float)al_get_display_height(display) / 2 + 224, COLOR_BLACK, 2.0);  //
                                 al_draw_rectangle(138, (float)al_get_display_height(display) / 2 + 128, 238, (float)al_get_display_height(display) / 2 + 224, COLOR_BLACK, 2.0); // placeholders dos ícones dos personagens (P1)
