@@ -1,6 +1,3 @@
-#include <allegro5/bitmap.h>
-#include <allegro5/bitmap_draw.h>
-#include <allegro5/display.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -13,7 +10,7 @@
 #include "../error_enums/main_func_flags.h"
 
 #define WIN_WIDTH 800
-#define al_get_display_height(display) 600
+#define WIN_HEIGHT 600
 #define MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define COLOR_BLACK al_map_rgb(0, 0, 0)
@@ -45,7 +42,7 @@ int main(void) {
         al_init_image_addon();
         al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
-        ALLEGRO_DISPLAY *display = al_create_display(WIN_WIDTH, al_get_display_height(display));
+        ALLEGRO_DISPLAY *display = al_create_display(WIN_WIDTH, WIN_HEIGHT);
 
         if (!display) {
                 fprintf(stderr, "[-] main(): failed to initialize display\n");
@@ -231,7 +228,7 @@ int main(void) {
                 if (evt.type == ALLEGRO_EVENT_TIMER) {
                         if (menu) {
                                 al_clear_to_color(al_map_rgb(0, 25, 51));
-                                al_draw_text(menu_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 250, ALLEGRO_ALIGN_CENTRE, "C-RUMBLE");
+                                al_draw_text(menu_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "C-RUMBLE");
 
                                 if (menu_select == 0) {
                                         al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
