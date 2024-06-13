@@ -1,3 +1,4 @@
+#include <allegro5/drawing.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -16,6 +17,8 @@
 #define COLOR_BLACK al_map_rgb(0, 0, 0)
 #define COLOR_WHITE al_map_rgb(255, 255, 255)
 #define COLOR_LIGHT_GRAY al_map_rgb(120, 120, 120)
+#define COLOR_DARK_BLUE al_map_rgb(0, 25, 51)
+#define COLOR_TOMATO al_map_rgb(153, 0, 0)
 
 int main(void) {
         if (!al_init()) {
@@ -227,7 +230,7 @@ int main(void) {
 
                 if (evt.type == ALLEGRO_EVENT_TIMER) {
                         if (menu) {
-                                al_clear_to_color(al_map_rgb(0, 25, 51));
+                                al_clear_to_color(COLOR_DARK_BLUE);
                                 al_draw_text(menu_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "C-RUMBLE");
 
                                 if (menu_select == 0) {
@@ -238,7 +241,7 @@ int main(void) {
                                         al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 128, ALLEGRO_ALIGN_CENTRE, "EXIT");
                                 }
                         } else if (character_select) {
-                                al_clear_to_color(al_map_rgb(153, 0, 0));
+                                al_clear_to_color(COLOR_TOMATO);
                                 al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "CHOOSE YOUR CHARACTER");
                                 al_draw_text(menu_options_font, COLOR_WHITE, 128, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_LEFT, "1P");
                                 al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) - 128, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_RIGHT, "2P");
