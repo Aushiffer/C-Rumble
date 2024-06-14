@@ -1,3 +1,4 @@
+#include <allegro5/keycodes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -15,11 +16,6 @@
 #define WIN_HEIGHT 600
 #define MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
-#define COLOR_BLACK al_map_rgb(0, 0, 0)
-#define COLOR_WHITE al_map_rgb(255, 255, 255)
-#define COLOR_LIGHT_GRAY al_map_rgb(120, 120, 120)
-#define COLOR_DARK_BLUE al_map_rgb(0, 25, 51)
-#define COLOR_TOMATO al_map_rgb(153, 0, 0)
 
 int main(void) {
         if (!al_init()) {
@@ -211,6 +207,16 @@ int main(void) {
 
         ALLEGRO_SAMPLE_ID character_confirm_sample_id;
         ALLEGRO_SAMPLE *character_confirm_sample = al_load_sample("sfx/character_confirm.ogg");
+
+        ALLEGRO_SAMPLE_ID stage_select_sample_id;
+        ALLEGRO_SAMPLE *stage_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 15 - Fear.ogg");
+
+        if (!stage_select_sample) {
+                fprintf(stderr, "[-] main(): failed to load stage select music\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded stage select music\n");
+        }
         
         ALLEGRO_EVENT evt;
 
@@ -230,9 +236,16 @@ int main(void) {
                         if (game_states->menu) {
                                 draw_menu(menu_header_font, menu_options_font, display, game_states);
                         } else if (game_states->character_select) {
-                                draw_character_select(character_select_header_font, menu_options_font, character_select_display_name_font, display, viking_icon, knight_icon, spearwoman_icon, fire_warrior_icon, game_states);
+                                draw_character_select(
+                                        character_select_header_font, menu_options_font, 
+                                        character_select_display_name_font, display, 
+                                        viking_icon, knight_icon, 
+                                        spearwoman_icon, fire_warrior_icon, 
+                                        game_states
+                                );
                         } else if (game_states->stage_select) {
-
+                                al_clear_to_color(al_map_rgb(0, 0, 0));
+                                al_draw_text(character_select_header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "STAGE SELECTION");
                         } else if (game_states->rumble) {
                                 
                         }
@@ -281,7 +294,7 @@ int main(void) {
                                                 game_states->menu_select = 0;
                                                 game_states->character_select = 1;
                                         } else {
-                                                al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                                al_play_sample(menu_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
                                                 al_rest(0.5);
 
                                                 break;
@@ -295,7 +308,7 @@ int main(void) {
                         }
                 } else if (game_states->character_select) {
                         if (game_states->play_character_select_welcome_sample && game_states->play_character_select_sample) {
-                                al_rest(0.5);
+                                al_rest(0.25);
                                 al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
                                 al_play_sample(character_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
@@ -303,6 +316,7 @@ int main(void) {
                         game_states->play_character_select_welcome_sample = 0;
                         game_states->play_character_select_sample = 0;
                         game_states->play_menu_sample = 1;
+                        game_states->play_stage_select_sample = 1;
                         game_states->menu_select = 0;
 
                         if (evt.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -310,8 +324,9 @@ int main(void) {
                                         game_states->menu = 1;
                                         game_states->character_select = 0;
 
-                                        al_stop_sample(&character_select_sample_id);
                                         al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_stop_sample(&character_select_sample_id);
+                                        al_rest(0.25);
                                 }
                                 
                                 if (evt.keyboard.keycode == ALLEGRO_KEY_D && !game_states->character_select_nav_p1_confirm) {
@@ -398,6 +413,39 @@ int main(void) {
                                         }
                                 }
                         }
+
+                        if (game_states->character_select_nav_p1_confirm && game_states->character_select_nav_p2_confirm) {
+                                al_stop_sample(&character_select_sample_id);
+
+                                game_states->stage_select = 1;
+                                game_states->character_select = 0;
+                        }
+                } else if (game_states->stage_select) {
+                        if (game_states->play_stage_select_sample) {
+                                al_play_sample(stage_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &stage_select_sample_id);
+                                al_rest(0.25);
+                        }
+                        
+                        game_states->play_stage_select_sample = 0;
+                        game_states->character_select_nav_p1 = 0;
+                        game_states->character_select_nav_p2 = 0;
+                        game_states->character_select_nav_p1_confirm = 0;
+                        game_states->character_select_nav_p2_confirm = 0;
+                        game_states->play_character_select_sample = 1;
+                        game_states->play_character_select_welcome_sample = 1;
+
+                        if (evt.type == ALLEGRO_EVENT_KEY_DOWN) {
+                                if (evt.keyboard.keycode == ALLEGRO_KEY_DELETE) {
+                                        game_states->stage_select = 0;
+                                        game_states->character_select = 1;
+
+                                        al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_stop_sample(&stage_select_sample_id);
+                                        al_rest(0.25);
+                                }
+                        }
+                } else if (game_states->rumble) {
+
                 }
         }
 

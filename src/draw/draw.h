@@ -6,6 +6,12 @@
 #include <allegro5/allegro_primitives.h>
 #include "../game_states/game_states.h"
 
+#define COLOR_BLACK al_map_rgb(0, 0, 0)
+#define COLOR_WHITE al_map_rgb(255, 255, 255)
+#define COLOR_LIGHT_GRAY al_map_rgb(120, 120, 120)
+#define COLOR_DARK_BLUE al_map_rgb(0, 25, 51)
+#define COLOR_TOMATO al_map_rgb(80, 0, 0)
+
 /* Renderiza o menu principal */
 void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
 

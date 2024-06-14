@@ -11,9 +11,10 @@ GameStates *create_game_states() {
         game_states->character_select = 0;
         game_states->character_select_nav_p1_confirm = 0;
         game_states->character_select_nav_p2_confirm = 0;
-        game_states->play_character_select_welcome_sample = 0;
-        game_states->play_character_select_sample = 0;
+        game_states->play_character_select_welcome_sample = 1;
+        game_states->play_character_select_sample = 1;
         game_states->stage_select = 0;
+        game_states->play_stage_select_sample = 1;
         game_states->rumble = 0;
         game_states->menu_select = 0;
         game_states->character_select_nav_p1 = 0;

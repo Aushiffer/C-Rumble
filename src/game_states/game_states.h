@@ -14,6 +14,7 @@ typedef struct GameStates {
         unsigned char play_character_select_welcome_sample;
         unsigned char play_character_select_sample;
         unsigned char stage_select;
+        unsigned char play_stage_select_sample;
         unsigned char rumble;
         char menu_select;
         char character_select_nav_p1;
