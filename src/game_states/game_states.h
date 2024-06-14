@@ -1,0 +1,26 @@
+#ifndef __GAME_STATES__
+#define __GAME_STATES__
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct GameStates {
+        unsigned char menu;
+        unsigned char play_menu_sample;
+        unsigned char character_select;
+        unsigned char character_select_nav_p1_confirm;
+        unsigned char character_select_nav_p2_confirm;
+        unsigned char play_character_select_welcome_sample;
+        unsigned char play_character_select_sample;
+        unsigned char stage_select;
+        unsigned char rumble;
+        char menu_select;
+        char character_select_nav_p1;
+        char character_select_nav_p2;
+} GameStates;
+
+GameStates *create_game_states();
+
+void destroy_game_states(GameStates *game_states);
+
+#endif // __GAME_STATES__

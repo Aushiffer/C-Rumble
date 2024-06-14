@@ -5,11 +5,14 @@ PROGRAM = C-Rumble
 
 all: $(PROGRAM)
 
-$(PROGRAM): main.o
-	$(CC) -o $(PROGRAM) main.o $(CCFLAGS) $(ALLEGRO_LIBS)
+$(PROGRAM): main.o game_states.o
+	$(CC) -o $(PROGRAM) main.o game_states.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
 main.o: src/main.c
 	$(CC) -c src/main.c $(CCFLAGS) $(ALLEGRO_LIBS)
+
+game_states.o: src/game_states/game_states.c
+	$(CC) -c src/game_states/game_states.c $(CCFLAGS)
 
 run: 
 	./$(PROGRAM)

@@ -8,6 +8,7 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_image.h>
 #include "../error_enums/main_func_flags.h"
+#include "game_states/game_states.h"
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
@@ -145,9 +146,9 @@ int main(void) {
                 printf("[+] main(): loaded Osake.ttf (character selection) font\n");
         }
 
-        ALLEGRO_FONT *character_select_display_name = al_load_font("fonts/OsakaBrightDemoRegular.ttf", 32, 0);
+        ALLEGRO_FONT *character_select_display_name_font = al_load_font("fonts/OsakaBrightDemoRegular.ttf", 32, 0);
 
-        if (!character_select_display_name) {
+        if (!character_select_display_name_font) {
                 fprintf(stderr, "[-] main(): failed to load OsakaBrightDemoRegular.ttf\n");
                 exit(AL_LOAD_FONT_ERROR);
         } else {
@@ -219,36 +220,24 @@ int main(void) {
         al_set_window_title(display, "C-Rumble");
         printf("[+] main(): success, starting game...\n");
 
-        /* TODO: criar uma struct contendo esses valores */
-        unsigned char menu = 1; /* default */
-        unsigned char play_menu_sample = 1; /* default */
-        char menu_select = 0; /* default */
-        unsigned char character_select = 0; /* default */
-        char character_select_nav_p1 = 0; /* default */
-        char character_select_nav_p2 = 0; /* default */
-        unsigned char character_select_nav_p1_confirm = 0;
-        unsigned char character_select_nav_p2_confirm = 0;
-        unsigned char play_character_select_welcome_sample = 0; /* default */
-        unsigned char play_character_select_sample = 0; /* default */
-        unsigned char stage_select = 0; /* default */
-        unsigned char rumble = 0; /* default */
+        GameStates *game_states = create_game_states(); // estrutura com as flags relativas aos diversos estados do jogo
 
         while (1) {
                 al_wait_for_event(evt_queue, &evt);
 
                 if (evt.type == ALLEGRO_EVENT_TIMER) {
-                        if (menu) {
+                        if (game_states->menu) {
                                 al_clear_to_color(COLOR_DARK_BLUE);
                                 al_draw_text(menu_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "C-RUMBLE");
 
-                                if (menu_select == 0) {
+                                if (game_states->menu_select == 0) {
                                         al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
                                         al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 128, ALLEGRO_ALIGN_CENTRE, "EXIT");
-                                } else if (menu_select == 1) {
+                                } else if (game_states->menu_select == 1) {
                                         al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
                                         al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 128, ALLEGRO_ALIGN_CENTRE, "EXIT");
                                 }
-                        } else if (character_select) {
+                        } else if (game_states->character_select) {
                                 al_clear_to_color(COLOR_TOMATO);
                                 al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "CHOOSE YOUR CHARACTER");
                                 al_draw_text(menu_options_font, COLOR_WHITE, 256, 256, ALLEGRO_ALIGN_CENTRE, "1P");
@@ -274,60 +263,60 @@ int main(void) {
                                 al_draw_rectangle(al_get_display_width(display) - 138, 356, al_get_display_width(display) - 238, 452, COLOR_BLACK, 2.0); //
                                 al_draw_rectangle(al_get_display_width(display) - 32, 356, al_get_display_width(display) - 128, 452, COLOR_BLACK, 2.0);  //
 
-                                switch (character_select_nav_p1) {
+                                switch (game_states->character_select_nav_p1) {
                                         case 0:
                                         al_draw_rectangle(32, 356, 128, 452, COLOR_WHITE, 2.0);
-                                        al_draw_text(character_select_display_name, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "VIKING");
+                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "VIKING");
 
                                         break;
 
                                         case 1:
                                         al_draw_rectangle(138, 356, 238, 452, COLOR_WHITE, 2.0);
-                                        al_draw_text(character_select_display_name, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "KNIGHT");
+                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "KNIGHT");
 
                                         break;
 
                                         case 2:
                                         al_draw_rectangle(248, 356, 345, 452, COLOR_WHITE, 2.0);
-                                        al_draw_text(character_select_display_name, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "SPEARWOMAN");
+                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "SPEARWOMAN");
 
                                         break;
 
                                         case 3:
                                         al_draw_rectangle(355, 356, 452, 452, COLOR_WHITE, 2.0);
-                                        al_draw_text(character_select_display_name, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "FIRE WARRIOR");
+                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "FIRE WARRIOR");
 
                                         break;
                                 }
 
-                                switch (character_select_nav_p2) {
+                                switch (game_states->character_select_nav_p2) {
                                         case 0:
                                         al_draw_rectangle(al_get_display_width(display) - 355, 356, al_get_display_width(display) - 452, 452, COLOR_WHITE, 2.0);
-                                        al_draw_text(character_select_display_name, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "VIKING");
+                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "VIKING");
 
                                         break;
 
                                         case 1:
                                         al_draw_rectangle(al_get_display_width(display) - 248, 356, al_get_display_width(display) - 345, 452, COLOR_WHITE, 2.0);
-                                        al_draw_text(character_select_display_name, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "KNIGHT");
+                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "KNIGHT");
 
                                         break;
 
                                         case 2:
                                         al_draw_rectangle(al_get_display_width(display) - 138, 356, al_get_display_width(display) - 238, 452, COLOR_WHITE, 2.0);
-                                        al_draw_text(character_select_display_name, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "SPEARWOMAN");
+                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "SPEARWOMAN");
 
                                         break;
 
                                         case 3:
                                         al_draw_rectangle(al_get_display_width(display) - 32, 356, al_get_display_width(display) - 128, 452, COLOR_WHITE, 2.0);
-                                        al_draw_text(character_select_display_name, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "FIRE WARRIOR");
+                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "FIRE WARRIOR");
 
                                         break;
                                 }
-                        } else if (stage_select) {
+                        } else if (game_states->stage_select) {
 
-                        } else if (rumble) {
+                        } else if (game_states->rumble) {
                                 
                         }
 
@@ -339,41 +328,41 @@ int main(void) {
                         break;
                 }
                 
-                if (menu) {
-                        if (play_menu_sample)
+                if (game_states->menu) {
+                        if (game_states->play_menu_sample)
                                 al_play_sample(menu_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
                         
-                        play_menu_sample = 0;
-                        play_character_select_welcome_sample = 1;
-                        play_character_select_sample = 1;
-                        character_select_nav_p1 = 0;
-                        character_select_nav_p2 = 0;
-                        character_select_nav_p1_confirm = 0;
-                        character_select_nav_p2_confirm = 0;
+                        game_states->play_menu_sample = 0;
+                        game_states->play_character_select_welcome_sample = 1;
+                        game_states->play_character_select_sample = 1;
+                        game_states->character_select_nav_p1 = 0;
+                        game_states->character_select_nav_p2 = 0;
+                        game_states->character_select_nav_p1_confirm = 0;
+                        game_states->character_select_nav_p2_confirm = 0;
 
                         if (evt.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (evt.keyboard.keycode == ALLEGRO_KEY_S || evt.keyboard.keycode == ALLEGRO_KEY_DOWN) {
-                                        menu_select++;
+                                        game_states->menu_select++;
                                 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
-                                        if (menu_select > MENU_OPTIONS - 1)
-                                                menu_select = 0;
+                                        if (game_states->menu_select > MENU_OPTIONS - 1)
+                                                game_states->menu_select = 0;
                                 } else if (evt.keyboard.keycode == ALLEGRO_KEY_W || evt.keyboard.keycode == ALLEGRO_KEY_UP) {
-                                        menu_select--;
+                                        game_states->menu_select--;
 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
-                                        if (menu_select < 0)
-                                                menu_select = MENU_OPTIONS - 1;
+                                        if (game_states->menu_select < 0)
+                                                game_states->menu_select = MENU_OPTIONS - 1;
                                 } else if (evt.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                        if (menu_select == 0) {
+                                        if (game_states->menu_select == 0) {
                                                 al_stop_sample(&menu_sample_id);
                                                 al_play_sample(menu_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
-                                                menu = 0;
-                                                menu_select = 0;
-                                                character_select = 1;
+                                                game_states->menu = 0;
+                                                game_states->menu_select = 0;
+                                                game_states->character_select = 1;
                                         } else {
                                                 al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                                 al_rest(0.5);
@@ -387,47 +376,47 @@ int main(void) {
                                         break;
                                 }
                         }
-                } else if (character_select) {
-                        if (play_character_select_welcome_sample && play_character_select_sample) {
+                } else if (game_states->character_select) {
+                        if (game_states->play_character_select_welcome_sample && game_states->play_character_select_sample) {
                                 al_rest(0.5);
                                 al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
                                 al_play_sample(character_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
 
-                        play_character_select_welcome_sample = 0;
-                        play_character_select_sample = 0;
-                        play_menu_sample = 1;
-                        menu_select = 0;
+                        game_states->play_character_select_welcome_sample = 0;
+                        game_states->play_character_select_sample = 0;
+                        game_states->play_menu_sample = 1;
+                        game_states->menu_select = 0;
 
                         if (evt.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (evt.keyboard.keycode == ALLEGRO_KEY_DELETE) {
-                                        menu = 1;
-                                        character_select = 0;
+                                        game_states->menu = 1;
+                                        game_states->character_select = 0;
 
                                         al_stop_sample(&character_select_sample_id);
                                         al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                 }
                                 
-                                if (evt.keyboard.keycode == ALLEGRO_KEY_D && !character_select_nav_p1_confirm) {
-                                        character_select_nav_p1++;
+                                if (evt.keyboard.keycode == ALLEGRO_KEY_D && !game_states->character_select_nav_p1_confirm) {
+                                        game_states->character_select_nav_p1++;
                                 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
-                                        if (character_select_nav_p1 > NUM_CHARACTERS - 1)
-                                                character_select_nav_p1 = 0;
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_A && !character_select_nav_p1_confirm) {
-                                        character_select_nav_p1--;
+                                        if (game_states->character_select_nav_p1 > NUM_CHARACTERS - 1)
+                                                game_states->character_select_nav_p1 = 0;
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_A && !game_states->character_select_nav_p1_confirm) {
+                                        game_states->character_select_nav_p1--;
 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
-                                        if (character_select_nav_p1 < 0)
-                                                character_select_nav_p1 = NUM_CHARACTERS - 1;
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_ENTER && !character_select_nav_p1_confirm) {
-                                        character_select_nav_p1_confirm = 1;
+                                        if (game_states->character_select_nav_p1 < 0)
+                                                game_states->character_select_nav_p1 = NUM_CHARACTERS - 1;
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_ENTER && !game_states->character_select_nav_p1_confirm) {
+                                        game_states->character_select_nav_p1_confirm = 1;
 
                                         al_play_sample(character_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
 
-                                        switch (character_select_nav_p1) {
+                                        switch (game_states->character_select_nav_p1) {
                                                 case 0:
                                                 printf("\nP1 SELECTED VIKING\n");
 
@@ -450,26 +439,26 @@ int main(void) {
                                         }
                                 }
 
-                                if (evt.keyboard.keycode == ALLEGRO_KEY_RIGHT && !character_select_nav_p2_confirm) {
-                                        character_select_nav_p2++;
+                                if (evt.keyboard.keycode == ALLEGRO_KEY_RIGHT && !game_states->character_select_nav_p2_confirm) {
+                                        game_states->character_select_nav_p2++;
                                 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
-                                        if (character_select_nav_p2 > NUM_CHARACTERS - 1)
-                                                character_select_nav_p2 = 0;
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_LEFT && !character_select_nav_p2_confirm) {
-                                        character_select_nav_p2--;
+                                        if (game_states->character_select_nav_p2 > NUM_CHARACTERS - 1)
+                                                game_states->character_select_nav_p2 = 0;
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_LEFT && !game_states->character_select_nav_p2_confirm) {
+                                        game_states->character_select_nav_p2--;
 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
-                                        if (character_select_nav_p2 < 0)
-                                                character_select_nav_p2 = NUM_CHARACTERS - 1;
-                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && !character_select_nav_p2_confirm) {
-                                        character_select_nav_p2_confirm = 1;
+                                        if (game_states->character_select_nav_p2 < 0)
+                                                game_states->character_select_nav_p2 = NUM_CHARACTERS - 1;
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && !game_states->character_select_nav_p2_confirm) {
+                                        game_states->character_select_nav_p2_confirm = 1;
 
                                         al_play_sample(character_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
 
-                                        switch (character_select_nav_p2) {
+                                        switch (game_states->character_select_nav_p2) {
                                                 case 0:
                                                 printf("\nP2 SELECTED VIKING\n");
 
@@ -496,11 +485,12 @@ int main(void) {
         }
 
         printf("[+] main(): exiting game...\n");
-        
+        destroy_game_states(game_states);
+
         al_destroy_font(menu_header_font);
         al_destroy_font(menu_options_font);
         al_destroy_font(character_select_header_font);
-        al_destroy_font(character_select_display_name);
+        al_destroy_font(character_select_display_name_font);
         al_destroy_display(display);
         al_destroy_timer(timer);
         al_destroy_event_queue(evt_queue);
