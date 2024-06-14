@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Estrutura de estados de jogo, contendo flags importantes para o funcionamento do programa */
 typedef struct GameStates {
         unsigned char menu;
         unsigned char play_menu_sample;
@@ -19,8 +20,10 @@ typedef struct GameStates {
         char character_select_nav_p2;
 } GameStates;
 
+/* Cria estrutura de estados de jogo */
 GameStates *create_game_states();
 
+/* Destrói estrutura de dados de jogo */
 void destroy_game_states(GameStates *game_states);
 
 #endif // __GAME_STATES__
