@@ -1,3 +1,5 @@
+#include <allegro5/bitmap_draw.h>
+#include <allegro5/display.h>
 #include <allegro5/keycodes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -105,6 +107,15 @@ int main(void) {
                 exit(AL_LOAD_GAME_ICON_ERROR);
         } else {
                 printf("[+] main(): loaded fire_warrior_icon.png\n");
+        }
+
+        ALLEGRO_BITMAP *stage_select_arrow_icon = al_load_bitmap("imgs/icons/stage_select_arrow_icon.png");
+
+        if (!stage_select_arrow_icon) {
+                fprintf(stderr, "[-] main(): failed to load stage_select_arrow_icon.png\n");
+                exit(AL_LOAD_GAME_ICON_ERROR);
+        } else {
+                printf("[+] main(): loaded stage_select_arrow_icon.png\n");
         }
 
         ALLEGRO_EVENT_QUEUE *evt_queue = al_create_event_queue();
@@ -244,8 +255,10 @@ int main(void) {
                                         game_states
                                 );
                         } else if (game_states->stage_select) {
-                                al_clear_to_color(al_map_rgb(0, 0, 0));
-                                al_draw_text(character_select_header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "STAGE SELECTION");
+                                al_clear_to_color(COLOR_DARK_GREEN);
+                                al_draw_text(character_select_header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2 + 16, 128, ALLEGRO_ALIGN_CENTRE, "STAGE SELECTION");
+                                al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 + 256, (float)al_get_display_height(display) / 2, 0);
+                                al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 - 356, (float)al_get_display_height(display) / 2, ALLEGRO_FLIP_HORIZONTAL);
                         } else if (game_states->rumble) {
                                 
                         }
@@ -422,8 +435,8 @@ int main(void) {
                         }
                 } else if (game_states->stage_select) {
                         if (game_states->play_stage_select_sample) {
-                                al_play_sample(stage_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &stage_select_sample_id);
                                 al_rest(0.25);
+                                al_play_sample(stage_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &stage_select_sample_id);
                         }
                         
                         game_states->play_stage_select_sample = 0;
@@ -471,6 +484,7 @@ int main(void) {
         al_destroy_bitmap(knight_icon);
         al_destroy_bitmap(spearwoman_icon);
         al_destroy_bitmap(fire_warrior_icon);
+        al_destroy_bitmap(stage_select_arrow_icon);
         al_uninstall_audio();
         al_uninstall_keyboard();
 
