@@ -1,3 +1,6 @@
+#include <allegro5/color.h>
+#include <allegro5/drawing.h>
+#include <allegro5/keycodes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -252,9 +255,9 @@ int main(void) {
                                         game_states
                                 );
                         } else if (game_states->stage_select) {
-                                draw_stage_select(character_select_header_font, display, stage_select_arrow_icon, game_states);
+                                draw_stage_select(character_select_header_font, menu_options_font, display, stage_select_arrow_icon, game_states);
                         } else if (game_states->rumble) {
-                                
+                                al_clear_to_color(al_map_rgb(0, 0, 0));
                         }
 
                         al_flip_display();
@@ -321,10 +324,11 @@ int main(void) {
                                 al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
                                 al_play_sample(character_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
-
+                        
                         game_states->play_character_select_welcome_sample = 0;
                         game_states->play_character_select_sample = 0;
                         game_states->play_menu_sample = 1;
+                        game_states->stage_select_nav = 0;
                         game_states->play_stage_select_sample = 1;
                         game_states->menu_select = 0;
 
@@ -463,6 +467,11 @@ int main(void) {
 
                                         if (game_states->stage_select_nav < 0)
                                                 game_states->stage_select_nav = NUM_STAGES - 1;
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_ENTER || evt.keyboard.keycode == ALLEGRO_KEY_DELETE) {
+                                        game_states->rumble = 1;
+                                        game_states->stage_select = 0;
+
+                                        al_stop_sample(&stage_select_sample_id);
                                 }
                         }
                 } else if (game_states->rumble) {

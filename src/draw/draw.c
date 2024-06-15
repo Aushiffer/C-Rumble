@@ -24,8 +24,8 @@ void draw_character_select(
         ALLEGRO_FONT *character_select_display_name_font, ALLEGRO_DISPLAY *display, 
         ALLEGRO_BITMAP *character_icon1, ALLEGRO_BITMAP *character_icon2, 
         ALLEGRO_BITMAP *character_icon3, ALLEGRO_BITMAP *character_icon4,
-        GameStates *game_states
-) {
+        GameStates *game_states)
+{
         al_clear_to_color(COLOR_TOMATO);
         al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "CHOOSE YOUR CHARACTER");
         al_draw_text(player_indicator_font, COLOR_WHITE, 256, 256, ALLEGRO_ALIGN_CENTRE, "1P");
@@ -104,9 +104,21 @@ void draw_character_select(
         }
 }
 
-void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage_select_arrow_icon, GameStates *game_states) {
+void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_name_font, ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage_select_arrow_icon, GameStates *game_states) {
         al_clear_to_color(COLOR_DARK_GREEN);
         al_draw_text(header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2 + 16, 128, ALLEGRO_ALIGN_CENTRE, "STAGE SELECTION");
         al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 + 256, (float)al_get_display_height(display) / 2, 0);
         al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 - 356, (float)al_get_display_height(display) / 2, ALLEGRO_FLIP_HORIZONTAL);
+
+        switch (game_states->stage_select_nav) {
+                case 0:
+                al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 16, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "FOREST");
+
+                break;
+
+                case 1:
+                al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 16, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "FACTORY");
+
+                break;
+        }
 }

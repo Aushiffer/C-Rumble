@@ -26,6 +26,6 @@ void draw_character_select(
 );
 
 /* Renderiza a tela de seleção de cenário */
-void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage_select_arrow_icon, GameStates *game_states);
+void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_name_font, ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage_select_arrow_icon, GameStates *game_states);
 
 #endif // __DRAW__
