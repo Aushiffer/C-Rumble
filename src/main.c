@@ -1,10 +1,6 @@
-#include <allegro5/bitmap_draw.h>
-#include <allegro5/display.h>
-#include <allegro5/keycodes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
-#include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_audio.h>
@@ -16,8 +12,9 @@
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
-#define MENU_OPTIONS 2
+#define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
+#define NUM_STAGES 2
 
 int main(void) {
         if (!al_init()) {
@@ -255,10 +252,7 @@ int main(void) {
                                         game_states
                                 );
                         } else if (game_states->stage_select) {
-                                al_clear_to_color(COLOR_DARK_GREEN);
-                                al_draw_text(character_select_header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2 + 16, 128, ALLEGRO_ALIGN_CENTRE, "STAGE SELECTION");
-                                al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 + 256, (float)al_get_display_height(display) / 2, 0);
-                                al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 - 356, (float)al_get_display_height(display) / 2, ALLEGRO_FLIP_HORIZONTAL);
+                                draw_stage_select(character_select_header_font, display, stage_select_arrow_icon, game_states);
                         } else if (game_states->rumble) {
                                 
                         }
@@ -272,8 +266,10 @@ int main(void) {
                 }
                 
                 if (game_states->menu) {
-                        if (game_states->play_menu_sample)
+                        if (game_states->play_menu_sample) {
                                 al_play_sample(menu_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
+                                al_rest(0.25);
+                        }
                         
                         game_states->play_menu_sample = 0;
                         game_states->play_character_select_welcome_sample = 1;
@@ -289,7 +285,7 @@ int main(void) {
                                 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
-                                        if (game_states->menu_select > MENU_OPTIONS - 1)
+                                        if (game_states->menu_select > NUM_MENU_OPTIONS - 1)
                                                 game_states->menu_select = 0;
                                 } else if (evt.keyboard.keycode == ALLEGRO_KEY_W || evt.keyboard.keycode == ALLEGRO_KEY_UP) {
                                         game_states->menu_select--;
@@ -297,7 +293,7 @@ int main(void) {
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
 
                                         if (game_states->menu_select < 0)
-                                                game_states->menu_select = MENU_OPTIONS - 1;
+                                                game_states->menu_select = NUM_MENU_OPTIONS - 1;
                                 } else if (evt.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                                         if (game_states->menu_select == 0) {
                                                 al_stop_sample(&menu_sample_id);
@@ -339,7 +335,6 @@ int main(void) {
 
                                         al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_stop_sample(&character_select_sample_id);
-                                        al_rest(0.25);
                                 }
                                 
                                 if (evt.keyboard.keycode == ALLEGRO_KEY_D && !game_states->character_select_nav_p1_confirm) {
@@ -454,7 +449,20 @@ int main(void) {
 
                                         al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_stop_sample(&stage_select_sample_id);
-                                        al_rest(0.25);
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_D || evt.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+                                        game_states->stage_select_nav++;
+
+                                        al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+
+                                        if (game_states->stage_select_nav > NUM_STAGES - 1)
+                                                game_states->stage_select_nav = 0;
+                                } else if (evt.keyboard.keycode == ALLEGRO_KEY_A || evt.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+                                        game_states->stage_select_nav--;
+
+                                        al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+
+                                        if (game_states->stage_select_nav < 0)
+                                                game_states->stage_select_nav = NUM_STAGES - 1;
                                 }
                         }
                 } else if (game_states->rumble) {

@@ -19,6 +19,7 @@ typedef struct GameStates {
         char menu_select;
         char character_select_nav_p1;
         char character_select_nav_p2;
+        char stage_select_nav;
 } GameStates;
 
 /* Cria estrutura de estados de jogo */

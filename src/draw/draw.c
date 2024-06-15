@@ -20,7 +20,7 @@ void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, 
 }
 
 void draw_character_select(
-        ALLEGRO_FONT *character_select_header_font, ALLEGRO_FONT *menu_options_font, 
+        ALLEGRO_FONT *character_select_header_font, ALLEGRO_FONT *player_indicator_font, 
         ALLEGRO_FONT *character_select_display_name_font, ALLEGRO_DISPLAY *display, 
         ALLEGRO_BITMAP *character_icon1, ALLEGRO_BITMAP *character_icon2, 
         ALLEGRO_BITMAP *character_icon3, ALLEGRO_BITMAP *character_icon4,
@@ -28,8 +28,8 @@ void draw_character_select(
 ) {
         al_clear_to_color(COLOR_TOMATO);
         al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "CHOOSE YOUR CHARACTER");
-        al_draw_text(menu_options_font, COLOR_WHITE, 256, 256, ALLEGRO_ALIGN_CENTRE, "1P");
-        al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) - 256, 256, ALLEGRO_ALIGN_CENTRE, "2P");
+        al_draw_text(player_indicator_font, COLOR_WHITE, 256, 256, ALLEGRO_ALIGN_CENTRE, "1P");
+        al_draw_text(player_indicator_font, COLOR_WHITE, (float)al_get_display_width(display) - 256, 256, ALLEGRO_ALIGN_CENTRE, "2P");
                                 
         al_draw_scaled_bitmap(character_icon1, 0.0, 0.0, al_get_bitmap_width(character_icon1), al_get_bitmap_height(character_icon1), 32, 356, 95, 95, 0);                      //
         al_draw_scaled_bitmap(character_icon2, 0.0, 0.0, al_get_bitmap_width(character_icon2), al_get_bitmap_height(character_icon2), 138, 356, 95, 95, 0); // coloca os ícones (P1)
@@ -102,4 +102,11 @@ void draw_character_select(
 
                 break;
         }
+}
+
+void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage_select_arrow_icon, GameStates *game_states) {
+        al_clear_to_color(COLOR_DARK_GREEN);
+        al_draw_text(header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2 + 16, 128, ALLEGRO_ALIGN_CENTRE, "STAGE SELECTION");
+        al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 + 256, (float)al_get_display_height(display) / 2, 0);
+        al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 - 356, (float)al_get_display_height(display) / 2, ALLEGRO_FLIP_HORIZONTAL);
 }

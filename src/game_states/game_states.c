@@ -18,7 +18,8 @@ GameStates *create_game_states() {
         game_states->rumble = 0;
         game_states->menu_select = 0;
         game_states->character_select_nav_p1 = 0;
-        game_states->character_select_nav_p2 = 0;        
+        game_states->character_select_nav_p2 = 0;   
+        game_states->stage_select_nav = 0;     
 
         return game_states;
 }
