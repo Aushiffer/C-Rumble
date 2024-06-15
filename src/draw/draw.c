@@ -106,18 +106,18 @@ void draw_character_select(
 
 void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_name_font, ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage_select_arrow_icon, GameStates *game_states) {
         al_clear_to_color(COLOR_DARK_GREEN);
-        al_draw_text(header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2 + 16, 128, ALLEGRO_ALIGN_CENTRE, "STAGE SELECTION");
-        al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 + 256, (float)al_get_display_height(display) / 2, 0);
-        al_draw_bitmap(stage_select_arrow_icon, (float)al_get_display_width(display) / 2 - 356, (float)al_get_display_height(display) / 2, ALLEGRO_FLIP_HORIZONTAL);
+        al_draw_text(header_font, al_map_rgb(255, 255, 255), (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "STAGE SELECTION");
+        al_draw_scaled_bitmap(stage_select_arrow_icon, 0.0, 0.0, al_get_bitmap_width(stage_select_arrow_icon), al_get_bitmap_height(stage_select_arrow_icon), (float)al_get_display_width(display) / 2 + 256, (float)al_get_display_height(display) / 2, 64, 48, 0);
+        al_draw_scaled_bitmap(stage_select_arrow_icon, 0.0, 0.0, al_get_bitmap_width(stage_select_arrow_icon), al_get_bitmap_height(stage_select_arrow_icon), (float)al_get_display_width(display) / 2 - 356, (float)al_get_display_height(display) / 2, 64, 48, ALLEGRO_FLIP_HORIZONTAL);
 
         switch (game_states->stage_select_nav) {
                 case 0:
-                al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 16, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "FOREST");
+                al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "DARK FOREST");
 
                 break;
 
                 case 1:
-                al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 16, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "FACTORY");
+                al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "ABANDONED FACTORY");
 
                 break;
         }

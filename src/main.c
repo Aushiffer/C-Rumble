@@ -1,6 +1,3 @@
-#include <allegro5/color.h>
-#include <allegro5/drawing.h>
-#include <allegro5/keycodes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -130,37 +127,46 @@ int main(void) {
         ALLEGRO_FONT *menu_header_font = al_load_font("fonts/Osake.ttf", 256, 0);
 
         if (!menu_header_font) {
-                fprintf(stderr, "[-] main(): failed to load Osake.ttf (menu) font\n");
+                fprintf(stderr, "[-] main(): failed to load menu_header_font\n");
                 exit(AL_LOAD_FONT_ERROR);
         } else {
-                printf("[+] main(): loaded Osake.ttf (menu) font\n");
+                printf("[+] main(): loaded menu_header_font\n");
         }
 
         ALLEGRO_FONT *menu_options_font = al_load_font("fonts/osaka-re.ttf", 64, 0);
 
         if (!menu_options_font) {
-                fprintf(stderr, "[-] main(): failed to load osaka-re.ttf font\n");
+                fprintf(stderr, "[-] main(): failed to load menu_options_font\n");
                 exit(AL_LOAD_FONT_ERROR);
         } else {
-                printf("[+] main(): loaded osaka-re.ttf font\n");
+                printf("[+] main(): loaded menu_options_font\n");
         }
 
         ALLEGRO_FONT *character_select_header_font = al_load_font("fonts/Osake.ttf", 64, 0);
 
         if (!character_select_header_font) {
-                fprintf(stderr, "[-] main(): failed to load Osake.ttf (character selection) font\n");
+                fprintf(stderr, "[-] main(): failed to load character_select_header_font\n");
                 exit(AL_LOAD_FONT_ERROR);
         } else {
-                printf("[+] main(): loaded Osake.ttf (character selection) font\n");
+                printf("[+] main(): loaded character_select_header_font\n");
         }
 
         ALLEGRO_FONT *character_select_display_name_font = al_load_font("fonts/OsakaBrightDemoRegular.ttf", 32, 0);
 
         if (!character_select_display_name_font) {
-                fprintf(stderr, "[-] main(): failed to load OsakaBrightDemoRegular.ttf\n");
+                fprintf(stderr, "[-] main(): failed to load character_select_display_name_font\n");
                 exit(AL_LOAD_FONT_ERROR);
         } else {
-                printf("[+] main(): loaded OsakaBrightDemoRegular.ttf font\n");
+                printf("[+] main(): loaded character_select_display_name_font\n");
+        }
+
+        ALLEGRO_FONT *stage_display_name_font = al_load_font("fonts/osaka-re.ttf", 32, 0);
+
+        if (!stage_display_name_font) {
+                fprintf(stderr, "[-] main(): failed to load stage_display_name_font\n");
+                exit(AL_LOAD_FONT_ERROR);
+        } else {
+                printf("[+] main(): loaded stage_display_name_font\n");
         }
 
         if (!al_install_audio() || !al_init_acodec_addon() || !al_reserve_samples(10)) {
@@ -255,7 +261,7 @@ int main(void) {
                                         game_states
                                 );
                         } else if (game_states->stage_select) {
-                                draw_stage_select(character_select_header_font, menu_options_font, display, stage_select_arrow_icon, game_states);
+                                draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                         } else if (game_states->rumble) {
                                 al_clear_to_color(al_map_rgb(0, 0, 0));
                         }
