@@ -22,8 +22,8 @@ void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, 
 void draw_character_select(
         ALLEGRO_FONT *character_select_header_font, ALLEGRO_FONT *player_indicator_font, 
         ALLEGRO_FONT *character_select_display_name_font, ALLEGRO_DISPLAY *display, 
-        ALLEGRO_BITMAP *character_icon1, ALLEGRO_BITMAP *character_icon2, 
-        ALLEGRO_BITMAP *character_icon3, ALLEGRO_BITMAP *character_icon4,
+        ALLEGRO_BITMAP *viking_icon, ALLEGRO_BITMAP *knight_icon, 
+        ALLEGRO_BITMAP *spearwoman_icon, ALLEGRO_BITMAP *fire_warrior_icon,
         GameStates *game_states)
 {
         al_clear_to_color(COLOR_TOMATO);
@@ -31,15 +31,15 @@ void draw_character_select(
         al_draw_text(player_indicator_font, COLOR_WHITE, 256, 256, ALLEGRO_ALIGN_CENTRE, "1P");
         al_draw_text(player_indicator_font, COLOR_WHITE, (float)al_get_display_width(display) - 256, 256, ALLEGRO_ALIGN_CENTRE, "2P");
                                 
-        al_draw_scaled_bitmap(character_icon1, 0.0, 0.0, al_get_bitmap_width(character_icon1), al_get_bitmap_height(character_icon1), 32, 356, 95, 95, 0);                      //
-        al_draw_scaled_bitmap(character_icon2, 0.0, 0.0, al_get_bitmap_width(character_icon2), al_get_bitmap_height(character_icon2), 138, 356, 95, 95, 0); // coloca os ícones (P1)
-        al_draw_scaled_bitmap(character_icon3, 0.0, 0.0, al_get_bitmap_width(character_icon3), al_get_bitmap_height(character_icon3), 248, 356, 95, 95, 0); // 
-        al_draw_scaled_bitmap(character_icon4, 0.0, 0.0, al_get_bitmap_width(character_icon4), al_get_bitmap_height(character_icon4), 355, 356, 95, 95, 0); //
+        al_draw_scaled_bitmap(viking_icon, 0.0, 0.0, al_get_bitmap_width(viking_icon), al_get_bitmap_height(viking_icon), 32, 356, 95, 95, 0);                      //
+        al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), 138, 356, 95, 95, 0); // coloca os ícones (P1)
+        al_draw_scaled_bitmap(spearwoman_icon, 0.0, 0.0, al_get_bitmap_width(spearwoman_icon), al_get_bitmap_height(spearwoman_icon), 248, 356, 95, 95, 0); // 
+        al_draw_scaled_bitmap(fire_warrior_icon, 0.0, 0.0, al_get_bitmap_width(fire_warrior_icon), al_get_bitmap_height(fire_warrior_icon), 355, 356, 95, 95, 0); //
 
-        al_draw_scaled_bitmap(character_icon1, 0.0, 0.0, al_get_bitmap_width(character_icon1), al_get_bitmap_height(character_icon1), al_get_display_width(display) - 452, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);                       //
-        al_draw_scaled_bitmap(character_icon2, 0.0, 0.0, al_get_bitmap_width(character_icon2), al_get_bitmap_height(character_icon2), al_get_display_width(display) - 345, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);                       // coloca os ícones (P2)
-        al_draw_scaled_bitmap(character_icon3, 0.0, 0.0, al_get_bitmap_width(character_icon3), al_get_bitmap_height(character_icon3), al_get_display_width(display) - 238, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);           //
-        al_draw_scaled_bitmap(character_icon4, 0.0, 0.0, al_get_bitmap_width(character_icon4), al_get_bitmap_height(character_icon4), al_get_display_width(display) - 128, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);     //
+        al_draw_scaled_bitmap(viking_icon, 0.0, 0.0, al_get_bitmap_width(viking_icon), al_get_bitmap_height(viking_icon), al_get_display_width(display) - 452, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);                       //
+        al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), al_get_display_width(display) - 345, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);                       // coloca os ícones (P2)
+        al_draw_scaled_bitmap(spearwoman_icon, 0.0, 0.0, al_get_bitmap_width(spearwoman_icon), al_get_bitmap_height(spearwoman_icon), al_get_display_width(display) - 238, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);           //
+        al_draw_scaled_bitmap(fire_warrior_icon, 0.0, 0.0, al_get_bitmap_width(fire_warrior_icon), al_get_bitmap_height(fire_warrior_icon), al_get_display_width(display) - 128, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);     //
 
         al_draw_rectangle(32, 356, 128, 452, COLOR_BLACK, 2.0);  //
         al_draw_rectangle(138, 356, 238, 452, COLOR_BLACK, 2.0); // placeholders dos ícones dos personagens (P1)

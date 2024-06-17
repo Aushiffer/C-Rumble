@@ -272,6 +272,13 @@ int main(void) {
         ALLEGRO_SAMPLE_ID character_confirm_sample_id;
         ALLEGRO_SAMPLE *character_select_confirm_sample = al_load_sample("sfx/character_confirm.ogg");
 
+        if (!character_select_confirm_sample) {
+                fprintf(stderr, "[-] main(): failed to load character_confirm.ogg\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded character_confirm.ogg\n");
+        }
+
         ALLEGRO_SAMPLE_ID stage_select_sample_id;
         ALLEGRO_SAMPLE *stage_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 15 - Fear.ogg");
 
@@ -446,21 +453,25 @@ int main(void) {
                                         switch (game_states->character_select_nav_p1) {
                                                 case 0:
                                                         printf("\nP1 SELECTED VIKING\n");
+                                                        game_states->rumble_fighter_p1 = 0;
 
                                                         break;
 
                                                 case 1:
                                                         printf("\nP1 SELECTED KNIGHT\n");
+                                                        game_states->rumble_fighter_p1 = 1;
 
                                                         break;
 
                                                 case 2:
                                                         printf("\nP1 SELECTED SPEARWOMAN\n");
+                                                        game_states->rumble_fighter_p1 = 2;
 
                                                         break;
 
                                                 case 3:
                                                         printf("\nP1 SELECTED FIRE WARRIOR\n");
+                                                        game_states->rumble_fighter_p1 = 3;
 
                                                         break;
                                         }
@@ -488,21 +499,25 @@ int main(void) {
                                         switch (game_states->character_select_nav_p2) {
                                                 case 0:
                                                         printf("\nP2 SELECTED VIKING\n");
+                                                        game_states->rumble_fighter_p2 = 0;
 
                                                         break;
 
                                                 case 1:
                                                         printf("\nP2 SELECTED KNIGHT\n");
+                                                        game_states->rumble_fighter_p2 = 1;
 
                                                         break;
 
                                                 case 2:
                                                         printf("\nP2 SELECTED SPEARWOMAN\n");
+                                                        game_states->rumble_fighter_p2 = 2;
 
                                                         break;
 
                                                 case 3:
                                                         printf("\nP2 SELECTED FIRE WARRIOR\n");
+                                                        game_states->rumble_fighter_p2 = 3;
 
                                                         break;
                                         }
