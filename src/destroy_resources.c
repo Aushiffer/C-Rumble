@@ -4,7 +4,8 @@ void destroy_samples(
         ALLEGRO_SAMPLE *menu_sample, ALLEGRO_SAMPLE *menu_confirm_sample, 
         ALLEGRO_SAMPLE *menu_select_sample, ALLEGRO_SAMPLE *cancel_sound_sample, 
         ALLEGRO_SAMPLE *character_select_welcome_sample, ALLEGRO_SAMPLE *character_select_sample, 
-        ALLEGRO_SAMPLE *character_select_confirm_sample, ALLEGRO_SAMPLE *pause_sound_effect
+        ALLEGRO_SAMPLE *character_select_confirm_sample, ALLEGRO_SAMPLE *pause_sound_effect,
+        ALLEGRO_SAMPLE *dark_forest_sample, ALLEGRO_SAMPLE *abandoned_factory_sample
 ) {
         al_destroy_sample(menu_sample);
         al_destroy_sample(menu_confirm_sample);
@@ -14,6 +15,8 @@ void destroy_samples(
         al_destroy_sample(character_select_confirm_sample);
         al_destroy_sample(cancel_sound_sample);
         al_destroy_sample(pause_sound_effect);
+        al_destroy_sample(dark_forest_sample);
+        al_destroy_sample(abandoned_factory_sample);
 }
 
 void destroy_fonts(

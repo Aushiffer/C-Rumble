@@ -10,12 +10,14 @@
 #include "destroy_resources.h"
 #include "game_states/game_states.h"
 #include "draw/draw.h"
+#include "fighter/fighter.h"
 
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 720
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define NUM_STAGES 2
+#define NUM_PAUSE_OPTIONS 3
 #define FRAMES_PER_SECOND 60.0
 
 int main(void) {
@@ -298,6 +300,26 @@ int main(void) {
         } else {
                 printf("[+] main(): loaded pause sound effect\n");
         }
+
+        ALLEGRO_SAMPLE_ID dark_forest_sample_id;
+        ALLEGRO_SAMPLE *dark_forest_sample = al_load_sample("music/dark_forest_soundtrack.ogg");
+
+        if (!dark_forest_sample) {
+                fprintf(stderr, "[-] main(): failed to load stage -> dark forest soundtrack\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded stage -> dark forest soundtrack\n");
+        }
+
+        ALLEGRO_SAMPLE_ID abandoned_factory_sample_id;
+        ALLEGRO_SAMPLE *abandoned_factory_sample = al_load_sample("music/abandoned_factory_soundtrack.ogg");
+
+        if (!abandoned_factory_sample) {
+                fprintf(stderr, "[-] main(): loaded stage -> abandoned factory soundtrack\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] loaded stage -> abandoned factory soundtrack\n");
+        }
         
         ALLEGRO_EVENT event;
 
@@ -316,7 +338,7 @@ int main(void) {
                 printf("[+] main(): loaded game states structure\n");
         }
 
-        printf("[+] main(): success, starting game...\n");
+        printf("\n[+] main(): success, starting game...\n");
 
         while (1) {
                 al_wait_for_event(event_queue, &event);
@@ -353,6 +375,30 @@ int main(void) {
                                         
                                         case 1:
                                                 al_clear_to_color(COLOR_BLACK);
+                                                al_draw_text(menu_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 64, ALLEGRO_ALIGN_CENTRE, "PAUSE");
+                                                
+                                                switch (game_states->rumble_pause_select) {
+                                                        case 0:
+                                                                al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 64, ALLEGRO_ALIGN_CENTRE, "RESUME");
+                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
+                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
+
+                                                                break;
+
+                                                        case 1:
+                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 64, ALLEGRO_ALIGN_CENTRE, "RESUME");
+                                                                al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
+                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
+
+                                                                break;
+
+                                                        case 2:
+                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 64, ALLEGRO_ALIGN_CENTRE, "RESUME");
+                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
+                                                                al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
+
+                                                                break;
+                                                }
 
                                                 break;
                                 }
@@ -541,6 +587,9 @@ int main(void) {
                         game_states->character_select_nav_p2_confirm = 0;
                         game_states->play_character_select_sample = 1;
                         game_states->play_character_select_welcome_sample = 1;
+                        game_states->play_rumble_sample = 1;
+                        game_states->rumble_pause = 0;
+                        game_states->rumble_pause_select = 0;
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
@@ -549,7 +598,9 @@ int main(void) {
 
                                         al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_stop_sample(&stage_select_sample_id);
-                                } else if (event.keyboard.keycode == ALLEGRO_KEY_D || event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+                                }
+                                
+                                if (event.keyboard.keycode == ALLEGRO_KEY_D || event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
                                         game_states->stage_select_nav++;
 
                                         al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
@@ -571,11 +622,96 @@ int main(void) {
                                 }
                         }
                 } else if (game_states->rumble) {
+                        if (game_states->play_rumble_sample) {
+                                switch (game_states->stage_select_nav) {
+                                        case 0:
+                                                al_play_sample(dark_forest_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &dark_forest_sample_id);
+
+                                                break;
+
+                                        case 1:
+                                                al_play_sample(abandoned_factory_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &abandoned_factory_sample_id);
+
+                                                break;
+                                }
+                        }
+
+                        game_states->play_rumble_sample = 0;
+                        game_states->character_select_nav_p1 = 0;
+                        game_states->character_select_nav_p2 = 0;
+                        game_states->character_select_nav_p1_confirm = 0;
+                        game_states->character_select_nav_p2_confirm = 0;
+                        game_states->play_character_select_welcome_sample = 1;
+                        game_states->play_character_select_sample = 1;
+                        game_states->play_menu_sample = 1;
+
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
                                         game_states->rumble_pause ^= 1;
                                         
                                         al_play_sample(pause_sound_effect, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &pause_sound_effect_id);
+                                }
+
+                                if (event.keyboard.keycode == ALLEGRO_KEY_S) {
+                                        if (game_states->rumble_pause) {
+                                                game_states->rumble_pause_select++;
+
+                                                al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+
+                                                if (game_states->rumble_pause_select > NUM_PAUSE_OPTIONS - 1)
+                                                        game_states->rumble_pause_select = 0;
+                                        } else {
+
+                                        }
+                                } else if (event.keyboard.keycode == ALLEGRO_KEY_W) {
+                                        if (game_states->rumble_pause) {
+                                                game_states->rumble_pause_select--;
+
+                                                al_play_sample(menu_select_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_select_sample_id);
+
+                                                if (game_states->rumble_pause_select < 0)
+                                                        game_states->rumble_pause_select = NUM_PAUSE_OPTIONS - 1;
+                                        } else {
+
+                                        }
+                                } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+                                        if (game_states->rumble_pause) {
+                                                al_play_sample(menu_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+
+                                                if (game_states->rumble_pause_select == 0) {
+                                                        game_states->rumble_pause = 0;
+                                                } else if (game_states->rumble_pause_select == 1) {
+                                                        game_states->character_select = 1;
+                                                        game_states->rumble = 0;
+
+                                                        switch (game_states->stage_select_nav) {
+                                                                case 0:
+                                                                        al_stop_sample(&dark_forest_sample_id);
+
+                                                                        break;
+
+                                                                case 1:
+                                                                        al_stop_sample(&abandoned_factory_sample_id);
+
+                                                                        break;
+                                                        }
+                                                } else if (game_states->rumble_pause_select == 2) {
+                                                        game_states->menu = 1;
+                                                        game_states->rumble = 0;
+
+                                                        switch (game_states->stage_select_nav) {
+                                                                case 0:
+                                                                        al_stop_sample(&dark_forest_sample_id);
+
+                                                                        break;
+
+                                                                case 1:
+                                                                        al_stop_sample(&abandoned_factory_sample_id);
+
+                                                                        break;
+                                                        }
+                                                }
+                                        }
                                 }
                         }
                 }
@@ -584,7 +720,7 @@ int main(void) {
         printf("\n[+] main(): exiting game...\n");
         destroy_game_states(game_states);
         destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
-        destroy_samples(menu_sample, menu_confirm_sample, menu_select_sample, cancel_sound_sample, character_select_welcome_sample, character_select_sample, character_select_confirm_sample, pause_sound_effect);
+        destroy_samples(menu_sample, menu_confirm_sample, menu_select_sample, cancel_sound_sample, character_select_welcome_sample, character_select_sample, character_select_confirm_sample, pause_sound_effect, dark_forest_sample, abandoned_factory_sample);
         destroy_bitmaps(window_icon, viking_icon, knight_icon, spearwoman_icon, fire_warrior_icon, stage_select_arrow_icon, stage_dark_forest, stage_abandoned_factory);
         al_destroy_display(display);
         al_destroy_timer(timer);

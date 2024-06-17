@@ -1,6 +1,7 @@
 #ifndef __FIGHTER__
 #define __FIGHTER__
 
+#include <stdlib.h>
 #include <allegro5/bitmap.h>
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
@@ -37,6 +38,9 @@ void move_fighter_jump(Fighter *fighter);
 
 /* Abaixar */
 void move_fighter_crouch(Fighter *fighter);
+
+/* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
+void update_fighter_pos(Fighter *player1, Fighter *player2);
 
 /* Destrói um lutador */
 void destroy_fighter(Fighter *fighter);

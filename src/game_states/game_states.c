@@ -16,11 +16,12 @@ GameStates *create_game_states() {
         game_states->stage_select = 0;
         game_states->play_stage_select_sample = 0;
         game_states->rumble = 0;
+        game_states->play_rumble_sample = 0;
         game_states->rumble_fighter_p1 = 0;
         game_states->rumble_fighter_p2 = 0;
         game_states->rumble_pause = 0;
         game_states->rumble_pause_select = 0;
-        game_states->rumble_rounds = 1;
+        game_states->rumble_round = 1;
         game_states->menu_select = 0;
         game_states->character_select_nav_p1 = 0;
         game_states->character_select_nav_p2 = 0;   

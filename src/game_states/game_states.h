@@ -16,15 +16,16 @@ typedef struct GameStates {
         unsigned char stage_select;
         unsigned char play_stage_select_sample;
         unsigned char rumble;
+        unsigned char play_rumble_sample;
         unsigned char rumble_fighter_p1;
         unsigned char rumble_fighter_p2;
         unsigned char rumble_pause;
-        unsigned char rumble_pause_select;
-        unsigned char rumble_rounds;
+        unsigned char rumble_round;
         char menu_select;
         char character_select_nav_p1;
         char character_select_nav_p2;
         char stage_select_nav;
+        char rumble_pause_select;
 } GameStates;
 
 /* Cria estrutura de estados de jogo */

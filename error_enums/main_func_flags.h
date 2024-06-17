@@ -18,7 +18,8 @@ enum AllegroFlags {
 };
 
 enum MiscFlags {
-        CREATE_GAME_STATES_ERROR = 14
+        CREATE_GAME_STATES_ERROR = 14,
+        INVALID_HITBOX_ERROR
 };
 
 #endif // __MAIN_FUNC_FLAGS__
