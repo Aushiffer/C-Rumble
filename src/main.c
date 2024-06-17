@@ -1,4 +1,3 @@
-#include <allegro5/keycodes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -8,14 +7,16 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_image.h>
 #include "../error_enums/main_func_flags.h"
+#include "destroy_resources.h"
 #include "game_states/game_states.h"
 #include "draw/draw.h"
 
-#define WIN_WIDTH 800
-#define WIN_HEIGHT 600
+#define WIN_WIDTH 1280
+#define WIN_HEIGHT 720
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define NUM_STAGES 2
+#define FRAMES_PER_SECOND 60.0
 
 int main(void) {
         if (!al_init()) {
@@ -39,7 +40,13 @@ int main(void) {
                 printf("[+] main(): set font addons\n");
         }
 
-        al_init_image_addon();
+        if (!al_init_image_addon()) {
+                fprintf(stderr, "[-] main(): failed to initialize image addon\n");
+                exit(AL_INIT_IMAGE_ADDON_ERROR);
+        } else {
+                printf("[+] main(): initialized image addon\n");
+        }
+
         al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
         ALLEGRO_DISPLAY *display = al_create_display(WIN_WIDTH, WIN_HEIGHT);
@@ -51,7 +58,7 @@ int main(void) {
                 printf("[+] main(): initialized display\n");
         }
 
-        ALLEGRO_TIMER *timer = al_create_timer(1.0 / 30.0);
+        ALLEGRO_TIMER *timer = al_create_timer(1.0 / FRAMES_PER_SECOND);
 
         if (!timer) {
                 fprintf(stderr, "[-] main(): failed to initialize timer\n");
@@ -60,22 +67,22 @@ int main(void) {
                 printf("[+] main(): initialized timer\n");
         }
 
-        ALLEGRO_BITMAP *game_icon = al_load_bitmap("imgs/icons/game_icon.png");
+        ALLEGRO_BITMAP *window_icon = al_load_bitmap("imgs/icons/window_icon.png");
 
-        if (!game_icon) {
+        if (!window_icon) {
                 fprintf(stderr, "[-] main(): failed to load the game icon\n");
-                exit(AL_LOAD_GAME_ICON_ERROR);
+                exit(AL_LOAD_ICON_ERROR);
         } else {
                 printf("[+] main(): loaded game icon\n");
         }
 
-        al_set_display_icon(display, game_icon);
+        al_set_display_icon(display, window_icon);
 
         ALLEGRO_BITMAP *viking_icon = al_load_bitmap("imgs/icons/viking_icon.png");
 
         if (!viking_icon) {
                 fprintf(stderr, "[-] main(): failed to load viking_icon.png\n");
-                exit(AL_LOAD_GAME_ICON_ERROR);
+                exit(AL_LOAD_ICON_ERROR);
         } else {
                 printf("[+] main(): loaded viking_icon.png\n");
         }
@@ -84,7 +91,7 @@ int main(void) {
 
         if (!knight_icon) {
                 fprintf(stderr, "[-] main(): failed to load knight_icon.png\n");
-                exit(AL_LOAD_GAME_ICON_ERROR);
+                exit(AL_LOAD_ICON_ERROR);
         } else {
                 printf("[+] main(): loaded knight_icon.png\n");
         }
@@ -93,7 +100,7 @@ int main(void) {
 
         if (!spearwoman_icon) {
                 fprintf(stderr, "[-] main(): failed to load spearwoman_icon.png\n");
-                exit(AL_LOAD_GAME_ICON_ERROR);
+                exit(AL_LOAD_ICON_ERROR);
         } else {
                 printf("[+] main(): loaded spearwoman_icon.png\n");
         }
@@ -102,7 +109,7 @@ int main(void) {
 
         if (!fire_warrior_icon) {
                 fprintf(stderr, "[-] main(): failed to load fire_warrior_icon.png\n");
-                exit(AL_LOAD_GAME_ICON_ERROR);
+                exit(AL_LOAD_ICON_ERROR);
         } else {
                 printf("[+] main(): loaded fire_warrior_icon.png\n");
         }
@@ -111,7 +118,7 @@ int main(void) {
 
         if (!stage_select_arrow_icon) {
                 fprintf(stderr, "[-] main(): failed to load stage_select_arrow_icon.png\n");
-                exit(AL_LOAD_GAME_ICON_ERROR);
+                exit(AL_LOAD_ICON_ERROR);
         } else {
                 printf("[+] main(): loaded stage_select_arrow_icon.png\n");
         }
@@ -208,11 +215,32 @@ int main(void) {
         ALLEGRO_SAMPLE_ID menu_select_sample_id;
         ALLEGRO_SAMPLE *menu_select_sample = al_load_sample("sfx/menu_select_option.ogg");
 
+        if (!menu_select_sample) {
+                fprintf(stderr, "[-] main(): failed to load menu_select_sample.ogg\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded menu_select_sample.ogg\n");
+        }
+
         ALLEGRO_SAMPLE_ID menu_confirm_sample_id;
         ALLEGRO_SAMPLE *menu_confirm_sample = al_load_sample("sfx/menu_confirm_option.ogg");
 
+        if (!menu_confirm_sample) {
+                fprintf(stderr, "[-] main(): failed to load menu_confirm_sample.ogg\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded menu_confirm_sample.ogg\n");
+        }
+
         ALLEGRO_SAMPLE_ID character_select_sample_id;
         ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 13 - Without Me.ogg");
+
+        if (!character_select_sample) {
+                fprintf(stderr, "[-] main(): failed to load character selection screen music\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded character selection screen music\n");
+        }
 
         if (!character_select_sample) {
                 fprintf(stderr, "[-] main(): failed to load character select screen music\n");
@@ -242,7 +270,7 @@ int main(void) {
         }
 
         ALLEGRO_SAMPLE_ID character_confirm_sample_id;
-        ALLEGRO_SAMPLE *character_confirm_sample = al_load_sample("sfx/character_confirm.ogg");
+        ALLEGRO_SAMPLE *character_select_confirm_sample = al_load_sample("sfx/character_confirm.ogg");
 
         ALLEGRO_SAMPLE_ID stage_select_sample_id;
         ALLEGRO_SAMPLE *stage_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 15 - Fear.ogg");
@@ -253,6 +281,16 @@ int main(void) {
         } else {
                 printf("[+] main(): loaded stage select music\n");
         }
+
+        ALLEGRO_SAMPLE_ID pause_sound_effect_id;
+        ALLEGRO_SAMPLE *pause_sound_effect = al_load_sample("sfx/pause.ogg");
+
+        if (!pause_sound_effect) {
+                fprintf(stderr, "[-] main(): failed to load pause sound effect\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        } else {
+                printf("[+] main(): loaded pause sound effect\n");
+        }
         
         ALLEGRO_EVENT event;
 
@@ -261,7 +299,6 @@ int main(void) {
         al_register_event_source(event_queue, al_get_display_event_source(display));
         al_start_timer(timer);
         al_set_window_title(display, "C-Rumble");
-        printf("[+] main(): success, starting game...\n");
 
         GameStates *game_states = create_game_states(); // estrutura com as flags relativas aos diversos estados do jogo
 
@@ -271,6 +308,8 @@ int main(void) {
         } else {
                 printf("[+] main(): loaded game states structure\n");
         }
+
+        printf("[+] main(): success, starting game...\n");
 
         while (1) {
                 al_wait_for_event(event_queue, &event);
@@ -295,12 +334,12 @@ int main(void) {
                                                         case 0:
                                                                 al_draw_scaled_bitmap(stage_dark_forest, 0.0, 0.0, al_get_bitmap_width(stage_dark_forest), al_get_bitmap_height(stage_dark_forest), 0.0, 0.0, al_get_display_width(display), al_get_display_height(display), 0);
 
-                                                        break;
+                                                                break;
 
                                                         case 1:
                                                                 al_draw_scaled_bitmap(stage_abandoned_factory, 0.0, 0.0, al_get_bitmap_width(stage_abandoned_factory), al_get_bitmap_height(stage_abandoned_factory), 0.0, 0.0, al_get_display_width(display), al_get_display_height(display), 0);
 
-                                                        break;
+                                                                break;
                                                 }
 
                                                 break;
@@ -313,18 +352,12 @@ int main(void) {
                         }
 
                         al_flip_display();
-                } else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)) {
-                        al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
-                        al_rest(0.5);
-
+                } else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE))
                         break;
-                }
                 
                 if (game_states->menu) {
-                        if (game_states->play_menu_sample) {
+                        if (game_states->play_menu_sample)
                                 al_play_sample(menu_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
-                                al_rest(0.25);
-                        }
                         
                         game_states->play_menu_sample = 0;
                         game_states->play_character_select_welcome_sample = 1;
@@ -365,14 +398,12 @@ int main(void) {
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
                                         al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
-                                        al_rest(0.5);
 
                                         break;
                                 }
                         }
                 } else if (game_states->character_select) {
                         if (game_states->play_character_select_welcome_sample && game_states->play_character_select_sample) {
-                                al_rest(0.25);
                                 al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
                                 al_play_sample(character_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
@@ -410,7 +441,7 @@ int main(void) {
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER && !game_states->character_select_nav_p1_confirm) {
                                         game_states->character_select_nav_p1_confirm = 1;
 
-                                        al_play_sample(character_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
+                                        al_play_sample(character_select_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
 
                                         switch (game_states->character_select_nav_p1) {
                                                 case 0:
@@ -452,7 +483,7 @@ int main(void) {
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && !game_states->character_select_nav_p2_confirm) {
                                         game_states->character_select_nav_p2_confirm = 1;
 
-                                        al_play_sample(character_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
+                                        al_play_sample(character_select_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
 
                                         switch (game_states->character_select_nav_p2) {
                                                 case 0:
@@ -485,10 +516,8 @@ int main(void) {
                                 game_states->character_select = 0;
                         }
                 } else if (game_states->stage_select) {
-                        if (game_states->play_stage_select_sample) {
-                                al_rest(0.25);
+                        if (game_states->play_stage_select_sample)
                                 al_play_sample(stage_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &stage_select_sample_id);
-                        }
                         
                         game_states->play_stage_select_sample = 0;
                         game_states->character_select_nav_p1 = 0;
@@ -530,6 +559,8 @@ int main(void) {
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
                                         game_states->rumble_pause ^= 1;
+                                        
+                                        al_play_sample(pause_sound_effect, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &pause_sound_effect_id);
                                 }
                         }
                 }
@@ -537,28 +568,12 @@ int main(void) {
 
         printf("[+] main(): exiting game...\n");
         destroy_game_states(game_states);
-        al_destroy_font(menu_header_font);
-        al_destroy_font(menu_options_font);
-        al_destroy_font(character_select_header_font);
-        al_destroy_font(character_select_display_name_font);
+        destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
+        destroy_samples(menu_sample, menu_confirm_sample, menu_select_sample, cancel_sound_sample, character_select_welcome_sample, character_select_sample, character_select_confirm_sample, pause_sound_effect);
+        destroy_bitmaps(window_icon, viking_icon, knight_icon, spearwoman_icon, fire_warrior_icon, stage_select_arrow_icon, stage_dark_forest, stage_abandoned_factory);
         al_destroy_display(display);
         al_destroy_timer(timer);
         al_destroy_event_queue(event_queue);
-        al_destroy_sample(menu_sample);
-        al_destroy_sample(menu_confirm_sample);
-        al_destroy_sample(menu_select_sample);
-        al_destroy_sample(cancel_sound_sample);
-        al_destroy_sample(character_select_welcome_sample);
-        al_destroy_sample(character_select_sample);
-        al_destroy_sample(character_confirm_sample);
-        al_destroy_bitmap(game_icon);
-        al_destroy_bitmap(viking_icon);
-        al_destroy_bitmap(knight_icon);
-        al_destroy_bitmap(spearwoman_icon);
-        al_destroy_bitmap(fire_warrior_icon);
-        al_destroy_bitmap(stage_select_arrow_icon);
-        al_destroy_bitmap(stage_dark_forest);
-        al_destroy_bitmap(stage_abandoned_factory);
         al_uninstall_audio();
         al_uninstall_keyboard();
 
