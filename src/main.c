@@ -581,7 +581,7 @@ int main(void) {
                 }
         }
 
-        printf("[+] main(): exiting game...\n");
+        printf("\n[+] main(): exiting game...\n");
         destroy_game_states(game_states);
         destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
         destroy_samples(menu_sample, menu_confirm_sample, menu_select_sample, cancel_sound_sample, character_select_welcome_sample, character_select_sample, character_select_confirm_sample, pause_sound_effect);
