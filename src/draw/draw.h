@@ -32,4 +32,7 @@ void draw_stage_select(
         GameStates *game_states
 );
 
+/* Renderiza a tela de pause */
+void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
+
 #endif // __DRAW__

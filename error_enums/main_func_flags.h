@@ -8,6 +8,7 @@ enum AllegroFlags {
         AL_INIT_IMAGE_ADDON_ERROR,
         AL_LOAD_ICON_ERROR,
         AL_LOAD_STAGE_ERROR,
+        AL_LOAD_SPRITE_ERROR,
         AL_CREATE_DISPLAY_ERROR,
         AL_LOAD_FONT_ERROR,
         AL_LOAD_SAMPLE_ERROR,
@@ -19,7 +20,8 @@ enum AllegroFlags {
 
 enum MiscFlags {
         CREATE_GAME_STATES_ERROR = 14,
-        INVALID_HITBOX_ERROR
+        INVALID_HITBOX_ERROR,
+        INVALID_FIGHTER_ERROR
 };
 
 #endif // __MAIN_FUNC_FLAGS__

@@ -33,7 +33,8 @@ void destroy_bitmaps(
         ALLEGRO_BITMAP *window_icon, ALLEGRO_BITMAP *viking_icon, 
         ALLEGRO_BITMAP *knight_icon, ALLEGRO_BITMAP *spearwoman_icon, 
         ALLEGRO_BITMAP *fire_warrior_icon, ALLEGRO_BITMAP *stage_select_arrow_icon, 
-        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory
+        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory,
+        ALLEGRO_BITMAP *viking_spritesheet
 ) {
         al_destroy_bitmap(window_icon);
         al_destroy_bitmap(viking_icon);
@@ -43,4 +44,5 @@ void destroy_bitmaps(
         al_destroy_bitmap(stage_select_arrow_icon);
         al_destroy_bitmap(stage_dark_forest);
         al_destroy_bitmap(stage_abandoned_factory);
+        al_destroy_bitmap(viking_spritesheet);
 }

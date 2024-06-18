@@ -10,22 +10,12 @@
 typedef struct Fighter {
         Hitbox *hitbox;
         Controller *controller;
-        ALLEGRO_BITMAP *high_punch;
-        ALLEGRO_BITMAP *low_punch;
-        ALLEGRO_BITMAP *high_kick;
-        ALLEGRO_BITMAP *low_kick;
-        ALLEGRO_BITMAP *crouch;
-        ALLEGRO_BITMAP *jump;
-        ALLEGRO_BITMAP *jump_punch;
-        ALLEGRO_BITMAP *jump_kick;
-        ALLEGRO_BITMAP *high_block;
-        ALLEGRO_BITMAP *low_block;
+        ALLEGRO_BITMAP **moveset_idle;
         float hp;
-        unsigned char on_air;
 } Fighter;
 
 /* Cria um novo lutador */
-Fighter *create_fighter(unsigned char width, unsigned char height);
+Fighter *create_fighter(unsigned char width, unsigned char height, unsigned short fighter_x, unsigned short fighter_y, unsigned short max_x, unsigned short max_y);
 
 /* Mover à direita */
 void move_fighter_right(Fighter *fighter);

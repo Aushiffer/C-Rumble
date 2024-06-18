@@ -29,3 +29,8 @@ unsigned char calc_collision(Hitbox *hitbox1, Hitbox *hitbox2) {
 
         return 0;
 }
+
+void destroy_hitbox(Hitbox *hitbox) {
+        if (hitbox)
+                free(hitbox);
+}

@@ -318,7 +318,16 @@ int main(void) {
                 fprintf(stderr, "[-] main(): loaded stage -> abandoned factory soundtrack\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         } else {
-                printf("[+] loaded stage -> abandoned factory soundtrack\n");
+                printf("[+] main(): loaded stage -> abandoned factory soundtrack\n");
+        }
+
+        ALLEGRO_BITMAP *viking_spritesheet = al_load_bitmap("imgs/sprites/Viking/Viking-Sheet.png");
+
+        if (!viking_spritesheet) {
+                fprintf(stderr, "[-] main(): failed to load the viking's spritesheet\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        } else {
+                printf("[+] main(): loaded the viking's spritesheet\n");
         }
         
         ALLEGRO_EVENT event;
@@ -357,56 +366,39 @@ int main(void) {
                         } else if (game_states->stage_select) {
                                 draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                         } else if (game_states->rumble) {
-                                switch (game_states->rumble_pause) {
-                                        case 0:
+                                if (game_states->rumble_pause == 0) {
+                                        switch (game_states->stage_select_nav) {
+                                                case 0:
+                                                        al_draw_scaled_bitmap(stage_dark_forest, 0.0, 0.0, al_get_bitmap_width(stage_dark_forest), al_get_bitmap_height(stage_dark_forest), 0.0, 0.0, al_get_display_width(display), al_get_display_height(display), 0);
+
+                                                        break;
+
+                                                case 1:
+                                                        al_draw_scaled_bitmap(stage_abandoned_factory, 0.0, 0.0, al_get_bitmap_width(stage_abandoned_factory), al_get_bitmap_height(stage_abandoned_factory), 0.0, 0.0, al_get_display_width(display), al_get_display_height(display), 0);
+
+                                                        break;
+                                        }
+
+                                        if (game_states->rumble_fighter_p1 == 0) {
                                                 switch (game_states->stage_select_nav) {
                                                         case 0:
-                                                                al_draw_scaled_bitmap(stage_dark_forest, 0.0, 0.0, al_get_bitmap_width(stage_dark_forest), al_get_bitmap_height(stage_dark_forest), 0.0, 0.0, al_get_display_width(display), al_get_display_height(display), 0);
 
                                                                 break;
 
                                                         case 1:
-                                                                al_draw_scaled_bitmap(stage_abandoned_factory, 0.0, 0.0, al_get_bitmap_width(stage_abandoned_factory), al_get_bitmap_height(stage_abandoned_factory), 0.0, 0.0, al_get_display_width(display), al_get_display_height(display), 0);
 
                                                                 break;
                                                 }
-
-                                                break;
-                                        
-                                        case 1:
-                                                al_clear_to_color(COLOR_BLACK);
-                                                al_draw_text(menu_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 64, ALLEGRO_ALIGN_CENTRE, "PAUSE");
-                                                
-                                                switch (game_states->rumble_pause_select) {
-                                                        case 0:
-                                                                al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 64, ALLEGRO_ALIGN_CENTRE, "RESUME");
-                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
-                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
-
-                                                                break;
-
-                                                        case 1:
-                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 64, ALLEGRO_ALIGN_CENTRE, "RESUME");
-                                                                al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
-                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
-
-                                                                break;
-
-                                                        case 2:
-                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 64, ALLEGRO_ALIGN_CENTRE, "RESUME");
-                                                                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
-                                                                al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
-
-                                                                break;
-                                                }
-
-                                                break;
+                                        }                                 
+                                } else if (game_states->rumble_pause == 1) {
+                                        draw_pause(menu_header_font, menu_options_font, display, game_states);
                                 }
                         }
 
                         al_flip_display();
-                } else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE))
+                } else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)) {
                         break;
+                }
                 
                 if (game_states->menu) {
                         if (game_states->play_menu_sample)
@@ -683,22 +675,12 @@ int main(void) {
                                                 } else if (game_states->rumble_pause_select == 1) {
                                                         game_states->character_select = 1;
                                                         game_states->rumble = 0;
-
-                                                        switch (game_states->stage_select_nav) {
-                                                                case 0:
-                                                                        al_stop_sample(&dark_forest_sample_id);
-
-                                                                        break;
-
-                                                                case 1:
-                                                                        al_stop_sample(&abandoned_factory_sample_id);
-
-                                                                        break;
-                                                        }
                                                 } else if (game_states->rumble_pause_select == 2) {
                                                         game_states->menu = 1;
                                                         game_states->rumble = 0;
+                                                }
 
+                                                if (game_states->rumble_pause_select != 0) {
                                                         switch (game_states->stage_select_nav) {
                                                                 case 0:
                                                                         al_stop_sample(&dark_forest_sample_id);
@@ -709,7 +691,7 @@ int main(void) {
                                                                         al_stop_sample(&abandoned_factory_sample_id);
 
                                                                         break;
-                                                        }
+                                                        } 
                                                 }
                                         }
                                 }
@@ -721,7 +703,7 @@ int main(void) {
         destroy_game_states(game_states);
         destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
         destroy_samples(menu_sample, menu_confirm_sample, menu_select_sample, cancel_sound_sample, character_select_welcome_sample, character_select_sample, character_select_confirm_sample, pause_sound_effect, dark_forest_sample, abandoned_factory_sample);
-        destroy_bitmaps(window_icon, viking_icon, knight_icon, spearwoman_icon, fire_warrior_icon, stage_select_arrow_icon, stage_dark_forest, stage_abandoned_factory);
+        destroy_bitmaps(window_icon, viking_icon, knight_icon, spearwoman_icon, fire_warrior_icon, stage_select_arrow_icon, stage_dark_forest, stage_abandoned_factory, viking_spritesheet);
         al_destroy_display(display);
         al_destroy_timer(timer);
         al_destroy_event_queue(event_queue);

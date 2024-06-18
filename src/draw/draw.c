@@ -6,16 +6,16 @@ void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, 
 
         switch (game_states->menu_select) {
                 case 0:
-                al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
-                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 128, ALLEGRO_ALIGN_CENTRE, "EXIT");
+                        al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 32, ALLEGRO_ALIGN_CENTRE, "PLAY");
+                        al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 96, ALLEGRO_ALIGN_CENTRE, "EXIT");
 
-                break;
+                        break;
 
                 case 1:
-                al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 64, ALLEGRO_ALIGN_CENTRE, "1P VS. 2P");
-                al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 128, ALLEGRO_ALIGN_CENTRE, "EXIT");
+                        al_draw_text(menu_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 32, ALLEGRO_ALIGN_CENTRE, "PLAY");
+                        al_draw_text(menu_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 96, ALLEGRO_ALIGN_CENTRE, "EXIT");
 
-                break;
+                        break;
         }
 }
 
@@ -118,6 +118,34 @@ void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_na
 
                 case 1:
                         al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "ABANDONED FACTORY");
+
+                        break;
+        }
+}
+
+void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
+        al_clear_to_color(COLOR_BLACK);
+        al_draw_text(pause_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 64, ALLEGRO_ALIGN_CENTRE, "PAUSE");
+                                                
+        switch (game_states->rumble_pause_select) {
+                case 0:
+                        al_draw_text(pause_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 32, ALLEGRO_ALIGN_CENTRE, "RESUME");
+                        al_draw_text(pause_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 32, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
+                        al_draw_text(pause_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 96, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
+
+                        break;
+
+                case 1:
+                        al_draw_text(pause_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 32, ALLEGRO_ALIGN_CENTRE, "RESUME");
+                        al_draw_text(pause_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 32, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
+                        al_draw_text(pause_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 96, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
+
+                        break;
+
+                case 2:
+                        al_draw_text(pause_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 32, ALLEGRO_ALIGN_CENTRE, "RESUME");
+                        al_draw_text(pause_options_font, COLOR_LIGHT_GRAY, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 32, ALLEGRO_ALIGN_CENTRE, "CHARACTER SELECTION");
+                        al_draw_text(pause_options_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 + 96, ALLEGRO_ALIGN_CENTRE, "MAIN MENU");
 
                         break;
         }
