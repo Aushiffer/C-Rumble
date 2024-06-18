@@ -13,7 +13,8 @@ Fighter *create_fighter(unsigned char width, unsigned char height, unsigned shor
         fighter->hitbox->hitbox_height = height;
         fighter->hitbox->hitbox_x = fighter_x;
         fighter->hitbox->hitbox_y = fighter_y;
-        fighter->hp = 100.0;
+        fighter->health = 100.0;
+        fighter->stamina = 100.0;
 
         return fighter;
 }

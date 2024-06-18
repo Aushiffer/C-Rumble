@@ -10,8 +10,8 @@
 typedef struct Fighter {
         Hitbox *hitbox;
         Controller *controller;
-        ALLEGRO_BITMAP **moveset_idle;
-        float hp;
+        float health;
+        float stamina;
 } Fighter;
 
 /* Cria um novo lutador */

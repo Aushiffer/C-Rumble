@@ -1,3 +1,5 @@
+#include <allegro5/bitmap_draw.h>
+#include <allegro5/display.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -321,13 +323,13 @@ int main(void) {
                 printf("[+] main(): loaded stage -> abandoned factory soundtrack\n");
         }
 
-        ALLEGRO_BITMAP *viking_spritesheet = al_load_bitmap("imgs/sprites/Viking/Viking-Sheet.png");
+        ALLEGRO_BITMAP *viking_idle_spritesheet = al_load_bitmap("imgs/sprites/Viking/viking_idle.png");
 
-        if (!viking_spritesheet) {
-                fprintf(stderr, "[-] main(): failed to load the viking's spritesheet\n");
+        if (!viking_idle_spritesheet) {
+                fprintf(stderr, "[-] main(): failed to load the viking's idle animation spritesheet\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         } else {
-                printf("[+] main(): loaded the viking's spritesheet\n");
+                printf("[+] main(): loaded the viking's idle animation spritesheet\n");
         }
         
         ALLEGRO_EVENT event;
@@ -380,16 +382,12 @@ int main(void) {
                                         }
 
                                         if (game_states->rumble_fighter_p1 == 0) {
-                                                switch (game_states->stage_select_nav) {
-                                                        case 0:
+                                                al_draw_scaled_bitmap(viking_idle_spritesheet, 0.0, 0.0, 47, 66, 32, (float)al_get_display_height(display) - 182, 237, 256, 0);
+                                        }
 
-                                                                break;
-
-                                                        case 1:
-
-                                                                break;
-                                                }
-                                        }                                 
+                                        if (game_states->rumble_fighter_p2 == 0) {
+                                                al_draw_scaled_bitmap(viking_idle_spritesheet, 0.0, 0.0, 47, 66, al_get_display_width(display) - 256, (float)al_get_display_height(display) - 182, 237, 256, ALLEGRO_FLIP_HORIZONTAL);
+                                        }                                
                                 } else if (game_states->rumble_pause == 1) {
                                         draw_pause(menu_header_font, menu_options_font, display, game_states);
                                 }
@@ -703,7 +701,7 @@ int main(void) {
         destroy_game_states(game_states);
         destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
         destroy_samples(menu_sample, menu_confirm_sample, menu_select_sample, cancel_sound_sample, character_select_welcome_sample, character_select_sample, character_select_confirm_sample, pause_sound_effect, dark_forest_sample, abandoned_factory_sample);
-        destroy_bitmaps(window_icon, viking_icon, knight_icon, spearwoman_icon, fire_warrior_icon, stage_select_arrow_icon, stage_dark_forest, stage_abandoned_factory, viking_spritesheet);
+        destroy_bitmaps(window_icon, viking_icon, knight_icon, spearwoman_icon, fire_warrior_icon, stage_select_arrow_icon, stage_dark_forest, stage_abandoned_factory, viking_idle_spritesheet);
         al_destroy_display(display);
         al_destroy_timer(timer);
         al_destroy_event_queue(event_queue);
