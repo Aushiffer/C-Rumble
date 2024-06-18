@@ -12,7 +12,6 @@
 #include "destroy_resources.h"
 #include "game_states/game_states.h"
 #include "draw/draw.h"
-#include "fighter/fighter.h"
 
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 720
@@ -127,7 +126,7 @@ int main(void) {
                 printf("[+] main(): loaded stage_select_arrow_icon.png\n");
         }
         
-        ALLEGRO_BITMAP *stage_dark_forest = al_load_bitmap("imgs/stages/NightForest/Image.png");
+        ALLEGRO_BITMAP *stage_dark_forest = al_load_bitmap("imgs/stages/stage_dark_forest.png");
 
         if (!stage_dark_forest) {
                 fprintf(stderr, "[-] main(): failed to load stage -> dark forest\n");
@@ -136,7 +135,7 @@ int main(void) {
                 printf("[+] main(): loaded stage -> dark forest\n");
         }
 
-        ALLEGRO_BITMAP *stage_abandoned_factory = al_load_bitmap("imgs/stages/bulkhead-walls-files/bulkhead-walls-files/bulkhead-wallsx3.png");
+        ALLEGRO_BITMAP *stage_abandoned_factory = al_load_bitmap("imgs/stages/stage_abandoned_factory.png");
 
         if (!stage_abandoned_factory) {
                 fprintf(stderr, "[-] main(): failed to load stage -> abandoned factory\n");
