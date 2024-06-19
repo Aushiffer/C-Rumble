@@ -1,6 +1,6 @@
 #include "hitbox.h"
 
-Hitbox *create_hitbox(unsigned char width, unsigned char height, unsigned short hitbox_x, unsigned short hitbox_y, unsigned short max_x, unsigned short max_y) {
+Hitbox *create_hitbox(float width, float height, float hitbox_x, float hitbox_y, float max_x, float max_y) {
         if ((hitbox_x - width / 2 < 0) || (hitbox_x + width / 2 > max_x) || (hitbox_y - height / 2 < 0) || (hitbox_y + height / 2 > max_y))
                 return NULL;
         

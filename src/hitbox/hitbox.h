@@ -5,14 +5,14 @@
 
 /* Hitbox */
 typedef struct Hitbox {
-        unsigned char hitbox_width;
-        unsigned char hitbox_height;
-        unsigned short hitbox_x;
-        unsigned short hitbox_y;
+        float hitbox_width;
+        float hitbox_height;
+        float hitbox_x;
+        float hitbox_y;
 } Hitbox;
 
 /* Cria uma hitbox */
-Hitbox *create_hitbox(unsigned char width, unsigned char height, unsigned short hitbox_x, unsigned short hitbox_y, unsigned short max_x, unsigned short max_y);
+Hitbox *create_hitbox(float width, float height, float hitbox_x, float hitbox_y, float max_x, float max_y);
 
 /* Calcula a colisão entre duas hitboxes. Retorna 1 se houver colisão e 0 caso contrário */
 unsigned char calc_collision(Hitbox *hitbox1, Hitbox *hitbox2);

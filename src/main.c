@@ -1,5 +1,3 @@
-#include <allegro5/bitmap_draw.h>
-#include <allegro5/display.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -20,6 +18,10 @@
 #define NUM_STAGES 2
 #define NUM_PAUSE_OPTIONS 3
 #define FRAMES_PER_SECOND 60.0
+#define FRAME_DURATION 0.1
+#define PLAYER_STEPS 15.0
+#define NUM_IDLE_FRAMES 8
+#define MAXLEN_SPRITE_PATH 65
 
 int main(void) {
         if (!al_init()) {
@@ -53,6 +55,8 @@ int main(void) {
         al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
         ALLEGRO_DISPLAY *display = al_create_display(WIN_WIDTH, WIN_HEIGHT);
+
+        al_hide_mouse_cursor(display);
 
         if (!display) {
                 fprintf(stderr, "[-] main(): failed to initialize display\n");
@@ -321,15 +325,6 @@ int main(void) {
         } else {
                 printf("[+] main(): loaded stage -> abandoned factory soundtrack\n");
         }
-
-        ALLEGRO_BITMAP *viking_idle_spritesheet = al_load_bitmap("imgs/sprites/Viking/viking_idle.png");
-
-        if (!viking_idle_spritesheet) {
-                fprintf(stderr, "[-] main(): failed to load the viking's idle animation spritesheet\n");
-                exit(AL_LOAD_SPRITE_ERROR);
-        } else {
-                printf("[+] main(): loaded the viking's idle animation spritesheet\n");
-        }
         
         ALLEGRO_EVENT event;
 
@@ -348,19 +343,44 @@ int main(void) {
                 printf("[+] main(): loaded game states structure\n");
         }
 
+        ALLEGRO_BITMAP *viking_idle_spriteset[NUM_IDLE_FRAMES];
+        char sprite_path[MAXLEN_SPRITE_PATH];
+
+        for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_idle%d.png", i + 1);
+                
+                viking_idle_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_idle_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load viking's idle sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
+        float player1_x = 32.0;
+        float time_last_frame = 0.0;
+        int current_frame = 0;
+
         printf("\n[+] main(): success, starting game...\n");
 
         while (1) {
                 al_wait_for_event(event_queue, &event);
 
                 if (event.type == ALLEGRO_EVENT_TIMER) {
+                        time_last_frame += 1.0 / FRAMES_PER_SECOND;
+
+                        if (time_last_frame >= FRAME_DURATION) {
+                                time_last_frame = 0;
+                                current_frame = (current_frame + 1) % NUM_IDLE_FRAMES;
+                        }
+
                         if (game_states->menu) {
                                 draw_menu(menu_header_font, menu_options_font, display, game_states);
                         } else if (game_states->character_select) {
                                 draw_character_select(
                                         character_select_header_font, menu_options_font, 
                                         character_select_display_name_font, display, 
-                                        viking_icon, knight_icon, 
+                                        viking_icon, knight_icon,
                                         spearwoman_icon, fire_warrior_icon, 
                                         game_states
                                 );
@@ -381,12 +401,8 @@ int main(void) {
                                         }
 
                                         if (game_states->rumble_fighter_p1 == 0) {
-                                                al_draw_scaled_bitmap(viking_idle_spritesheet, 0.0, 0.0, 47, 66, 32, (float)al_get_display_height(display) - 182, 237, 256, 0);
-                                        }
-
-                                        if (game_states->rumble_fighter_p2 == 0) {
-                                                al_draw_scaled_bitmap(viking_idle_spritesheet, 0.0, 0.0, 47, 66, al_get_display_width(display) - 256, (float)al_get_display_height(display) - 182, 237, 256, ALLEGRO_FLIP_HORIZONTAL);
-                                        }                                
+                                                al_draw_scaled_bitmap(viking_idle_spriteset[current_frame], 0.0, 0.0, al_get_bitmap_width(viking_idle_spriteset[current_frame]), al_get_bitmap_height(viking_idle_spriteset[current_frame]), player1_x, (float)al_get_display_height(display) - 200, 184, 200, 0);
+                                        }                              
                                 } else if (game_states->rumble_pause == 1) {
                                         draw_pause(menu_header_font, menu_options_font, display, game_states);
                                 }
@@ -434,7 +450,6 @@ int main(void) {
                                                 game_states->character_select = 1;
                                         } else {
                                                 al_play_sample(menu_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
-                                                al_rest(0.5);
 
                                                 break;
                                         }
@@ -449,7 +464,7 @@ int main(void) {
                                 al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
                                 al_play_sample(character_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
-                        
+
                         game_states->play_character_select_welcome_sample = 0;
                         game_states->play_character_select_sample = 0;
                         game_states->play_menu_sample = 1;
@@ -603,7 +618,7 @@ int main(void) {
 
                                         if (game_states->stage_select_nav < 0)
                                                 game_states->stage_select_nav = NUM_STAGES - 1;
-                                } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER || event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
+                                } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER || event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
                                         game_states->rumble = 1;
                                         game_states->stage_select = 0;
 
@@ -649,8 +664,6 @@ int main(void) {
 
                                                 if (game_states->rumble_pause_select > NUM_PAUSE_OPTIONS - 1)
                                                         game_states->rumble_pause_select = 0;
-                                        } else {
-
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_W) {
                                         if (game_states->rumble_pause) {
@@ -660,8 +673,6 @@ int main(void) {
 
                                                 if (game_states->rumble_pause_select < 0)
                                                         game_states->rumble_pause_select = NUM_PAUSE_OPTIONS - 1;
-                                        } else {
-
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                                         if (game_states->rumble_pause) {
@@ -693,14 +704,33 @@ int main(void) {
                                         }
                                 }
                         }
+
+                        if (!game_states->rumble_pause) {
+                                if (event.keyboard.keycode == ALLEGRO_KEY_D)
+                                        player1_x += PLAYER_STEPS;
+                                else if (event.keyboard.keycode == ALLEGRO_KEY_A)
+                                        player1_x -= PLAYER_STEPS;
+                        }
                 }
         }
 
         printf("\n[+] main(): exiting game...\n");
         destroy_game_states(game_states);
         destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
-        destroy_samples(menu_sample, menu_confirm_sample, menu_select_sample, cancel_sound_sample, character_select_welcome_sample, character_select_sample, character_select_confirm_sample, pause_sound_effect, dark_forest_sample, abandoned_factory_sample);
-        destroy_bitmaps(window_icon, viking_icon, knight_icon, spearwoman_icon, fire_warrior_icon, stage_select_arrow_icon, stage_dark_forest, stage_abandoned_factory, viking_idle_spritesheet);
+        destroy_samples(
+                menu_sample, menu_confirm_sample, 
+                menu_select_sample, cancel_sound_sample, 
+                character_select_welcome_sample, character_select_sample, 
+                character_select_confirm_sample, pause_sound_effect, 
+                dark_forest_sample, abandoned_factory_sample
+        );
+        destroy_bitmaps(
+                window_icon, viking_icon, 
+                knight_icon, spearwoman_icon, 
+                fire_warrior_icon, stage_select_arrow_icon, 
+                stage_dark_forest, stage_abandoned_factory, 
+                viking_idle_spriteset, NUM_IDLE_FRAMES
+        );
         al_destroy_display(display);
         al_destroy_timer(timer);
         al_destroy_event_queue(event_queue);
