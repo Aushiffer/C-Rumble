@@ -19,9 +19,12 @@
 #define NUM_STAGES 2
 #define NUM_PAUSE_OPTIONS 3
 #define FRAMES_PER_SECOND 60.0
-#define FRAME_DURATION 0.1
+#define FRAME_DURATION_REGULAR 0.10
+#define FRAME_DURATION_DAMAGE 0.07
 #define PLAYER_STEPS 15.0
 #define NUM_IDLE_FRAMES 8
+#define NUM_DAMAGE_FRAMES 3
+#define NUM_DEATH_FRAMES 11
 #define MAXLEN_SPRITE_PATH 65
 
 int main(void) {
@@ -352,15 +355,56 @@ int main(void) {
                 viking_idle_spriteset[i] = al_load_bitmap(sprite_path);
 
                 if (!viking_idle_spriteset[i]) {
-                        fprintf(stderr, "[-] main(): failed to load viking's idle sprite set\n");
+                        fprintf(stderr, "[-] main(): failed to load the viking's idle sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
+        ALLEGRO_BITMAP *viking_running_spriteset[NUM_IDLE_FRAMES];
+
+        for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_running%d.png", i + 1);
+                viking_running_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_running_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load the viking's running sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
+        ALLEGRO_BITMAP *viking_damage_spriteset[NUM_DAMAGE_FRAMES];
+
+        for (int i = 0; i < NUM_DAMAGE_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_damage%d.png", i + 1);
+                viking_damage_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_damage_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load the viking's damage sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
+        ALLEGRO_BITMAP *viking_death_spriteset[NUM_DAMAGE_FRAMES];
+
+        for (int i = 0; i < NUM_DEATH_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_death%d.png", i + 1);
+                viking_death_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_death_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load the viking's death sprite set\n");
                         exit(AL_LOAD_SPRITE_ERROR);
                 }
         }
 
         float player1_x = 32.0;
         float player2_x = al_get_display_width(display) - 32;
-        float time_last_idle_frame = 0.0;
-        int current_frame = 0;
+        float idle_frame_time = 0.0;
+        float running_frame_time = 0.0;
+        float damage_frame_time = 0.0;
+        float death_frame_time = 0.0;
+        int current_idle_frame = 0;
+        int current_running_frame = 0;
+        int current_death_frame = 0;
 
         printf("\n[+] main(): success, starting game...\n");
 
@@ -368,11 +412,25 @@ int main(void) {
                 al_wait_for_event(event_queue, &event);
 
                 if (event.type == ALLEGRO_EVENT_TIMER) {
-                        time_last_idle_frame += 1.0 / FRAMES_PER_SECOND;
+                        idle_frame_time += 1.0 / FRAMES_PER_SECOND;
 
-                        if (time_last_idle_frame >= FRAME_DURATION) {
-                                time_last_idle_frame = 0;
-                                current_frame = (current_frame + 1) % NUM_IDLE_FRAMES;
+                        if (idle_frame_time >= FRAME_DURATION_REGULAR) {
+                                idle_frame_time = 0.0;
+                                current_idle_frame = (current_idle_frame + 1) % NUM_IDLE_FRAMES;
+                        }
+
+                        running_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                        if (running_frame_time >= FRAME_DURATION_REGULAR) {
+                                running_frame_time = 0.0;
+                                current_running_frame = (current_running_frame + 1) % NUM_IDLE_FRAMES;
+                        }
+
+                        death_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                        if (death_frame_time >= FRAME_DURATION_REGULAR) {
+                                death_frame_time = 0.0;
+                                current_death_frame = (current_death_frame + 1) % NUM_DEATH_FRAMES;
                         }
 
                         if (game_states->menu) {
@@ -389,20 +447,17 @@ int main(void) {
                                 draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                         } else if (game_states->rumble) {
                                 if (game_states->rumble_pause == 0) {
-                                        switch (game_states->stage_select_nav) {
-                                                case 0:
-                                                        al_draw_scaled_bitmap(stage_dark_forest, 0.0, 0.0, al_get_bitmap_width(stage_dark_forest), al_get_bitmap_height(stage_dark_forest), 0.0, 0.0, al_get_display_width(display), al_get_display_height(display), 0);
-
-                                                        break;
-
-                                                case 1:
-                                                        al_draw_scaled_bitmap(stage_abandoned_factory, 0.0, 0.0, al_get_bitmap_width(stage_abandoned_factory), al_get_bitmap_height(stage_abandoned_factory), 0.0, 0.0, al_get_display_width(display), al_get_display_height(display), 0);
-
-                                                        break;
-                                        }
+                                        draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
 
                                         if (game_states->rumble_fighter_p1 == 0) {
-                                                al_draw_scaled_bitmap(viking_idle_spriteset[current_frame], 0.0, 0.0, al_get_bitmap_width(viking_idle_spriteset[current_frame]), al_get_bitmap_height(viking_idle_spriteset[current_frame]), player1_x, (float)al_get_display_height(display) - 200, 184, 200, 0);
+                                                al_draw_scaled_bitmap(
+                                                        viking_death_spriteset[current_death_frame], 0.0, 
+                                                        0.0, al_get_bitmap_width(viking_death_spriteset[current_death_frame]), 
+                                                        al_get_bitmap_height(viking_death_spriteset[current_death_frame]), player1_x, 
+                                                        (float)al_get_display_height(display) - 200, 
+                                                        184, 200, 
+                                                        0
+                                                );
                                         }                              
                                 } else if (game_states->rumble_pause == 1) {
                                         draw_pause(menu_header_font, menu_options_font, display, game_states);
@@ -499,25 +554,21 @@ int main(void) {
 
                                         switch (game_states->character_select_nav_p1) {
                                                 case 0:
-                                                        printf("\nP1 SELECTED VIKING\n");
                                                         game_states->rumble_fighter_p1 = 0;
 
                                                         break;
 
                                                 case 1:
-                                                        printf("\nP1 SELECTED KNIGHT\n");
                                                         game_states->rumble_fighter_p1 = 1;
 
                                                         break;
 
                                                 case 2:
-                                                        printf("\nP1 SELECTED SPEARWOMAN\n");
                                                         game_states->rumble_fighter_p1 = 2;
 
                                                         break;
 
                                                 case 3:
-                                                        printf("\nP1 SELECTED FIRE WARRIOR\n");
                                                         game_states->rumble_fighter_p1 = 3;
 
                                                         break;
@@ -543,25 +594,21 @@ int main(void) {
 
                                         switch (game_states->character_select_nav_p2) {
                                                 case 0:
-                                                        printf("\nP2 SELECTED VIKING\n");
                                                         game_states->rumble_fighter_p2 = 0;
 
                                                         break;
 
                                                 case 1:
-                                                        printf("\nP2 SELECTED KNIGHT\n");
                                                         game_states->rumble_fighter_p2 = 1;
 
                                                         break;
 
                                                 case 2:
-                                                        printf("\nP2 SELECTED SPEARWOMAN\n");
                                                         game_states->rumble_fighter_p2 = 2;
 
                                                         break;
 
                                                 case 3:
-                                                        printf("\nP2 SELECTED FIRE WARRIOR\n");
                                                         game_states->rumble_fighter_p2 = 3;
 
                                                         break;
@@ -695,6 +742,9 @@ int main(void) {
                                         }
                                 }
                         }
+
+                        if (!game_states->rumble_pause)
+                                game_states->rumble_pause_select = 0;
                 }
         }
 

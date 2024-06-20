@@ -32,6 +32,9 @@ void draw_stage_select(
         GameStates *game_states
 );
 
+/* Renderiza o cenário selecionado pelo jogador */
+void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, GameStates *game_states);
+
 /* Renderiza a tela de pause */
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
 

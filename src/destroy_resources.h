@@ -26,7 +26,7 @@ void destroy_bitmaps(
         ALLEGRO_BITMAP *knight_icon, ALLEGRO_BITMAP *spearwoman_icon,
         ALLEGRO_BITMAP *fire_warrior_icon, ALLEGRO_BITMAP *stage_select_arrow_icon, 
         ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory,
-        ALLEGRO_BITMAP **viking_idle_spriteset, int NUM_IDLE_FRAMES
+        ALLEGRO_BITMAP *viking_idle_spriteset[], int NUM_IDLE_FRAMES
 );
 
 #endif // __DESTROY_RESOURCES__

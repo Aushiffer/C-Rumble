@@ -123,6 +123,32 @@ void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_na
         }
 }
 
+void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, GameStates *game_states) {
+        switch (game_states->stage_select_nav) {
+                case 0:
+                        al_draw_scaled_bitmap(
+                                stage1_bitmap, 0.0, 
+                                0.0, al_get_bitmap_width(stage1_bitmap), 
+                                al_get_bitmap_height(stage1_bitmap), 0.0, 
+                                0.0, al_get_display_width(display), al_get_display_height(display), 
+                                0
+                        );
+
+                        break;
+
+                case 1:
+                        al_draw_scaled_bitmap(
+                                stage2_bitmap, 0.0, 
+                                0.0, al_get_bitmap_width(stage2_bitmap), 
+                                al_get_bitmap_height(stage2_bitmap), 0.0, 
+                                0.0, al_get_display_width(display), al_get_display_height(display), 
+                                0
+                        );
+
+                        break;
+        }
+}
+
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
         al_clear_to_color(COLOR_BLACK);
         al_draw_text(pause_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 64, ALLEGRO_ALIGN_CENTRE, "PAUSE");
