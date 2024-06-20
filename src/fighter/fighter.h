@@ -11,10 +11,15 @@ typedef struct Fighter {
         Hitbox *hitbox;
         Controller *controller;
         ALLEGRO_BITMAP **fighter_idle_spriteset;
-        ALLEGRO_BITMAP **fighter_hi_attack_spriteset;
-        ALLEGRO_BITMAP **fighter_lo_attack_spriteset;
+        ALLEGRO_BITMAP **fighter_hi_punch_spriteset;
+        ALLEGRO_BITMAP **fighter_lo_punch_spriteset;
+        ALLEGRO_BITMAP **fighter_kick_spriteset;
+        ALLEGRO_BITMAP **fighter_damage_spriteset;
+        ALLEGRO_BITMAP **fighter_death_spriteset;
+        ALLEGRO_BITMAP **fighter_block_spriteset;
         float health;
         float stamina;
+        unsigned char player_type;
 } Fighter;
 
 /* Cria um novo lutador */
@@ -22,9 +27,14 @@ Fighter *create_fighter(
         float fighter_width, float fighter_height, 
         float fighter_x, float fighter_y, 
         float max_x, float max_y, 
-        ALLEGRO_BITMAP **fighter_idle_spriteset, ALLEGRO_BITMAP **fighter_hi_attack_spriteset, 
-        ALLEGRO_BITMAP **fighter_lo_attack_spriteset
+        ALLEGRO_BITMAP **fighter_idle_spriteset, ALLEGRO_BITMAP **fighter_hi_punch_spriteset, 
+        ALLEGRO_BITMAP **fighter_lo_punch_spriteset, ALLEGRO_BITMAP **fighter_kick_spriteset,
+        ALLEGRO_BITMAP **fighter_damage_spriteset, ALLEGRO_BITMAP **fighter_death_spriteset,
+        ALLEGRO_BITMAP **fighter_block_spriteset, unsigned char player_type
 );
+
+/* Roda a animação do personagem parado */
+void play_idle_animation(Fighter *fighter, unsigned int current_idle_frame);
 
 /* Mover à direita */
 void move_fighter_right(Fighter *fighter);

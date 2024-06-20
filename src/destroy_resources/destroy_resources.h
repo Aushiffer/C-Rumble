@@ -25,8 +25,10 @@ void destroy_bitmaps(
         ALLEGRO_BITMAP *window_icon, ALLEGRO_BITMAP *viking_icon,
         ALLEGRO_BITMAP *knight_icon, ALLEGRO_BITMAP *spearwoman_icon,
         ALLEGRO_BITMAP *fire_warrior_icon, ALLEGRO_BITMAP *stage_select_arrow_icon, 
-        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory,
-        ALLEGRO_BITMAP *viking_idle_spriteset[], int NUM_IDLE_FRAMES
+        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory
 );
+
+/* Destrói um set de sprites de um personagem */
+void destroy_spriteset(ALLEGRO_BITMAP *spriteset[], unsigned int num_frames);
 
 #endif // __DESTROY_RESOURCES__

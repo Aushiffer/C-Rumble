@@ -10,7 +10,7 @@
 #include "game_states/game_states.h"
 #include "draw/draw.h"
 #include "selector/selector.h"
-#include "destroy_resources.h"
+#include "destroy_resources/destroy_resources.h"
 
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 720
@@ -338,7 +338,7 @@ int main(void) {
         al_start_timer(timer);
         al_set_window_title(display, "C-Rumble");
 
-        GameStates *game_states = create_game_states(); // estrutura com as flags relativas aos diversos estados do jogo
+        GameStates *game_states = create_game_states(); // Estrutura com as flags relativas aos diversos estados do jogo
 
         if (!game_states) {
                 fprintf(stderr, "[-] main(): failed to create game states structure\n");
@@ -412,27 +412,6 @@ int main(void) {
                 al_wait_for_event(event_queue, &event);
 
                 if (event.type == ALLEGRO_EVENT_TIMER) {
-                        idle_frame_time += 1.0 / FRAMES_PER_SECOND;
-
-                        if (idle_frame_time >= FRAME_DURATION_REGULAR) {
-                                idle_frame_time = 0.0;
-                                current_idle_frame = (current_idle_frame + 1) % NUM_IDLE_FRAMES;
-                        }
-
-                        running_frame_time += 1.0 / FRAMES_PER_SECOND;
-
-                        if (running_frame_time >= FRAME_DURATION_REGULAR) {
-                                running_frame_time = 0.0;
-                                current_running_frame = (current_running_frame + 1) % NUM_IDLE_FRAMES;
-                        }
-
-                        death_frame_time += 1.0 / FRAMES_PER_SECOND;
-
-                        if (death_frame_time >= FRAME_DURATION_REGULAR) {
-                                death_frame_time = 0.0;
-                                current_death_frame = (current_death_frame + 1) % NUM_DEATH_FRAMES;
-                        }
-
                         if (game_states->menu) {
                                 draw_menu(menu_header_font, menu_options_font, display, game_states);
                         } else if (game_states->character_select) {
@@ -446,6 +425,27 @@ int main(void) {
                         } else if (game_states->stage_select) {
                                 draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                         } else if (game_states->rumble) {
+                                idle_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (idle_frame_time >= FRAME_DURATION_REGULAR) {
+                                        idle_frame_time = 0.0;
+                                        current_idle_frame = (current_idle_frame + 1) % NUM_IDLE_FRAMES;
+                                }
+
+                                running_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (running_frame_time >= FRAME_DURATION_REGULAR) {
+                                        running_frame_time = 0.0;
+                                        current_running_frame = (current_running_frame + 1) % NUM_IDLE_FRAMES;
+                                }
+
+                                death_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (death_frame_time >= FRAME_DURATION_REGULAR) {
+                                        death_frame_time = 0.0;
+                                        current_death_frame = (current_death_frame + 1) % NUM_DEATH_FRAMES;
+                                }
+
                                 if (game_states->rumble_pause == 0) {
                                         draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
 
@@ -762,9 +762,9 @@ int main(void) {
                 window_icon, viking_icon, 
                 knight_icon, spearwoman_icon, 
                 fire_warrior_icon, stage_select_arrow_icon, 
-                stage_dark_forest, stage_abandoned_factory, 
-                viking_idle_spriteset, NUM_IDLE_FRAMES
+                stage_dark_forest, stage_abandoned_factory
         );
+        destroy_spriteset(viking_idle_spriteset, NUM_IDLE_FRAMES);
         al_destroy_display(display);
         al_destroy_timer(timer);
         al_destroy_event_queue(event_queue);

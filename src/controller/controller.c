@@ -10,6 +10,8 @@ Controller *create_controller() {
         controller->left = 0;
         controller->up = 0;
         controller->down = 0;
+        controller->punch = 0;
+        controller->kick = 0;
 
         return controller;
 }
