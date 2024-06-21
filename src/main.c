@@ -1,3 +1,4 @@
+#include <allegro5/bitmap.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -25,6 +26,7 @@
 #define NUM_IDLE_FRAMES 8
 #define NUM_DAMAGE_FRAMES 3
 #define NUM_DEATH_FRAMES 11
+#define NUM_KICK_FRAMES 7
 #define MAXLEN_SPRITE_PATH 65
 
 int main(void) {
@@ -351,7 +353,7 @@ int main(void) {
         char sprite_path[MAXLEN_SPRITE_PATH];
 
         for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
-                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_idle%d.png", i + 1);
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_idle/viking_idle%d.png", i + 1);
                 viking_idle_spriteset[i] = al_load_bitmap(sprite_path);
 
                 if (!viking_idle_spriteset[i]) {
@@ -363,7 +365,7 @@ int main(void) {
         ALLEGRO_BITMAP *viking_running_spriteset[NUM_IDLE_FRAMES];
 
         for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
-                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_running%d.png", i + 1);
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_running/viking_running%d.png", i + 1);
                 viking_running_spriteset[i] = al_load_bitmap(sprite_path);
 
                 if (!viking_running_spriteset[i]) {
@@ -375,7 +377,7 @@ int main(void) {
         ALLEGRO_BITMAP *viking_damage_spriteset[NUM_DAMAGE_FRAMES];
 
         for (int i = 0; i < NUM_DAMAGE_FRAMES; i++) {
-                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_damage%d.png", i + 1);
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_damage/viking_damage%d.png", i + 1);
                 viking_damage_spriteset[i] = al_load_bitmap(sprite_path);
 
                 if (!viking_damage_spriteset[i]) {
@@ -384,14 +386,38 @@ int main(void) {
                 }
         }
 
-        ALLEGRO_BITMAP *viking_death_spriteset[NUM_DAMAGE_FRAMES];
+        ALLEGRO_BITMAP *viking_death_spriteset[NUM_DEATH_FRAMES];
 
         for (int i = 0; i < NUM_DEATH_FRAMES; i++) {
-                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_death%d.png", i + 1);
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_death/viking_death%d.png", i + 1);
                 viking_death_spriteset[i] = al_load_bitmap(sprite_path);
 
                 if (!viking_death_spriteset[i]) {
                         fprintf(stderr, "[-] main(): failed to load the viking's death sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
+        ALLEGRO_BITMAP *viking_kick_spriteset[NUM_KICK_FRAMES];
+
+        for (int i = 0; i < NUM_KICK_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_kick/viking_kick%d.png", i + 1);
+                viking_kick_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_kick_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load the viking's kick sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
+        ALLEGRO_BITMAP *viking_special_spriteset[NUM_DEATH_FRAMES];
+
+        for (int i = 0; i < NUM_DEATH_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_special/viking_special%d.png", i + 1);
+                viking_special_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_special_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load the viking's special sprite set\n");
                         exit(AL_LOAD_SPRITE_ERROR);
                 }
         }
@@ -402,9 +428,14 @@ int main(void) {
         float running_frame_time = 0.0;
         float damage_frame_time = 0.0;
         float death_frame_time = 0.0;
+        float kick_frame_time = 0.0;
+        float special_frame_time = 0.0;
         int current_idle_frame = 0;
         int current_running_frame = 0;
+        int current_damage_frame = 0;
         int current_death_frame = 0;
+        int current_kick_frame = 0;
+        int current_special_frame = 0;
 
         printf("\n[+] main(): success, starting game...\n");
 
@@ -439,6 +470,13 @@ int main(void) {
                                         current_running_frame = (current_running_frame + 1) % NUM_IDLE_FRAMES;
                                 }
 
+                                damage_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (damage_frame_time >= FRAME_DURATION_DAMAGE) {
+                                        damage_frame_time = 0.0;
+                                        current_damage_frame = (current_damage_frame + 1) % NUM_DAMAGE_FRAMES;
+                                }
+
                                 death_frame_time += 1.0 / FRAMES_PER_SECOND;
 
                                 if (death_frame_time >= FRAME_DURATION_REGULAR) {
@@ -446,16 +484,30 @@ int main(void) {
                                         current_death_frame = (current_death_frame + 1) % NUM_DEATH_FRAMES;
                                 }
 
+                                kick_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (kick_frame_time >= FRAME_DURATION_REGULAR) {
+                                        kick_frame_time = 0.0;
+                                        current_kick_frame = (current_kick_frame + 1) % NUM_KICK_FRAMES;
+                                }
+
+                                special_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (special_frame_time >= FRAME_DURATION_REGULAR) {
+                                        special_frame_time = 0.0;
+                                        current_special_frame = (current_special_frame + 1) % NUM_DEATH_FRAMES;
+                                }
+
                                 if (game_states->rumble_pause == 0) {
                                         draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
 
                                         if (game_states->rumble_fighter_p1 == 0) {
                                                 al_draw_scaled_bitmap(
-                                                        viking_death_spriteset[current_death_frame], 0.0, 
-                                                        0.0, al_get_bitmap_width(viking_death_spriteset[current_death_frame]), 
-                                                        al_get_bitmap_height(viking_death_spriteset[current_death_frame]), player1_x, 
-                                                        (float)al_get_display_height(display) - 200, 
-                                                        184, 200, 
+                                                        viking_special_spriteset[current_special_frame], 0.0, 
+                                                        0.0, al_get_bitmap_width(viking_special_spriteset[current_special_frame]), 
+                                                        al_get_bitmap_height(viking_special_spriteset[current_special_frame]), player1_x, 
+                                                        (float)al_get_display_height(display) - 235, 
+                                                        184, 250,
                                                         0
                                                 );
                                         }                              
