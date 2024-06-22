@@ -1,4 +1,8 @@
 #include <allegro5/bitmap.h>
+#include <allegro5/bitmap_draw.h>
+#include <allegro5/bitmap_io.h>
+#include <allegro5/display.h>
+#include <allegro5/events.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -8,12 +12,14 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_image.h>
 #include "../error_enums/main_func_flags.h"
+#include "controller/controller.h"
+#include "fighter/fighter.h"
 #include "game_states/game_states.h"
 #include "draw/draw.h"
 #include "selector/selector.h"
 #include "destroy_resources/destroy_resources.h"
 
-#define WIN_WIDTH 1280
+#define WIN_WIDTH 1068
 #define WIN_HEIGHT 720
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
@@ -22,11 +28,12 @@
 #define FRAMES_PER_SECOND 60.0
 #define FRAME_DURATION_REGULAR 0.10
 #define FRAME_DURATION_DAMAGE 0.07
-#define PLAYER_STEPS 15.0
 #define NUM_IDLE_FRAMES 8
 #define NUM_DAMAGE_FRAMES 3
 #define NUM_DEATH_FRAMES 11
 #define NUM_KICK_FRAMES 7
+#define NUM_HI_PUNCH_FRAMES 4
+#define NUM_LO_PUNCH_FRAMES 5
 #define MAXLEN_SPRITE_PATH 65
 
 int main(void) {
@@ -58,7 +65,7 @@ int main(void) {
                 printf("[+] main(): initialized image addon\n");
         }
 
-        al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+        al_set_new_display_flags(ALLEGRO_WINDOWED);
 
         ALLEGRO_DISPLAY *display = al_create_display(WIN_WIDTH, WIN_HEIGHT);
 
@@ -163,7 +170,7 @@ int main(void) {
                 printf("[+] main(): initialized event queue\n");
         }
 
-        ALLEGRO_FONT *menu_header_font = al_load_font("fonts/Osake.ttf", 256, 0);
+        ALLEGRO_FONT *menu_header_font = al_load_font("fonts/Osake.ttf", 128, 0);
 
         if (!menu_header_font) {
                 fprintf(stderr, "[-] main(): failed to load menu_header_font\n");
@@ -422,20 +429,91 @@ int main(void) {
                 }
         }
 
+        ALLEGRO_BITMAP *viking_block_spriteset[NUM_IDLE_FRAMES];
+
+        for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_block/viking_block%d.png", i + 1);
+                viking_block_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_block_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load the viking's block sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
+        ALLEGRO_BITMAP *viking_hi_punch_spriteset[NUM_HI_PUNCH_FRAMES];
+
+        for (int i = 0; i < NUM_HI_PUNCH_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_hi_punch/viking_hi_punch%d.png", i + 1);
+                viking_hi_punch_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_hi_punch_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load the viking's hi punch sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
+        ALLEGRO_BITMAP *viking_lo_punch_spriteset[NUM_LO_PUNCH_FRAMES];
+
+        for (int i = 0; i < NUM_LO_PUNCH_FRAMES; i++) {
+                snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_lo_punch/viking_lo_punch%d.png", i + 1);
+                viking_lo_punch_spriteset[i] = al_load_bitmap(sprite_path);
+
+                if (!viking_lo_punch_spriteset[i]) {
+                        fprintf(stderr, "[-] main(): failed to load the viking's lo punch sprite set\n");
+                        exit(AL_LOAD_SPRITE_ERROR);
+                }
+        }
+
         float player1_x = 32.0;
-        float player2_x = al_get_display_width(display) - 32;
+        float player2_x = al_get_display_width(display) - 64.0;
         float idle_frame_time = 0.0;
         float running_frame_time = 0.0;
         float damage_frame_time = 0.0;
         float death_frame_time = 0.0;
         float kick_frame_time = 0.0;
         float special_frame_time = 0.0;
-        int current_idle_frame = 0;
-        int current_running_frame = 0;
-        int current_damage_frame = 0;
-        int current_death_frame = 0;
-        int current_kick_frame = 0;
-        int current_special_frame = 0;
+        float block_frame_time = 0.0;
+        float hi_punch_frame_time = 0.0;
+        float lo_punch_frame_time = 0.0;
+        unsigned int current_idle_frame = 0;
+        unsigned int current_running_frame = 0;
+        unsigned int current_damage_frame = 0;
+        unsigned int current_death_frame = 0;
+        unsigned int current_kick_frame = 0;
+        unsigned int current_special_frame = 0;
+        unsigned int current_block_frame = 0;
+        unsigned int current_hi_punch_frame = 0;
+        unsigned int current_lo_punch_frame = 0;
+
+        Fighter *player1 = create_fighter(
+                64, 64, 
+                player1_x, (float)al_get_display_height(display) / 2, 
+                WIN_WIDTH, WIN_HEIGHT, 
+                viking_idle_spriteset, viking_hi_punch_spriteset, 
+                viking_lo_punch_spriteset, viking_kick_spriteset, 
+                viking_damage_spriteset, viking_death_spriteset, 
+                viking_block_spriteset, viking_special_spriteset, 
+                viking_running_spriteset, 1
+        );
+
+        Fighter *player2 = create_fighter(
+                64, 64, 
+                player2_x, (float)al_get_display_height(display) / 2, 
+                WIN_WIDTH, WIN_HEIGHT, 
+                viking_idle_spriteset, viking_hi_punch_spriteset, 
+                viking_lo_punch_spriteset, viking_kick_spriteset, 
+                viking_damage_spriteset, viking_death_spriteset, 
+                viking_block_spriteset, viking_special_spriteset, 
+                viking_running_spriteset, 2
+        );
+
+        if (!player1) {
+                fprintf(stderr, "[-] main(): failed to load player 1\n");
+                exit(INVALID_FIGHTER_ERROR);
+        } else {
+                printf("[+] main(): created player 1\n");
+        }
 
         printf("\n[+] main(): success, starting game...\n");
 
@@ -498,19 +576,44 @@ int main(void) {
                                         current_special_frame = (current_special_frame + 1) % NUM_DEATH_FRAMES;
                                 }
 
+                                block_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (block_frame_time >= FRAME_DURATION_REGULAR) {
+                                        block_frame_time = 0.0;
+                                        current_block_frame = (current_block_frame + 1) % NUM_IDLE_FRAMES;
+                                }
+
+                                hi_punch_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (hi_punch_frame_time >= FRAME_DURATION_REGULAR) {
+                                        hi_punch_frame_time = 0.0;
+                                        current_hi_punch_frame = (current_hi_punch_frame + 1) % NUM_HI_PUNCH_FRAMES;
+                                }
+
+                                lo_punch_frame_time += 1.0 / FRAMES_PER_SECOND;
+
+                                if (lo_punch_frame_time >= FRAME_DURATION_REGULAR) {
+                                        lo_punch_frame_time = 0.0;
+                                        current_lo_punch_frame = (current_lo_punch_frame + 1) % NUM_LO_PUNCH_FRAMES;
+                                }
+
                                 if (game_states->rumble_pause == 0) {
                                         draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
-
-                                        if (game_states->rumble_fighter_p1 == 0) {
-                                                al_draw_scaled_bitmap(
-                                                        viking_special_spriteset[current_special_frame], 0.0, 
-                                                        0.0, al_get_bitmap_width(viking_special_spriteset[current_special_frame]), 
-                                                        al_get_bitmap_height(viking_special_spriteset[current_special_frame]), player1_x, 
-                                                        (float)al_get_display_height(display) - 235, 
-                                                        184, 250,
-                                                        0
-                                                );
-                                        }                              
+                                        update_fighter_pos(player1, player2, WIN_WIDTH, WIN_HEIGHT);
+                                        update_animations(
+                                                current_idle_frame, current_running_frame, 
+                                                current_damage_frame, current_block_frame, 
+                                                current_death_frame, current_hi_punch_frame, 
+                                                current_lo_punch_frame, current_kick_frame, 
+                                                current_special_frame, player1
+                                        );
+                                        update_animations(
+                                                current_idle_frame, current_running_frame, 
+                                                current_damage_frame, current_block_frame, 
+                                                current_death_frame, current_hi_punch_frame, 
+                                                current_lo_punch_frame, current_kick_frame, 
+                                                current_special_frame, player2
+                                        );
                                 } else if (game_states->rumble_pause == 1) {
                                         draw_pause(menu_header_font, menu_options_font, display, game_states);
                                 }
@@ -795,8 +898,12 @@ int main(void) {
                                 }
                         }
 
-                        if (!game_states->rumble_pause)
+                        if (!game_states->rumble_pause) {
                                 game_states->rumble_pause_select = 0;
+
+                                if (event.keyboard.keycode == ALLEGRO_KEY_D && (event.type == ALLEGRO_EVENT_KEY_DOWN || event.type == ALLEGRO_EVENT_KEY_UP))
+                                        move_controller_right(player1->controller);
+                        }
                 }
         }
 

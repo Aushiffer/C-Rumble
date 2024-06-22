@@ -9,7 +9,8 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **fighter_idle_spriteset, ALLEGRO_BITMAP **fighter_hi_punch_spriteset, 
         ALLEGRO_BITMAP **fighter_lo_punch_spriteset, ALLEGRO_BITMAP **fighter_kick_spriteset,
         ALLEGRO_BITMAP **fighter_damage_spriteset, ALLEGRO_BITMAP **fighter_death_spriteset,
-        ALLEGRO_BITMAP **fighter_block_spriteset, unsigned char player_type
+        ALLEGRO_BITMAP **fighter_hi_block_spriteset, ALLEGRO_BITMAP **fighter_special_spriteset,
+        ALLEGRO_BITMAP **fighter_running_spriteset, unsigned char player_type
 ) {
         if ((fighter_x - width / 2 < 0) || (fighter_x + width / 2 > max_x) || (fighter_y - height / 2 < 0) || (fighter_y + height / 2 > max_y))
                 return NULL;
@@ -29,13 +30,15 @@ Fighter *create_fighter(
         if (!fighter->controller)
                 return NULL;
 
-        fighter->fighter_idle_spriteset = fighter_idle_spriteset;
-        fighter->fighter_hi_punch_spriteset = fighter_hi_punch_spriteset;
-        fighter->fighter_lo_punch_spriteset = fighter_lo_punch_spriteset;
-        fighter->fighter_kick_spriteset = fighter_kick_spriteset;
-        fighter->fighter_damage_spriteset = fighter_damage_spriteset;
-        fighter->fighter_death_spriteset = fighter_death_spriteset;
-        fighter->fighter_block_spriteset = fighter_block_spriteset;
+        fighter->idle_spriteset = fighter_idle_spriteset;
+        fighter->hi_punch_spriteset = fighter_hi_punch_spriteset;
+        fighter->lo_punch_spriteset = fighter_lo_punch_spriteset;
+        fighter->kick_spriteset = fighter_kick_spriteset;
+        fighter->damage_spriteset = fighter_damage_spriteset;
+        fighter->death_spriteset = fighter_death_spriteset;
+        fighter->hi_block_spriteset = fighter_hi_block_spriteset;
+        fighter->special_spriteset = fighter_special_spriteset;
+        fighter->running_spriteset = fighter_running_spriteset;
         fighter->health = 100.0;
         fighter->stamina = 100.0;
         fighter->player_type = player_type;
@@ -43,18 +46,49 @@ Fighter *create_fighter(
         return fighter;
 }
 
-void play_idle_animation(Fighter *fighter, unsigned int current_idle_frame) {
-        if (fighter->controller->right == 0 && fighter->controller->left == 0 
-        && fighter->controller->up == 0 && fighter->controller->down == 0 
-        && fighter->controller->punch == 0 && fighter->controller->kick == 0) {
-                al_draw_scaled_bitmap(
-                        fighter->fighter_idle_spriteset[current_idle_frame], 0.0, 
-                        0.0, al_get_bitmap_width(fighter->fighter_idle_spriteset[current_idle_frame]), 
-                        al_get_bitmap_height(fighter->fighter_idle_spriteset[current_idle_frame]), fighter->hitbox->hitbox_x, 
-                        fighter->hitbox->hitbox_y, fighter->hitbox->hitbox_width, 
-                        fighter->hitbox->hitbox_height, 0
-                );
+void move_fighter_right(Fighter *fighter, unsigned short max_x) {
+        fighter->hitbox->hitbox_x = fighter->hitbox->hitbox_x + PLAYER_STEPS;
+
+        if ((fighter->hitbox->hitbox_x + PLAYER_STEPS) + fighter->hitbox->hitbox_width / 2 > max_x)
+                fighter->hitbox->hitbox_x = fighter->hitbox->hitbox_x - PLAYER_STEPS;
+}
+
+void move_fighter_left(Fighter *fighter) {
+        fighter->hitbox->hitbox_x = fighter->hitbox->hitbox_x - PLAYER_STEPS;
+
+        if ((fighter->hitbox->hitbox_x - PLAYER_STEPS) - fighter->hitbox->hitbox_width / 2 < 0)
+                fighter->hitbox->hitbox_x = fighter->hitbox->hitbox_x + PLAYER_STEPS;
+}
+
+void move_fighter_crouch(Fighter *fighter) {
+        fighter->hitbox->hitbox_height = fighter->hitbox->hitbox_height / 2;
+}
+
+void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {
+        if (player1->controller->right) {
+                move_fighter_right(player1, max_x);
+
+                if (calc_collision(player1->hitbox, player2->hitbox))
+                        move_fighter_left(player1);
+        } else if (player1->controller->left) {
+                move_fighter_left(player1);
+
+                if (calc_collision(player1->hitbox, player2->hitbox))
+                        move_fighter_right(player1, max_x);
         }
+}
+
+void update_animations(
+        unsigned int current_idle_frame, unsigned int current_running_frame, 
+        unsigned int current_damage_frame, unsigned int current_hi_block_frame, 
+        unsigned int current_death_frame, unsigned int current_hi_punch_frame, 
+        unsigned int current_lo_punch_frame, unsigned int current_kick_frame, 
+        unsigned int current_special_frame, Fighter *fighter
+) {
+        if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                al_draw_bitmap(fighter->idle_spriteset[current_idle_frame], fighter->hitbox->hitbox_x, fighter->hitbox->hitbox_y, fighter->player_type - 1);
+        else if (!fighter->controller->left && fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                al_draw_bitmap(fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x, fighter->hitbox->hitbox_y, fighter->player_type - 1);
 }
 
 void destroy_fighter(Fighter *fighter) {

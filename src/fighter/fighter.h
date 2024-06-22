@@ -6,17 +6,21 @@
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
 
+#define PLAYER_STEPS 5.0
+
 /* Lutador */
 typedef struct Fighter {
         Hitbox *hitbox;
         Controller *controller;
-        ALLEGRO_BITMAP **fighter_idle_spriteset;
-        ALLEGRO_BITMAP **fighter_hi_punch_spriteset;
-        ALLEGRO_BITMAP **fighter_lo_punch_spriteset;
-        ALLEGRO_BITMAP **fighter_kick_spriteset;
-        ALLEGRO_BITMAP **fighter_damage_spriteset;
-        ALLEGRO_BITMAP **fighter_death_spriteset;
-        ALLEGRO_BITMAP **fighter_block_spriteset;
+        ALLEGRO_BITMAP **idle_spriteset;
+        ALLEGRO_BITMAP **hi_punch_spriteset;
+        ALLEGRO_BITMAP **lo_punch_spriteset;
+        ALLEGRO_BITMAP **kick_spriteset;
+        ALLEGRO_BITMAP **damage_spriteset;
+        ALLEGRO_BITMAP **death_spriteset;
+        ALLEGRO_BITMAP **hi_block_spriteset;
+        ALLEGRO_BITMAP **special_spriteset;
+        ALLEGRO_BITMAP **running_spriteset;
         float health;
         float stamina;
         unsigned char player_type;
@@ -30,26 +34,33 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **fighter_idle_spriteset, ALLEGRO_BITMAP **fighter_hi_punch_spriteset, 
         ALLEGRO_BITMAP **fighter_lo_punch_spriteset, ALLEGRO_BITMAP **fighter_kick_spriteset,
         ALLEGRO_BITMAP **fighter_damage_spriteset, ALLEGRO_BITMAP **fighter_death_spriteset,
-        ALLEGRO_BITMAP **fighter_block_spriteset, unsigned char player_type
+        ALLEGRO_BITMAP **fighter_hi_block_spriteset, ALLEGRO_BITMAP **fighter_special_spriteset,
+        ALLEGRO_BITMAP **fighter_running_spriteset, unsigned char player_type
 );
 
-/* Roda a animação do personagem parado */
-void play_idle_animation(Fighter *fighter, unsigned int current_idle_frame);
-
 /* Mover à direita */
-void move_fighter_right(Fighter *fighter);
+void move_fighter_right(Fighter *fighter, unsigned short max_x);
 
 /* Mover à esquerda */
 void move_fighter_left(Fighter *fighter);
 
 /* Pular */
-void move_fighter_jump(Fighter *fighter);
+void move_fighter_jump(Fighter *fighter, unsigned short max_x, unsigned short max_y);
 
 /* Abaixar */
 void move_fighter_crouch(Fighter *fighter);
 
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
-void update_fighter_pos(Fighter *player1, Fighter *player2);
+void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y);
+
+/* Atualiza as animações de sprites */
+void update_animations(
+        unsigned int current_idle_frame, unsigned int current_running_frame, 
+        unsigned int current_damage_frame, unsigned int current_hi_block_frame, 
+        unsigned int current_death_frame, unsigned int current_hi_punch_frame, 
+        unsigned int current_lo_punch_frame, unsigned int current_kick_frame, 
+        unsigned int current_special_frame, Fighter *fighter
+);
 
 /* Destrói um lutador */
 void destroy_fighter(Fighter *fighter);
