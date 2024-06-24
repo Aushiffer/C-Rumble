@@ -63,7 +63,7 @@ void move_fighter_left(Fighter *fighter) {
 }
 
 void move_fighter_crouch(Fighter *fighter) {
-        //fighter->hitbox->hitbox_height = fighter->hitbox->hitbox_height / 2;
+        fighter->hitbox->hitbox_height = fighter->hitbox->hitbox_height / 2;
 }
 
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {
@@ -80,6 +80,20 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
         } else if (player1->controller->down) {
                 move_fighter_crouch(player1);
         }
+
+        if (player2->controller->right) {
+                move_fighter_right(player2, max_x);
+
+                if (calc_collision(player2->hitbox, player1->hitbox))
+                        move_fighter_left(player2);
+        } else if (player2->controller->left) {
+                move_fighter_left(player2);
+
+                if (calc_collision(player2->hitbox, player1->hitbox))
+                        move_fighter_right(player2, max_x);
+        } else if (player2->controller->down) {
+                move_fighter_crouch(player2);
+        }
 }
 
 void update_animations(
@@ -89,14 +103,49 @@ void update_animations(
         unsigned int current_lo_punch_frame, unsigned int current_kick_frame, 
         unsigned int current_special_frame, Fighter *fighter
 ) {
-        if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
-                al_draw_bitmap(fighter->idle_spriteset[current_idle_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->idle_spriteset[current_idle_frame]) / 2, fighter->hitbox->hitbox_y, (fighter->player_type - 1) % 2);
-        else if (!fighter->controller->left && fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
-                al_draw_bitmap(fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->running_spriteset[current_running_frame]) / 2, fighter->hitbox->hitbox_y, (fighter->player_type - 1) % 2);
-        else if (fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
-                al_draw_bitmap(fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->running_spriteset[current_running_frame]) / 2, fighter->hitbox->hitbox_y, fighter->player_type % 2);
-        else if (!fighter->controller->left && !fighter->controller->right && fighter->controller->down && !fighter->controller->up)
-                al_draw_bitmap(fighter->crouch_spriteset[1], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->crouch_spriteset[1]) / 2, fighter->hitbox->hitbox_y + (float)al_get_bitmap_width(fighter->crouch_spriteset[1]) / 2, (fighter->player_type - 1) % 2);
+        if (fighter->player_type == 1) {
+                if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                        al_draw_bitmap(
+                                fighter->idle_spriteset[current_idle_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->idle_spriteset[current_idle_frame]) / 2, 
+                                fighter->hitbox->hitbox_y, 0
+                        );
+                else if (!fighter->controller->left && fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                        al_draw_bitmap(
+                                fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->running_spriteset[current_running_frame]) / 2, 
+                                fighter->hitbox->hitbox_y, 0
+                        );
+                else if (fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                        al_draw_bitmap(
+                                fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->running_spriteset[current_running_frame]) / 2, 
+                                fighter->hitbox->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                        );
+                else if (!fighter->controller->left && !fighter->controller->right && fighter->controller->down && !fighter->controller->up)
+                        al_draw_bitmap(
+                                fighter->crouch_spriteset[1], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->crouch_spriteset[1]) / 2, 
+                                fighter->hitbox->hitbox_y + (float)al_get_bitmap_width(fighter->crouch_spriteset[1]) / 2, 0
+                        );
+        } else {
+                if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                        al_draw_bitmap(
+                                fighter->idle_spriteset[current_idle_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->idle_spriteset[current_idle_frame]) / 2, 
+                                fighter->hitbox->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                        );
+                else if (!fighter->controller->left && fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                        al_draw_bitmap(
+                                fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->running_spriteset[current_running_frame]) / 2, 
+                                fighter->hitbox->hitbox_y, 0
+                        );
+                else if (fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                        al_draw_bitmap(
+                                fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->running_spriteset[current_running_frame]) / 2, 
+                                fighter->hitbox->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                        );
+                else if (!fighter->controller->left && !fighter->controller->right && fighter->controller->down && !fighter->controller->up)
+                        al_draw_bitmap(
+                                fighter->crouch_spriteset[1], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->crouch_spriteset[1]) / 2, 
+                                fighter->hitbox->hitbox_y + (float)al_get_bitmap_width(fighter->crouch_spriteset[1]) / 2, ALLEGRO_FLIP_HORIZONTAL
+                        );
+        }
 }
 
 void destroy_fighter(Fighter *fighter) {

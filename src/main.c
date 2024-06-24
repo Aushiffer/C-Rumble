@@ -482,7 +482,7 @@ int main(void) {
         }
 
         float player1_viking_x = 94.5;
-        float player2_x = al_get_display_width(display) - 94.5;
+        float player2_viking_x = al_get_display_width(display) - 94.5;
 
         /* Abaixo, apenas os dados de frames para o Viking. Depois, fazer para todos os personagens */
         float idle_frame_time = 0.0;
@@ -525,9 +525,9 @@ int main(void) {
                 printf("[+] main(): created player 1\n");
         }
 
-        Fighter *player2 = create_fighter(
+        Fighter *player2_viking = create_fighter(
                 189.0, 256.0, 
-                player2_x, (float)al_get_display_height(display) - 256.0, 
+                player2_viking_x, (float)al_get_display_height(display) - 256.0, 
                 al_get_display_width(display), al_get_display_height(display), 
                 viking_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
@@ -634,11 +634,11 @@ int main(void) {
                                                 al_map_rgb(255, 0, 0), 2.0
                                         );
                                         al_draw_rectangle(
-                                                player2->hitbox->hitbox_x - player2->hitbox->hitbox_width / 2, (player2->hitbox->hitbox_y - player2->hitbox->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_idle_frame])) / 2,
-                                                player2->hitbox->hitbox_x + player2->hitbox->hitbox_width / 2, (player2->hitbox->hitbox_y + player2->hitbox->hitbox_height / 2) + (float)al_get_display_height(display) - 256.0,
+                                                player2_viking->hitbox->hitbox_x - player2_viking->hitbox->hitbox_width / 2, (player2_viking->hitbox->hitbox_y - player2_viking->hitbox->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_idle_frame])) / 2,
+                                                player2_viking->hitbox->hitbox_x + player2_viking->hitbox->hitbox_width / 2, (player2_viking->hitbox->hitbox_y + player2_viking->hitbox->hitbox_height / 2) + (float)al_get_display_height(display) - 256.0,
                                                 al_map_rgb(255, 0, 0), 2.0
                                         );
-                                        update_fighter_pos(player1_viking, player2, al_get_display_width(display), al_get_display_height(display));
+                                        update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), al_get_display_height(display));
                                         update_animations(
                                                 current_idle_frame, current_running_frame, 
                                                 current_damage_frame, current_block_frame, 
@@ -651,7 +651,7 @@ int main(void) {
                                                 current_damage_frame, current_block_frame, 
                                                 current_death_frame, current_hi_punch_frame, 
                                                 current_lo_punch_frame, current_kick_frame, 
-                                                current_special_frame, player2
+                                                current_special_frame, player2_viking
                                         );
                                 } else if (game_states->rumble_pause == 1) {
                                         draw_pause(menu_header_font, menu_options_font, display, game_states);
@@ -947,6 +947,14 @@ int main(void) {
                                                 move_controller_left(player1_viking->controller);
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
                                                 move_controller_down(player1_viking->controller);
+                                        }
+
+                                        if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+                                                move_controller_right(player2_viking->controller);
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+                                                move_controller_left(player2_viking->controller);
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+                                                move_controller_down(player2_viking->controller);
                                         }
                                 }
                         }
