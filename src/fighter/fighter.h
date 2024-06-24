@@ -6,7 +6,7 @@
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
 
-#define PLAYER_STEPS 5.0
+#define PLAYER_STEPS 7.5
 
 /* Lutador */
 typedef struct Fighter {
@@ -21,6 +21,7 @@ typedef struct Fighter {
         ALLEGRO_BITMAP **hi_block_spriteset;
         ALLEGRO_BITMAP **special_spriteset;
         ALLEGRO_BITMAP **running_spriteset;
+        ALLEGRO_BITMAP **crouch_spriteset;
         float health;
         float stamina;
         unsigned char player_type;
@@ -35,7 +36,8 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **fighter_lo_punch_spriteset, ALLEGRO_BITMAP **fighter_kick_spriteset,
         ALLEGRO_BITMAP **fighter_damage_spriteset, ALLEGRO_BITMAP **fighter_death_spriteset,
         ALLEGRO_BITMAP **fighter_hi_block_spriteset, ALLEGRO_BITMAP **fighter_special_spriteset,
-        ALLEGRO_BITMAP **fighter_running_spriteset, unsigned char player_type
+        ALLEGRO_BITMAP **fighter_running_spriteset, ALLEGRO_BITMAP **fighter_crouch_spriteset,
+        unsigned char player_type
 );
 
 /* Mover à direita */
