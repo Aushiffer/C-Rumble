@@ -14,8 +14,8 @@
 #include "selector/selector.h"
 #include "destroy_resources/destroy_resources.h"
 
-#define WIN_WIDTH 1068
-#define WIN_HEIGHT 720
+#define WIN_WIDTH 1366
+#define WIN_HEIGHT 768
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define NUM_STAGES 2
@@ -52,6 +52,13 @@ int main(void) {
                 exit(AL_INIT_FONT_ADDONS_ERROR);
         } else {
                 printf("[+] main(): set font addons\n");
+        }
+
+        if (!al_init_primitives_addon()) {
+                fprintf(stderr, "[-] main(): failed to initialize the primitives addon\n");
+                exit(AL_INIT_PRIMITIVES_ADDON_ERROR);
+        } else {
+                printf("[+] main(): loaded primitives addon\n");
         }
 
         if (!al_init_image_addon()) {
