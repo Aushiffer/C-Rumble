@@ -25,6 +25,7 @@ typedef struct Fighter {
         float health;
         float stamina;
         unsigned char player_type;
+        unsigned char rounds_won;
 } Fighter;
 
 /* Cria um novo lutador */

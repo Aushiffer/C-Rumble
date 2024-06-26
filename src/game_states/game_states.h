@@ -21,6 +21,7 @@ typedef struct GameStates {
         unsigned char rumble_fighter_p2;
         unsigned char rumble_pause;
         unsigned char rumble_round;
+        unsigned char rumble_end;
         char menu_select;
         char character_select_nav_p1;
         char character_select_nav_p2;

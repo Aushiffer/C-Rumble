@@ -44,6 +44,7 @@ Fighter *create_fighter(
         fighter->health = 100.0;
         fighter->stamina = 100.0;
         fighter->player_type = player_type;
+        fighter->rounds_won = 0;
 
         return fighter;
 }

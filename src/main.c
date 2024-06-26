@@ -350,7 +350,7 @@ int main(void) {
         al_start_timer(timer);
         al_set_window_title(display, "C-Rumble");
 
-        GameStates *game_states = create_game_states(); // Estrutura com as flags relativas aos diversos estados do jogo
+        GameStates *game_states = create_game_states(); /* Estrutura com as flags relativas aos diversos estados do jogo */
 
         if (!game_states) {
                 fprintf(stderr, "[-] main(): failed to create game states structure\n");
