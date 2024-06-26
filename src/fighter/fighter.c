@@ -104,25 +104,35 @@ void update_animations(
         unsigned int current_special_frame, Fighter *fighter
 ) {
         if (fighter->player_type == 1) {
-                if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up && !fighter->controller->punch && !fighter->controller->kick)
                         al_draw_bitmap(
                                 fighter->idle_spriteset[current_idle_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->idle_spriteset[current_idle_frame]) / 2, 
                                 fighter->hitbox->hitbox_y, 0
                         );
-                else if (!fighter->controller->left && fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                else if (!fighter->controller->left && fighter->controller->right && !fighter->controller->down && !fighter->controller->up && !fighter->controller->punch && !fighter->controller->kick)
                         al_draw_bitmap(
                                 fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->running_spriteset[current_running_frame]) / 2, 
                                 fighter->hitbox->hitbox_y, 0
                         );
-                else if (fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)
+                else if (fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up && !fighter->controller->punch && !fighter->controller->kick)
                         al_draw_bitmap(
                                 fighter->running_spriteset[current_running_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->running_spriteset[current_running_frame]) / 2, 
                                 fighter->hitbox->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                         );
-                else if (!fighter->controller->left && !fighter->controller->right && fighter->controller->down && !fighter->controller->up)
+                else if (!fighter->controller->left && !fighter->controller->right && fighter->controller->down && !fighter->controller->up && !fighter->controller->punch && !fighter->controller->kick)
                         al_draw_bitmap(
                                 fighter->crouch_spriteset[1], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->crouch_spriteset[1]) / 2, 
                                 fighter->hitbox->hitbox_y + (float)al_get_bitmap_width(fighter->crouch_spriteset[1]) / 2, 0
+                        );
+                else if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up && fighter->controller->punch && !fighter->controller->kick)
+                        al_draw_bitmap(
+                                fighter->hi_punch_spriteset[current_hi_punch_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->hi_punch_spriteset[current_hi_punch_frame]) / 2, 
+                                fighter->hitbox->hitbox_y, 0
+                        );
+                else if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up && !fighter->controller->punch && fighter->controller->kick)
+                        al_draw_bitmap(
+                                fighter->kick_spriteset[current_kick_frame], fighter->hitbox->hitbox_x - (float)al_get_bitmap_width(fighter->kick_spriteset[current_kick_frame]) / 2, 
+                                fighter->hitbox->hitbox_y + (float)al_get_bitmap_width(fighter->kick_spriteset[current_kick_frame]) / 2 - 32, 0
                         );
         } else {
                 if (!fighter->controller->left && !fighter->controller->right && !fighter->controller->down && !fighter->controller->up)

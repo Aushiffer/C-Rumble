@@ -23,12 +23,11 @@
 #define NUM_PAUSE_OPTIONS 3
 #define FRAMES_PER_SECOND 60.0
 #define FRAME_DURATION_REGULAR 0.10
-#define FRAME_DURATION_DAMAGE 0.07
 #define NUM_IDLE_FRAMES 8
 #define NUM_DAMAGE_FRAMES 3
 #define NUM_DEATH_FRAMES 11
-#define NUM_KICK_FRAMES 7
-#define NUM_HI_PUNCH_FRAMES 4
+#define NUM_KICK_FRAMES 3
+#define NUM_HI_PUNCH_FRAMES 2
 #define NUM_LO_PUNCH_FRAMES 5
 #define NUM_CROUCH_FRAMES 2
 #define MAXLEN_SPRITE_PATH 65
@@ -481,8 +480,8 @@ int main(void) {
                 }
         }
 
-        float player1_viking_x = 94.5;
-        float player2_viking_x = al_get_display_width(display) - 94.5;
+        float player1_x = 94.5;
+        float player2_x = al_get_display_width(display) - 94.5;
 
         /* Abaixo, apenas os dados de frames para o Viking. Depois, fazer para todos os personagens */
         float idle_frame_time = 0.0;
@@ -508,7 +507,7 @@ int main(void) {
 
         Fighter *player1_viking = create_fighter(
                 189.0, 256.0, 
-                player1_viking_x, (float)al_get_display_height(display) - 256.0, 
+                player1_x, (float)al_get_display_height(display) - 256.0, 
                 al_get_display_width(display), al_get_display_height(display), 
                 viking_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
@@ -527,7 +526,7 @@ int main(void) {
 
         Fighter *player2_viking = create_fighter(
                 189.0, 256.0, 
-                player2_viking_x, (float)al_get_display_height(display) - 256.0, 
+                player2_x, (float)al_get_display_height(display) - 256.0, 
                 al_get_display_width(display), al_get_display_height(display), 
                 viking_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
@@ -572,7 +571,7 @@ int main(void) {
 
                                 damage_frame_time += 1.0 / FRAMES_PER_SECOND;
 
-                                if (damage_frame_time >= FRAME_DURATION_DAMAGE) {
+                                if (damage_frame_time >= FRAME_DURATION_REGULAR) {
                                         damage_frame_time = 0.0;
                                         current_damage_frame = (current_damage_frame + 1) % NUM_DAMAGE_FRAMES;
                                 }
@@ -947,6 +946,10 @@ int main(void) {
                                                 move_controller_left(player1_viking->controller);
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
                                                 move_controller_down(player1_viking->controller);
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                                                move_controller_punch(player1_viking->controller);
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_X) {
+                                                move_controller_kick(player1_viking->controller);
                                         }
 
                                         if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
