@@ -718,6 +718,8 @@ int main(void) {
                         game_states->stage_select_nav = 0;
                         game_states->play_stage_select_sample = 1;
                         game_states->menu_select = 0;
+                        player1_viking->hitbox->hitbox_x = 94.5;
+                        player2_viking->hitbox->hitbox_x = (float)al_get_display_width(display) - 94.5;
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
