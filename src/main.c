@@ -15,8 +15,8 @@
 #include "destroy_resources/destroy_resources.h"
 
 /* As macros de frames valem PARA O VIKING APENAS, definir um valor para cada sprite de CADA personagem */
-#define WIN_WIDTH 1366
-#define WIN_HEIGHT 768
+#define WIN_WIDTH 1028
+#define WIN_HEIGHT 720
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define NUM_STAGES 2
