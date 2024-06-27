@@ -6,7 +6,7 @@
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
 
-#define PLAYER_STEPS 12.5
+#define PLAYER_STEPS 15.0
 
 /* Lutador */
 typedef struct Fighter {
