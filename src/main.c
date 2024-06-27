@@ -422,7 +422,7 @@ int main(void) {
 
         ALLEGRO_BITMAP *viking_special_spriteset[NUM_DEATH_FRAMES];
 
-        for (int i = 0; i < NUM_DEATH_FRAMES; i++) {
+        for (int i = 0; i < NUM_DEATH_FRAMES - 1; i++) {
                 snprintf(sprite_path, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_special/viking_special%d.png", i + 1);
                 viking_special_spriteset[i] = al_load_bitmap(sprite_path);
 
@@ -594,7 +594,7 @@ int main(void) {
 
                                 if (special_frame_time >= FRAME_DURATION_REGULAR) {
                                         special_frame_time = 0.0;
-                                        current_special_frame = (current_special_frame + 1) % NUM_DEATH_FRAMES;
+                                        current_special_frame = (current_special_frame + 1) % (NUM_DEATH_FRAMES - 1);
                                 }
 
                                 block_frame_time += 1.0 / FRAMES_PER_SECOND;
@@ -952,6 +952,10 @@ int main(void) {
                                                 move_controller_punch(player1_viking->controller);
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_X) {
                                                 move_controller_kick(player1_viking->controller);
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_C) {
+                                                move_controller_special(player1_viking->controller);
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_W) {
+                                                move_controller_up(player1_viking->controller);
                                         }
 
                                         if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
