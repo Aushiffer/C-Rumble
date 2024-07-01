@@ -571,7 +571,7 @@ int main(void) {
                                                 }
 
                                                 al_draw_bitmap(
-                                                        viking_running_spriteset[current_frame], player1_viking->hitbox->hitbox_x, 
+                                                        viking_running_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(viking_running_spriteset[current_frame]) / 2, 
                                                         player1_viking->hitbox->hitbox_y, 0
                                                 );
                                         } else if (player1_viking->is_punching) {
