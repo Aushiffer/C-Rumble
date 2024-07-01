@@ -570,7 +570,10 @@ int main(void) {
                                                         current_frame = (current_frame + 1) % NUM_IDLE_FRAMES;
                                                 }
 
-                                                al_draw_bitmap(viking_running_spriteset[current_frame], player1_viking->hitbox->hitbox_x, player1_viking->hitbox->hitbox_y, 0);
+                                                al_draw_bitmap(
+                                                        viking_running_spriteset[current_frame], player1_viking->hitbox->hitbox_x, 
+                                                        player1_viking->hitbox->hitbox_y, 0
+                                                );
                                         } else if (player1_viking->is_punching) {
 
                                         } else if (player1_viking->is_kicking) {
