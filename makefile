@@ -1,12 +1,12 @@
-CCFLAGS = -Wall -Wextra -pedantic
+CCFLAGS = -g -Wall -Wextra -pedantic
 CC = gcc
 ALLEGRO_LIBS = -lallegro -lallegro_main -lallegro_primitives -lallegro_font -lallegro_ttf -lallegro_audio -lallegro_acodec -lallegro_image
 PROGRAM = C-Rumble
 
 all: $(PROGRAM)
 
-$(PROGRAM): main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o
-	$(CC) -o $(PROGRAM) main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o $(CCFLAGS) $(ALLEGRO_LIBS)
+$(PROGRAM): main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o load_sprites.o
+	$(CC) -o $(PROGRAM) main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o load_sprites.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
 main.o:
 	$(CC) -c src/main.c $(CCFLAGS) $(ALLEGRO_LIBS)
@@ -31,6 +31,9 @@ controller.o:
 
 hitbox.o:
 	$(CC) -c src/hitbox/hitbox.c $(CCFLAGS)
+
+load_sprites.o:
+	$(CC) -c src/load_sprites/load_sprites.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
 run: 
 	./$(PROGRAM)

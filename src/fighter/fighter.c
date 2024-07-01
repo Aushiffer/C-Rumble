@@ -1,6 +1,4 @@
 #include "fighter.h"
-#include <allegro5/bitmap.h>
-#include <allegro5/bitmap_draw.h>
 
 Fighter *create_fighter(
         float width, float height, 
@@ -11,7 +9,7 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **fighter_damage_spriteset, ALLEGRO_BITMAP **fighter_death_spriteset,
         ALLEGRO_BITMAP **fighter_hi_block_spriteset, ALLEGRO_BITMAP **fighter_special_spriteset,
         ALLEGRO_BITMAP **fighter_running_spriteset, ALLEGRO_BITMAP **fighter_crouch_spriteset,
-        unsigned char player_type
+        unsigned char direction_facing
 ) {
         if ((fighter_x - width / 2 < 0) || (fighter_x + width / 2 > max_x) || (fighter_y - height / 2 < 0) || (fighter_y + height / 2 > max_y))
                 return NULL;
@@ -43,9 +41,10 @@ Fighter *create_fighter(
         fighter->crouch_spriteset = fighter_crouch_spriteset;
         fighter->health = 100.0;
         fighter->stamina = 100.0;
-        fighter->player_type = player_type;
+        fighter->direction_facing = direction_facing;
         fighter->rounds_won = 0;
-        fighter->is_running = 0;
+        fighter->is_running_right = 0;
+        fighter->is_running_left = 0;
         fighter->is_punching = 0;
         fighter->is_kicking = 0;
 
@@ -67,7 +66,7 @@ void move_fighter_left(Fighter *fighter) {
 }
 
 void move_fighter_crouch(Fighter *fighter) {
-        fighter->hitbox->hitbox_height = fighter->hitbox->hitbox_height / 2;
+        // fighter->hitbox->hitbox_height = fighter->hitbox->hitbox_height / 2;
 }
 
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {

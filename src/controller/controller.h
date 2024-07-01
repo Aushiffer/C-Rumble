@@ -12,7 +12,7 @@ typedef struct Controller {
 } Controller;
 
 /* Cria um novo controle */
-Controller *create_controller();
+Controller *create_controller(void);
 
 /* Move o controle para a direita */
 void move_controller_right(Controller *controller);

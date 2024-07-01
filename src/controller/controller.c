@@ -1,6 +1,6 @@
 #include "controller.h"
 
-Controller *create_controller() {
+Controller *create_controller(void) {
         Controller *controller = (Controller *)malloc(sizeof(Controller));
 
         if (!controller)

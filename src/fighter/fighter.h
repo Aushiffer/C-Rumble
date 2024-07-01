@@ -24,9 +24,10 @@ typedef struct Fighter {
         ALLEGRO_BITMAP **crouch_spriteset;
         float health;
         float stamina;
-        unsigned char player_type;
+        unsigned char direction_facing;
         unsigned char rounds_won;
-        unsigned char is_running;
+        unsigned char is_running_right;
+        unsigned char is_running_left;
         unsigned char is_punching;
         unsigned char is_kicking;
 } Fighter;
@@ -41,7 +42,7 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **fighter_damage_spriteset, ALLEGRO_BITMAP **fighter_death_spriteset,
         ALLEGRO_BITMAP **fighter_hi_block_spriteset, ALLEGRO_BITMAP **fighter_special_spriteset,
         ALLEGRO_BITMAP **fighter_running_spriteset, ALLEGRO_BITMAP **fighter_crouch_spriteset,
-        unsigned char player_type
+        unsigned char direction_facing
 );
 
 /* Mover à direita */

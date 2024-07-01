@@ -30,7 +30,7 @@ typedef struct GameStates {
 } GameStates;
 
 /* Cria estrutura de estados de jogo */
-GameStates *create_game_states();
+GameStates *create_game_states(void);
 
 /* Destrói estrutura de dados de jogo */
 void destroy_game_states(GameStates *game_states);

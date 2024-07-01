@@ -1,6 +1,6 @@
 #include "game_states.h"
 
-GameStates *create_game_states() {
+GameStates *create_game_states(void) {
         GameStates *game_states = (GameStates *)malloc(sizeof(GameStates));
 
         if (!game_states)
