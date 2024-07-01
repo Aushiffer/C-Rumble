@@ -26,6 +26,9 @@ typedef struct Fighter {
         float stamina;
         unsigned char player_type;
         unsigned char rounds_won;
+        unsigned char is_running;
+        unsigned char is_punching;
+        unsigned char is_kicking;
 } Fighter;
 
 /* Cria um novo lutador */
@@ -53,17 +56,14 @@ void move_fighter_jump(Fighter *fighter, unsigned short max_x, unsigned short ma
 /* Abaixar */
 void move_fighter_crouch(Fighter *fighter);
 
+/* Soco */
+void move_fighter_punch(Fighter *fighter);
+
+/* Chute */
+void move_fighter_kick(Fighter *fighter);
+
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y);
-
-/* Atualiza as animações de sprites */
-void update_animations(
-        unsigned int current_idle_frame, unsigned int current_running_frame, 
-        unsigned int current_damage_frame, unsigned int current_hi_block_frame, 
-        unsigned int current_death_frame, unsigned int current_hi_punch_frame, 
-        unsigned int current_lo_punch_frame, unsigned int current_kick_frame, 
-        unsigned int current_special_frame, Fighter *fighter
-);
 
 /* Destrói um lutador */
 void destroy_fighter(Fighter *fighter);

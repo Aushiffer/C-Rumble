@@ -9,9 +9,6 @@ typedef struct Controller {
         unsigned char left;
         unsigned char up;
         unsigned char down;
-        unsigned char punch;
-        unsigned char kick;
-        unsigned char special;
 } Controller;
 
 /* Cria um novo controle */
@@ -28,15 +25,6 @@ void move_controller_up(Controller *controller);
 
 /* Move o controle para baixo */
 void move_controller_down(Controller *controller);
-
-/* Pressiona o botão de soco */
-void move_controller_punch(Controller *controller);
-
-/* Pressiona o botão de chute */
-void move_controller_kick(Controller *controller);
-
-/* Pressiona o botão de especial */
-void move_controller_special(Controller *controller);
 
 /* Destrói um controle */
 void destroy_controller(Controller *controller);
