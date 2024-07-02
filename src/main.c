@@ -11,7 +11,7 @@
 #include "fighter/fighter.h"
 #include "game_states/game_states.h"
 #include "draw/draw.h"
-#include "load_sprites/load_sprites.h"
+#include "load_spriteset/load_spriteset.h"
 #include "selector/selector.h"
 #include "destroy_resources/destroy_resources.h"
 
