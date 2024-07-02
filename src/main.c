@@ -24,7 +24,7 @@
 #define NUM_PAUSE_OPTIONS 3
 #define FRAMES_PER_SECOND 30.0
 #define FRAME_DURATION_IDLE 0.09
-#define FRAME_DURATION_PUNCH 0.06
+#define FRAME_DURATION_PUNCH 0.06666
 #define NUM_IDLE_FRAMES 8
 #define NUM_DAMAGE_FRAMES 3
 #define NUM_DEATH_FRAMES 11
@@ -35,49 +35,19 @@
 #define MAXLEN_SPRITE_PATH 65
 
 int main(void) {
-        if (!al_init()) {
-                fprintf(stderr, "[-] main(): failed to initialize Allegro\n");
-                exit(AL_INIT_ERROR);
-        }
-
-        if (!al_install_keyboard()) {
-                fprintf(stderr, "[-] main(): failed keyboard installation\n");
-                exit(AL_KEYBOARD_INSTALL_ERROR);
-        }
-
-        if (!al_init_font_addon() || !al_init_ttf_addon()) {
-                fprintf(stderr, "[-] main(): failed to initialize font addons\n");
-                exit(AL_INIT_FONT_ADDONS_ERROR);
-        }
-
-        if (!al_init_primitives_addon()) {
-                fprintf(stderr, "[-] main(): failed to initialize the primitives addon\n");
-                exit(AL_INIT_PRIMITIVES_ADDON_ERROR);
-        }
-
-        if (!al_init_image_addon()) {
-                fprintf(stderr, "[-] main(): failed to initialize image addon\n");
-                exit(AL_INIT_IMAGE_ADDON_ERROR);
-        }
-
+        al_init();
+        al_install_keyboard();
+        al_init_font_addon();
+        al_init_ttf_addon();
+        al_init_primitives_addon();
+        al_init_image_addon();
         al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
         ALLEGRO_DISPLAY *display = al_create_display(WIN_WIDTH, WIN_HEIGHT);
 
         al_hide_mouse_cursor(display);
 
-        if (!display) {
-                fprintf(stderr, "[-] main(): failed to initialize display\n");
-                exit(AL_CREATE_DISPLAY_ERROR);
-        }
-
         ALLEGRO_TIMER *timer = al_create_timer(1.0 / FRAMES_PER_SECOND);
-
-        if (!timer) {
-                fprintf(stderr, "[-] main(): failed to initialize timer\n");
-                exit(AL_CREATE_TIMER_ERROR);
-        }
-
         ALLEGRO_BITMAP *window_icon = al_load_bitmap("imgs/icons/window_icon.png");
 
         if (!window_icon) {
@@ -299,52 +269,32 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP *viking_running_spriteset[NUM_IDLE_FRAMES];
+        ALLEGRO_BITMAP **viking_running_spriteset = load_spriteset(NUM_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_running/viking_running", MAXLEN_SPRITE_PATH);
 
-        for (int i = 0; i < NUM_IDLE_FRAMES; i++) {
-                snprintf(sprite_path_buf, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_running/viking_running%d.png", i + 1);
-                viking_running_spriteset[i] = al_load_bitmap(sprite_path_buf);
-
-                if (!viking_running_spriteset[i]) {
-                        fprintf(stderr, "[-] main(): failed to load the viking's running sprite set\n");
-                        exit(AL_LOAD_SPRITE_ERROR);
-                }
+        if (!viking_running_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load the viking's running sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP *viking_damage_spriteset[NUM_DAMAGE_FRAMES];
+        ALLEGRO_BITMAP **viking_damage_spriteset = load_spriteset(NUM_DAMAGE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_damage/viking_damage", MAXLEN_SPRITE_PATH);
 
-        for (int i = 0; i < NUM_DAMAGE_FRAMES; i++) {
-                snprintf(sprite_path_buf, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_damage/viking_damage%d.png", i + 1);
-                viking_damage_spriteset[i] = al_load_bitmap(sprite_path_buf);
-
-                if (!viking_damage_spriteset[i]) {
-                        fprintf(stderr, "[-] main(): failed to load the viking's damage sprite set\n");
-                        exit(AL_LOAD_SPRITE_ERROR);
-                }
+        if (!viking_damage_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load the viking's damage sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP *viking_death_spriteset[NUM_DEATH_FRAMES];
+        ALLEGRO_BITMAP **viking_death_spriteset = load_spriteset(NUM_DEATH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_death/viking_death", MAXLEN_SPRITE_PATH);
 
-        for (int i = 0; i < NUM_DEATH_FRAMES; i++) {
-                snprintf(sprite_path_buf, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_death/viking_death%d.png", i + 1);
-                viking_death_spriteset[i] = al_load_bitmap(sprite_path_buf);
-
-                if (!viking_death_spriteset[i]) {
-                        fprintf(stderr, "[-] main(): failed to load the viking's death sprite set\n");
-                        exit(AL_LOAD_SPRITE_ERROR);
-                }
+        if (!viking_death_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load the viking's death sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP *viking_kick_spriteset[NUM_KICK_FRAMES];
+        ALLEGRO_BITMAP **viking_kick_spriteset = load_spriteset(NUM_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_kick/viking_kick", MAXLEN_SPRITE_PATH);
 
-        for (int i = 0; i < NUM_KICK_FRAMES; i++) {
-                snprintf(sprite_path_buf, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_kick/viking_kick%d.png", i + 1);
-                viking_kick_spriteset[i] = al_load_bitmap(sprite_path_buf);
-
-                if (!viking_kick_spriteset[i]) {
-                        fprintf(stderr, "[-] main(): failed to load the viking's kick sprite set\n");
-                        exit(AL_LOAD_SPRITE_ERROR);
-                }
+        if (!viking_kick_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load the viking's kick sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
         }
 
         ALLEGRO_BITMAP *viking_special_spriteset[NUM_DEATH_FRAMES];
@@ -524,10 +474,8 @@ int main(void) {
                                                                 player1_viking->is_punching = 0;
                                                 }
 
-                                                printf("%f ", time_frame);
-
                                                 al_draw_bitmap(
-                                                        viking_hi_punch_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(viking_hi_punch_spriteset[current_frame]) / 2,
+                                                        viking_hi_punch_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(viking_hi_punch_spriteset[current_frame]) / 2 + 64,
                                                         player1_viking->hitbox->hitbox_y, 0
                                                 );
                                         } else {
@@ -827,7 +775,7 @@ int main(void) {
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
                                         player1_viking->is_punching = 1;
                                         current_frame = 0;
-                                        time_frame = 0.0;
+                                        time_frame = 0;
                                 }
                         }
 

@@ -5,8 +5,8 @@ PROGRAM = C-Rumble
 
 all: $(PROGRAM)
 
-$(PROGRAM): main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o load_sprites.o
-	$(CC) -o $(PROGRAM) main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o load_sprites.o $(CCFLAGS) $(ALLEGRO_LIBS)
+$(PROGRAM): main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o load_spriteset.o
+	$(CC) -o $(PROGRAM) main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o load_spriteset.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
 main.o:
 	$(CC) -c src/main.c $(CCFLAGS) $(ALLEGRO_LIBS)
@@ -32,11 +32,14 @@ controller.o:
 hitbox.o:
 	$(CC) -c src/hitbox/hitbox.c $(CCFLAGS)
 
-load_sprites.o:
-	$(CC) -c src/load_sprites/load_sprites.c $(CCFLAGS) $(ALLEGRO_LIBS)
+load_spriteset.o:
+	$(CC) -c src/load_spriteset/load_spriteset.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
-run: 
+run:
 	./$(PROGRAM)
+
+test_run:
+	make purge && make && make run
 
 clean:
 	rm -f *.o

@@ -45,7 +45,9 @@ void destroy_bitmaps(
         al_destroy_bitmap(stage_abandoned_factory);
 }
 
-void destroy_spriteset(ALLEGRO_BITMAP *spriteset[], unsigned int num_frames) {
+void destroy_spriteset(ALLEGRO_BITMAP **spriteset, unsigned int num_frames) {
         for (unsigned int i = 0; i < num_frames; i++)
                 al_destroy_bitmap(spriteset[i]);
+
+        free(spriteset);
 }

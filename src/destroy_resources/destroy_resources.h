@@ -29,6 +29,6 @@ void destroy_bitmaps(
 );
 
 /* Destrói um set de sprites de um personagem */
-void destroy_spriteset(ALLEGRO_BITMAP *spriteset[], unsigned int num_frames);
+void destroy_spriteset(ALLEGRO_BITMAP **spriteset, unsigned int num_frames);
 
 #endif // __DESTROY_RESOURCES__
