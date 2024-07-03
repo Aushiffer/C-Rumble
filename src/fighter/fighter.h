@@ -59,6 +59,12 @@ void move_fighter_jump(Fighter *fighter, unsigned short max_x, unsigned short ma
 /* Abaixar */
 void move_fighter_crouch(Fighter *fighter);
 
+/* Soco */
+void move_fighter_punch(Fighter *fighter);
+
+/* Chute */
+void move_fighter_kick(Fighter *fighter);
+
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y);
 
