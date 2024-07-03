@@ -6,7 +6,7 @@
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
 
-#define PLAYER_STEPS 8.0
+#define PLAYER_STEPS 15.0
 
 /* Lutador */
 typedef struct Fighter {
@@ -28,8 +28,9 @@ typedef struct Fighter {
         unsigned char rounds_won;
         unsigned char is_running_right;
         unsigned char is_running_left;
-        unsigned char is_punching;
-        unsigned char is_kicking;
+        unsigned char is_hi_punching;
+        unsigned char is_lo_punching;
+        unsigned char is_hi_kicking;
         unsigned char is_blocking;
         unsigned char is_crouching;
 } Fighter;
@@ -39,11 +40,11 @@ Fighter *create_fighter(
         float fighter_width, float fighter_height, 
         float fighter_x, float fighter_y, 
         float max_x, float max_y, 
-        ALLEGRO_BITMAP **fighter_idle_spriteset, ALLEGRO_BITMAP **fighter_hi_punch_spriteset, 
-        ALLEGRO_BITMAP **fighter_lo_punch_spriteset, ALLEGRO_BITMAP **fighter_kick_spriteset,
-        ALLEGRO_BITMAP **fighter_damage_spriteset, ALLEGRO_BITMAP **fighter_death_spriteset,
-        ALLEGRO_BITMAP **fighter_hi_block_spriteset, ALLEGRO_BITMAP **fighter_special_spriteset,
-        ALLEGRO_BITMAP **fighter_running_spriteset, ALLEGRO_BITMAP **fighter_crouch_spriteset,
+        ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
+        ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
+        ALLEGRO_BITMAP **damage_spriteset, ALLEGRO_BITMAP **death_spriteset,
+        ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **special_spriteset,
+        ALLEGRO_BITMAP **running_spriteset, ALLEGRO_BITMAP **crouch_spriteset,
         unsigned char direction_facing
 );
 

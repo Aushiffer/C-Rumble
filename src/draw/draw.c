@@ -155,7 +155,7 @@ void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_
                 (*current_frame) = ((*current_frame) + 1) % num_frames;
 
                 if ((*current_frame) == 0)
-                        player->is_punching = 0;
+                        player->is_hi_punching = 0;
         }
 
         al_draw_bitmap(

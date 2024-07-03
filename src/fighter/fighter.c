@@ -2,16 +2,16 @@
 
 Fighter *create_fighter(
         float width, float height, 
-        float fighter_x, float fighter_y, 
+        float x, float y, 
         float max_x, float max_y, 
-        ALLEGRO_BITMAP **fighter_idle_spriteset, ALLEGRO_BITMAP **fighter_hi_punch_spriteset, 
-        ALLEGRO_BITMAP **fighter_lo_punch_spriteset, ALLEGRO_BITMAP **fighter_kick_spriteset,
-        ALLEGRO_BITMAP **fighter_damage_spriteset, ALLEGRO_BITMAP **fighter_death_spriteset,
-        ALLEGRO_BITMAP **fighter_hi_block_spriteset, ALLEGRO_BITMAP **fighter_special_spriteset,
-        ALLEGRO_BITMAP **fighter_running_spriteset, ALLEGRO_BITMAP **fighter_crouch_spriteset,
+        ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
+        ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
+        ALLEGRO_BITMAP **damage_spriteset, ALLEGRO_BITMAP **death_spriteset,
+        ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **special_spriteset,
+        ALLEGRO_BITMAP **running_spriteset, ALLEGRO_BITMAP **crouch_spriteset,
         unsigned char direction_facing
 ) {
-        if ((fighter_x - width / 2 < 0) || (fighter_x + width / 2 > max_x) || (fighter_y - height / 2 < 0) || (fighter_y + height / 2 > max_y))
+        if ((x - width / 2 < 0) || (x + width / 2 > max_x) || (y - height / 2 < 0) || (y + height / 2 > max_y))
                 return NULL;
 
         Fighter *fighter = (Fighter *)malloc(sizeof(Fighter));
@@ -19,7 +19,7 @@ Fighter *create_fighter(
         if (!fighter)
                 return NULL;
 
-        fighter->hitbox = create_hitbox(width, height, fighter_x, fighter_y, max_x, max_y);
+        fighter->hitbox = create_hitbox(width, height, x, y, max_x, max_y);
 
         if (!fighter->hitbox)
                 return NULL;
@@ -29,24 +29,24 @@ Fighter *create_fighter(
         if (!fighter->controller)
                 return NULL;
 
-        fighter->idle_spriteset = fighter_idle_spriteset;
-        fighter->hi_punch_spriteset = fighter_hi_punch_spriteset;
-        fighter->lo_punch_spriteset = fighter_lo_punch_spriteset;
-        fighter->kick_spriteset = fighter_kick_spriteset;
-        fighter->damage_spriteset = fighter_damage_spriteset;
-        fighter->death_spriteset = fighter_death_spriteset;
-        fighter->hi_block_spriteset = fighter_hi_block_spriteset;
-        fighter->special_spriteset = fighter_special_spriteset;
-        fighter->running_spriteset = fighter_running_spriteset;
-        fighter->crouch_spriteset = fighter_crouch_spriteset;
+        fighter->idle_spriteset = idle_spriteset;
+        fighter->hi_punch_spriteset = hi_punch_spriteset;
+        fighter->lo_punch_spriteset = lo_punch_spriteset;
+        fighter->kick_spriteset = kick_spriteset;
+        fighter->damage_spriteset = damage_spriteset;
+        fighter->death_spriteset = death_spriteset;
+        fighter->hi_block_spriteset = hi_block_spriteset;
+        fighter->special_spriteset = special_spriteset;
+        fighter->running_spriteset = running_spriteset;
+        fighter->crouch_spriteset = crouch_spriteset;
         fighter->health = 100.0;
         fighter->stamina = 100.0;
         fighter->direction_facing = direction_facing;
         fighter->rounds_won = 0;
         fighter->is_running_right = 0;
         fighter->is_running_left = 0;
-        fighter->is_punching = 0;
-        fighter->is_kicking = 0;
+        fighter->is_hi_punching = 0;
+        fighter->is_hi_kicking = 0;
         fighter->is_blocking = 0;
         fighter->is_crouching = 0;
 
