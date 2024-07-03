@@ -41,6 +41,9 @@ run:
 test_run:
 	make purge && make && make run
 
+valgrind_test:
+	valgrind make run
+
 clean:
 	rm -f *.o
 

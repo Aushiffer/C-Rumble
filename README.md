@@ -16,13 +16,16 @@
 - make run
 
 ## Como jogar
-- Veja a documentação no diretório "docs"
+- Leia a documentação no diretório "docs"
 
 ## Como limpar os arquivos de compilação (*.o e/ou executável) rapidamente
 - make clean (limpa os arquivos-objeto *.o)
 - make purge (limpa os arquivos-objeto *.o, bem como o executável do jogo)
 
+## Comando rápido para aplicar mudanças, compilar e executar o código (com foco nos contribuidores)
+- make test_run
+
 ## Créditos
 - Programação: eu (Caio)
-- Música: DavidKBD
+- Música: DavidKBD, Daisuke Ishikawa
 - Sprites: pixramen (Iron Sentinel A.K.A Knight), Dreamir (Viking, Spearwoman, Fire Warrior)

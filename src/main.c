@@ -1,3 +1,4 @@
+#include <allegro5/bitmap.h>
 #include <allegro5/bitmap_draw.h>
 #include <allegro5/keycodes.h>
 #include <stdio.h>
@@ -27,11 +28,12 @@
 #define FRAMES_PER_SECOND 60.0
 #define FRAME_DURATION_IDLE 0.09
 #define FRAME_DURATION_PUNCH 0.06666
+#define FRAME_DURATION_KICK 0.04444
 #define NUM_IDLE_FRAMES 8
 #define NUM_DAMAGE_FRAMES 3
 #define NUM_DEATH_FRAMES 11
 #define NUM_SPECIAL_FRAMES 10
-#define NUM_KICK_FRAMES 3
+#define NUM_KICK_FRAMES 7
 #define NUM_HI_PUNCH_FRAMES 4
 #define NUM_LO_PUNCH_FRAMES 5
 #define NUM_CROUCH_FRAMES 2
@@ -314,46 +316,29 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP *viking_hi_punch_spriteset[NUM_HI_PUNCH_FRAMES];
+        ALLEGRO_BITMAP **viking_hi_punch_spriteset = load_spriteset(NUM_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_hi_punch/viking_hi_punch", MAXLEN_SPRITE_PATH);
 
-        for (int i = 0; i < NUM_HI_PUNCH_FRAMES; i++) {
-                snprintf(sprite_path_buf, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_hi_punch/viking_hi_punch%d.png", i + 1);
-                viking_hi_punch_spriteset[i] = al_load_bitmap(sprite_path_buf);
-
-                if (!viking_hi_punch_spriteset[i]) {
-                        fprintf(stderr, "[-] main(): failed to load the viking's hi punch sprite set\n");
-                        exit(AL_LOAD_SPRITE_ERROR);
-                }
+        if (!viking_hi_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load the viking's hi punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP *viking_lo_punch_spriteset[NUM_LO_PUNCH_FRAMES];
+        ALLEGRO_BITMAP **viking_lo_punch_spriteset = load_spriteset(NUM_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_lo_punch/viking_lo_punch", MAXLEN_SPRITE_PATH);
 
-        for (int i = 0; i < NUM_LO_PUNCH_FRAMES; i++) {
-                snprintf(sprite_path_buf, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_lo_punch/viking_lo_punch%d.png", i + 1);
-                viking_lo_punch_spriteset[i] = al_load_bitmap(sprite_path_buf);
-
-                if (!viking_lo_punch_spriteset[i]) {
-                        fprintf(stderr, "[-] main(): failed to load the viking's lo punch sprite set\n");
-                        exit(AL_LOAD_SPRITE_ERROR);
-                }
+        if (!viking_lo_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load the viking's lo punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP *viking_crouch_spriteset[NUM_CROUCH_FRAMES];
+        ALLEGRO_BITMAP **viking_crouch_spriteset = load_spriteset(NUM_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_crouch/viking_crouch", MAXLEN_SPRITE_PATH);
 
-        for (int i = 0; i < NUM_CROUCH_FRAMES; i++) {
-                snprintf(sprite_path_buf, MAXLEN_SPRITE_PATH, "imgs/sprites/Viking/viking_crouch/viking_crouch%d.png", i + 1);
-                viking_crouch_spriteset[i] = al_load_bitmap(sprite_path_buf);
-
-                if (!viking_crouch_spriteset[i]) {
-                        fprintf(stderr, "[-] main(): failed to load the viking's crouch sprite set\n");
-                        exit(AL_LOAD_SPRITE_ERROR);
-                }
+        if (!viking_crouch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load the viking's crouch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
         }
 
         float player1_x = 94.5;
         float player2_x = al_get_display_width(display) - 94.5;
-
-        /* Abaixo, apenas os dados de frames para o Viking. Depois, fazer para todos os personagens */
         float time_frame = 0.0;
         unsigned int current_frame = 0;
 
@@ -479,6 +464,19 @@ int main(void) {
 
                                                 al_draw_bitmap(
                                                         viking_block_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(viking_block_spriteset[current_frame]) / 2, 
+                                                        player1_viking->hitbox->hitbox_y, 0
+                                                );
+                                        } else if (player1_viking->is_kicking) {
+                                                if (time_frame >= FRAME_DURATION_KICK) {
+                                                        time_frame = 0;
+                                                        current_frame = (current_frame + 1) % NUM_KICK_FRAMES;
+
+                                                        if (current_frame == 0)
+                                                                player1_viking->is_kicking = 0;
+                                                }
+
+                                                al_draw_bitmap(
+                                                        viking_kick_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(viking_kick_spriteset[current_frame]) / 2,
                                                         player1_viking->hitbox->hitbox_y, 0
                                                 );
                                         } else {
@@ -777,6 +775,14 @@ int main(void) {
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
                                         player1_viking->is_punching = 1;
+                                        player1_viking->is_kicking = 0;
+                                        player1_viking->is_blocking = 0;
+                                        current_frame = 0;
+                                        time_frame = 0;
+                                } else if (event.keyboard.keycode == ALLEGRO_KEY_X) {
+                                        player1_viking->is_kicking = 1;
+                                        player1_viking->is_punching = 0;
+                                        player1_viking->is_blocking = 0;
                                         current_frame = 0;
                                         time_frame = 0;
                                 }
@@ -834,6 +840,9 @@ int main(void) {
         destroy_spriteset(viking_running_spriteset, NUM_IDLE_FRAMES);
         destroy_spriteset(viking_special_spriteset, NUM_DEATH_FRAMES);
         destroy_spriteset(viking_block_spriteset, NUM_IDLE_FRAMES);
+        destroy_spriteset(viking_hi_punch_spriteset, NUM_HI_PUNCH_FRAMES);
+        destroy_spriteset(viking_lo_punch_spriteset, NUM_LO_PUNCH_FRAMES);
+        destroy_spriteset(viking_crouch_spriteset, NUM_CROUCH_FRAMES);
         al_destroy_display(display);
         al_destroy_timer(timer);
         al_destroy_event_queue(event_queue);
