@@ -48,6 +48,7 @@ Fighter *create_fighter(
         fighter->is_punching = 0;
         fighter->is_kicking = 0;
         fighter->is_blocking = 0;
+        fighter->is_crouching = 0;
 
         return fighter;
 }

@@ -22,7 +22,7 @@
 - make clean (limpa os arquivos-objeto *.o)
 - make purge (limpa os arquivos-objeto *.o, bem como o executável do jogo)
 
-## Comando rápido para aplicar mudanças, compilar e executar o código (com foco nos contribuidores)
+## Comando rápido para aplicar mudanças, compilar e executar o código
 - make test_run
 
 ## Créditos

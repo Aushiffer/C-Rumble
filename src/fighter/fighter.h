@@ -31,6 +31,7 @@ typedef struct Fighter {
         unsigned char is_punching;
         unsigned char is_kicking;
         unsigned char is_blocking;
+        unsigned char is_crouching;
 } Fighter;
 
 /* Cria um novo lutador */

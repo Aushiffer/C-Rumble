@@ -149,6 +149,21 @@ void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO
         }
 }
 
+void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_animation, unsigned int (*current_frame), unsigned int num_frames) {
+        if ((*time_animation) >= frame_duration) {
+                (*time_animation) = 0;
+                (*current_frame) = ((*current_frame) + 1) % num_frames;
+
+                if ((*current_frame) == 0)
+                        player->is_punching = 0;
+        }
+
+        al_draw_bitmap(
+                player->hi_punch_spriteset[(*current_frame)], player->hitbox->hitbox_x - (float)al_get_bitmap_width(player->hi_punch_spriteset[(*current_frame)]) / 2 + 64,
+                player->hitbox->hitbox_y, 0
+        );
+}
+
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
         al_clear_to_color(COLOR_BLACK);
         al_draw_text(pause_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2, 64, ALLEGRO_ALIGN_CENTRE, "PAUSE");
