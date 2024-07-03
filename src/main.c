@@ -465,10 +465,17 @@ int main(void) {
                                                                 player1_viking->is_kicking = 0;
                                                 }
 
-                                                al_draw_bitmap(
-                                                        viking_kick_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(viking_kick_spriteset[current_frame]) / 2,
-                                                        player1_viking->hitbox->hitbox_y, 0
-                                                );
+                                                if (current_frame == 3 || current_frame == 4 || current_frame == 5) {
+                                                        al_draw_bitmap(
+                                                                viking_kick_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(viking_kick_spriteset[current_frame]) / 2,
+                                                                player1_viking->hitbox->hitbox_y + 128, 0
+                                                        );
+                                                } else {
+                                                        al_draw_bitmap(
+                                                                viking_kick_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(viking_kick_spriteset[current_frame]) / 2,
+                                                                player1_viking->hitbox->hitbox_y, 0
+                                                        );
+                                                }
                                         } else if (player1_viking->is_crouching) {
                                                 al_draw_bitmap(
                                                         player1_viking->crouch_spriteset[0], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->crouch_spriteset[0]) / 2,
