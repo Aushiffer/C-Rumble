@@ -1,4 +1,4 @@
-CCFLAGS = -g -Wall -Wextra -pedantic
+CCFLAGS = -g -Wall -Wextra -pedantic -O3 -std=c99
 CC = gcc
 ALLEGRO_LIBS = -lallegro -lallegro_main -lallegro_primitives -lallegro_font -lallegro_ttf -lallegro_audio -lallegro_acodec -lallegro_image
 PROGRAM = C-Rumble

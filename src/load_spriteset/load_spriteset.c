@@ -1,4 +1,4 @@
-#include "load_sprites.h"
+#include "load_spriteset.h"
 
 ALLEGRO_BITMAP **load_spriteset(unsigned short num_frames, char *sprite_dir_path_var, const char *sprite_dir_path_const, unsigned long path_length) {
         ALLEGRO_BITMAP **bitmap_array = (ALLEGRO_BITMAP **)malloc(num_frames * sizeof(ALLEGRO_BITMAP *));

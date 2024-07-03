@@ -9,6 +9,7 @@ typedef struct Controller {
         unsigned char left;
         unsigned char up;
         unsigned char down;
+        unsigned char block;
 } Controller;
 
 /* Cria um novo controle */
@@ -25,6 +26,9 @@ void move_controller_up(Controller *controller);
 
 /* Move o controle para baixo */
 void move_controller_down(Controller *controller);
+
+/* Pressiona o botão de bloqueio */
+void move_controller_block(Controller *controller);
 
 /* Destrói um controle */
 void destroy_controller(Controller *controller);

@@ -6,7 +6,7 @@
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
 
-#define PLAYER_STEPS 15.0
+#define PLAYER_STEPS 8.0
 
 /* Lutador */
 typedef struct Fighter {
@@ -30,6 +30,7 @@ typedef struct Fighter {
         unsigned char is_running_left;
         unsigned char is_punching;
         unsigned char is_kicking;
+        unsigned char is_blocking;
 } Fighter;
 
 /* Cria um novo lutador */
@@ -56,12 +57,6 @@ void move_fighter_jump(Fighter *fighter, unsigned short max_x, unsigned short ma
 
 /* Abaixar */
 void move_fighter_crouch(Fighter *fighter);
-
-/* Soco */
-void move_fighter_punch(Fighter *fighter);
-
-/* Chute */
-void move_fighter_kick(Fighter *fighter);
 
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y);
