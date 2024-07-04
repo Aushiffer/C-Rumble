@@ -188,11 +188,6 @@ int main(void) {
         ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 13 - Without Me.ogg");
 
         if (!character_select_sample) {
-                fprintf(stderr, "[-] main(): failed to load character selection screen music\n");
-                exit(AL_LOAD_SAMPLE_ERROR);
-        }
-
-        if (!character_select_sample) {
                 fprintf(stderr, "[-] main(): failed to load character select screen music\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
