@@ -45,8 +45,8 @@ Fighter *create_fighter(
         fighter->rounds_won = 0;
         fighter->is_running_right = 0;
         fighter->is_running_left = 0;
-        fighter->is_hi_punching = 0;
-        fighter->is_hi_kicking = 0;
+        fighter->is_punching = 0;
+        fighter->is_kicking = 0;
         fighter->is_blocking = 0;
         fighter->is_crouching = 0;
 

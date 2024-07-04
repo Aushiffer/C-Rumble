@@ -28,9 +28,8 @@ typedef struct Fighter {
         unsigned char rounds_won;
         unsigned char is_running_right;
         unsigned char is_running_left;
-        unsigned char is_hi_punching;
-        unsigned char is_lo_punching;
-        unsigned char is_hi_kicking;
+        unsigned char is_punching;
+        unsigned char is_kicking;
         unsigned char is_blocking;
         unsigned char is_crouching;
 } Fighter;

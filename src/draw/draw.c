@@ -149,13 +149,13 @@ void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO
         }
 }
 
-void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_animation, unsigned int (*current_frame), unsigned int num_frames) {
+void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_animation, unsigned int *current_frame, unsigned int num_frames) {
         if ((*time_animation) >= frame_duration) {
                 (*time_animation) = 0;
                 (*current_frame) = ((*current_frame) + 1) % num_frames;
 
                 if ((*current_frame) == 0)
-                        player->is_hi_punching = 0;
+                        player->is_punching = 0;
         }
 
         al_draw_bitmap(
