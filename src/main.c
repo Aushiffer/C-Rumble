@@ -30,7 +30,7 @@
 #define FRAME_DURATION_IDLE 0.09
 #define FRAME_DURATION_PUNCH 0.066666
 #define FRAME_DURATION_KICK 0.050000
-#define FRAME_DURATION_LO_PUNCH 0.040000
+#define FRAME_DURATION_LO_PUNCH 0.50000
 #define NUM_IDLE_FRAMES 8
 #define NUM_DAMAGE_FRAMES 3
 #define NUM_DEATH_FRAMES 11
@@ -337,7 +337,14 @@ int main(void) {
         float player1_x = 94.5;
         float player2_x = al_get_display_width(display) - 94.5;
         float time_frame = 0.0;
+        float time_frame_hi_punch = 0.0;
         unsigned int current_frame = 0;
+        unsigned int current_frame_idle = 0;
+        unsigned int current_frame_hi_punch = 0;
+        unsigned int current_frame_hi_kick = 0;
+        unsigned int current_frame_block = 0;
+        unsigned int current_frame_running = 0;
+
 
         Fighter *player1_viking = create_fighter(
                 189.0, 256.0, 
@@ -389,11 +396,6 @@ int main(void) {
                         } else if (game_states->rumble) {
                                 time_frame += 1.0 / FRAMES_PER_SECOND;
 
-                                if (time_frame >= FRAME_DURATION_IDLE) {
-                                        time_frame = 0.0;
-                                        current_frame = (current_frame + 1) % NUM_IDLE_FRAMES;
-                                }
-
                                 if (game_states->rumble_pause == 0) {
                                         draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
                                         al_draw_rectangle(
@@ -441,8 +443,7 @@ int main(void) {
                                                                 player1_viking->hitbox->hitbox_y, 0
                                                         );   
                                         } else if (player1_viking->is_punching) {
-                                                if (!player1_viking->is_crouching)
-                                                        draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &time_frame, &current_frame, NUM_HI_PUNCH_FRAMES);
+                                                draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &time_frame_hi_punch, &current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
                                         } else if (player1_viking->is_blocking) {
                                                 if (time_frame >= FRAME_DURATION_IDLE) {
                                                         time_frame = 0;
@@ -748,6 +749,10 @@ int main(void) {
                                         handle_pause_selection(menu_confirm_sample, menu_confirm_sample_id, dark_forest_sample_id, abandoned_factory_sample_id, game_states);
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_Z && !game_states->rumble_pause) {
                                         player1_viking->is_punching = 1;
+
+                                        if (player1_viking->is_crouching)
+                                                player1_viking->is_lo_punching = 1;
+
                                         current_frame = 0;
                                         time_frame = 0;
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {
