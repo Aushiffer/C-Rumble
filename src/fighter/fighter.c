@@ -50,6 +50,7 @@ Fighter *create_fighter(
         fighter->is_kicking = 0;
         fighter->is_blocking = 0;
         fighter->is_crouching = 0;
+        fighter->is_special = 0;
 
         return fighter;
 }

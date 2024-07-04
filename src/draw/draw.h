@@ -40,7 +40,10 @@ void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO
 void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
 
 /* Anima o soco do lutador na tela */
-void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_animation, unsigned int *current_frame, unsigned int num_frames);
+void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
+
+/* Anima o chute do lutador na tela */
+void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
 /* Renderiza a tela de pause */
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
