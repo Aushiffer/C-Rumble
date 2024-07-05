@@ -10,7 +10,8 @@
 
 /* Lutador */
 typedef struct Fighter {
-        Hitbox *hitbox;
+        Hitbox *hitbox_upper;
+        Hitbox *hitbox_lower;
         Controller *controller;
         ALLEGRO_BITMAP **idle_spriteset;
         ALLEGRO_BITMAP **hi_punch_spriteset;

@@ -19,9 +19,9 @@ Fighter *create_fighter(
         if (!fighter)
                 return NULL;
 
-        fighter->hitbox = create_hitbox(width, height, x, y, max_x, max_y);
+        fighter->hitbox_upper = create_hitbox(width, height, x, y, max_x, max_y);
 
-        if (!fighter->hitbox)
+        if (!fighter->hitbox_upper)
                 return NULL;
 
         fighter->controller = create_controller();
@@ -56,21 +56,21 @@ Fighter *create_fighter(
 }
 
 void move_fighter_right(Fighter *fighter, unsigned short max_x) {
-        fighter->hitbox->hitbox_x = fighter->hitbox->hitbox_x + PLAYER_STEPS;
+        fighter->hitbox_upper->hitbox_x = fighter->hitbox_upper->hitbox_x + PLAYER_STEPS;
 
-        if (((fighter->hitbox->hitbox_x + PLAYER_STEPS) + fighter->hitbox->hitbox_width / 2) > max_x)
-                fighter->hitbox->hitbox_x = fighter->hitbox->hitbox_x - PLAYER_STEPS;
+        if (((fighter->hitbox_upper->hitbox_x + PLAYER_STEPS) + fighter->hitbox_upper->hitbox_width / 2) > max_x)
+                fighter->hitbox_upper->hitbox_x = fighter->hitbox_upper->hitbox_x - PLAYER_STEPS;
 }
 
 void move_fighter_left(Fighter *fighter) {
-        fighter->hitbox->hitbox_x = fighter->hitbox->hitbox_x - PLAYER_STEPS;
+        fighter->hitbox_upper->hitbox_x = fighter->hitbox_upper->hitbox_x - PLAYER_STEPS;
 
-        if (((fighter->hitbox->hitbox_x - PLAYER_STEPS) - fighter->hitbox->hitbox_width / 2) < 0)
-                fighter->hitbox->hitbox_x = fighter->hitbox->hitbox_x + PLAYER_STEPS;
+        if (((fighter->hitbox_upper->hitbox_x - PLAYER_STEPS) - fighter->hitbox_upper->hitbox_width / 2) < 0)
+                fighter->hitbox_upper->hitbox_x = fighter->hitbox_upper->hitbox_x + PLAYER_STEPS;
 }
 
 void move_fighter_crouch(Fighter *fighter) {
-        // fighter->hitbox->hitbox_height = fighter->hitbox->hitbox_height / 2;
+        // fighter->hitbox_upper->hitbox_upper_height = fighter->hitbox_upper->hitbox_upper_height / 2;
 }
 
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {
@@ -78,12 +78,12 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
                 if (player1->controller->right) {
                 move_fighter_right(player1, max_x);
 
-                if (calc_collision(player1->hitbox, player2->hitbox))
+                if (calc_collision(player1->hitbox_upper, player2->hitbox_upper))
                         move_fighter_left(player1);
                 } else if (player1->controller->left) {
                         move_fighter_left(player1);
 
-                        if (calc_collision(player1->hitbox, player2->hitbox))
+                        if (calc_collision(player1->hitbox_upper, player2->hitbox_upper))
                                 move_fighter_right(player1, max_x);
                 } else if (player1->controller->down) {
                         move_fighter_crouch(player1);
@@ -94,12 +94,12 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
                 if (player2->controller->right) {
                         move_fighter_right(player2, max_x);
 
-                        if (calc_collision(player2->hitbox, player1->hitbox))
+                        if (calc_collision(player2->hitbox_upper, player1->hitbox_upper))
                                 move_fighter_left(player2);
                 } else if (player2->controller->left) {
                         move_fighter_left(player2);
 
-                        if (calc_collision(player2->hitbox, player1->hitbox))
+                        if (calc_collision(player2->hitbox_upper, player1->hitbox_upper))
                                 move_fighter_right(player2, max_x);
                 } else if (player2->controller->down) {
                         move_fighter_crouch(player2);
@@ -109,7 +109,7 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
 
 void destroy_fighter(Fighter *fighter) {
         if (fighter) {
-                destroy_hitbox(fighter->hitbox);
+                destroy_hitbox(fighter->hitbox_upper);
                 destroy_controller(fighter->controller);
                 free(fighter);
         }
