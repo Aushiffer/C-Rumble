@@ -413,12 +413,12 @@ int main(void) {
                                         draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
                                         al_draw_rectangle(
                                                 player1_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_width / 2, (player1_viking->hitbox_upper->hitbox_y - player1_viking->hitbox_upper->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_frame_idle])) / 2,
-                                                player1_viking->hitbox_upper->hitbox_x + player1_viking->hitbox_upper->hitbox_width / 2, (player1_viking->hitbox_upper->hitbox_y + player1_viking->hitbox_upper->hitbox_height / 2) + (float)al_get_display_height(display) - 256.0,
+                                                player1_viking->hitbox_upper->hitbox_x + player1_viking->hitbox_upper->hitbox_width / 2, (player1_viking->hitbox_upper->hitbox_y + player1_viking->hitbox_upper->hitbox_height / 2),
                                                 al_map_rgb(255, 0, 0), 2.0
                                         );
                                         al_draw_rectangle(
-                                                player2_viking->hitbox_upper->hitbox_x - player2_viking->hitbox_upper->hitbox_width / 2, (player2_viking->hitbox_upper->hitbox_y - player2_viking->hitbox_upper->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_frame_idle])) / 2,
-                                                player2_viking->hitbox_upper->hitbox_x + player2_viking->hitbox_upper->hitbox_width / 2, (player2_viking->hitbox_upper->hitbox_y + player2_viking->hitbox_upper->hitbox_height / 2) + (float)al_get_display_height(display) - 256.0,
+                                                player2_viking->hitbox_upper->hitbox_x - player2_viking->hitbox_upper->hitbox_width / 2, player2_viking->hitbox_upper->hitbox_y - player2_viking->hitbox_upper->hitbox_height / 2 + ((float)al_get_bitmap_height(viking_idle_spriteset[current_frame_idle])) / 2,
+                                                player2_viking->hitbox_upper->hitbox_x + player2_viking->hitbox_upper->hitbox_width / 2, player2_viking->hitbox_upper->hitbox_y + player2_viking->hitbox_upper->hitbox_height / 2,
                                                 al_map_rgb(255, 0, 0), 2.0
                                         );
                                         update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), al_get_display_height(display));
