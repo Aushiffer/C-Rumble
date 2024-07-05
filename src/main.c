@@ -403,15 +403,19 @@ int main(void) {
                         } else if (game_states->stage_select) {
                                 draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                         } else if (game_states->rumble) {
-                                time_frame += 1.0 / FRAMES_PER_SECOND;
-                                time_frame_idle += 1.0 / FRAMES_PER_SECOND;
-                                time_frame_hi_punch += 1.0 / FRAMES_PER_SECOND;
-                                time_frame_hi_kick += 1.0 / FRAMES_PER_SECOND;
-                                time_frame_block += 1.0 / FRAMES_PER_SECOND;
-                                time_frame_running += 1.0 / FRAMES_PER_SECOND;
-                                time_frame_special += 1.0 / FRAMES_PER_SECOND;
-
                                 if (game_states->rumble_pause == 0) {
+                                        time_frame_idle += 1.0 / FRAMES_PER_SECOND;
+                                        time_frame_hi_punch += 1.0 / FRAMES_PER_SECOND;
+                                        time_frame_hi_kick += 1.0 / FRAMES_PER_SECOND;
+                                        time_frame_block += 1.0 / FRAMES_PER_SECOND;
+                                        time_frame_running += 1.0 / FRAMES_PER_SECOND;
+                                        time_frame_special += 1.0 / FRAMES_PER_SECOND;
+        
+                                        if (time_frame_idle >= FRAME_DURATION_IDLE) {
+                                                time_frame_idle = 0;
+                                                current_frame_idle = (current_frame_idle + 1) % NUM_IDLE_FRAMES;
+                                        }
+
                                         draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
                                         al_draw_rectangle(
                                                 player1_viking->hitbox->hitbox_x - player1_viking->hitbox->hitbox_width / 2, (player1_viking->hitbox->hitbox_y - player1_viking->hitbox->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_frame])) / 2,
@@ -425,71 +429,25 @@ int main(void) {
                                         );
                                         update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), al_get_display_height(display));
 
-                                        if (player1_viking->is_running_right) {
-                                                if (time_frame >= FRAME_DURATION_RUNNING) {
-                                                        time_frame = 0;
-                                                        current_frame = (current_frame + 1) % NUM_RUNNING_FRAMES;
-                                                }
-
-                                                if (!player1_viking->is_running_left)
-                                                        al_draw_bitmap(
-                                                                player1_viking->running_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->running_spriteset[current_frame]) / 2, 
-                                                                player1_viking->hitbox->hitbox_y, 0
-                                                        );
-                                                else if (player1_viking->is_running_left)
-                                                        al_draw_bitmap(
-                                                                player1_viking->idle_spriteset[current_frame_idle], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->idle_spriteset[current_frame_idle]) / 2, 
-                                                                player1_viking->hitbox->hitbox_y, 0
-                                                        );
-                                        } else if (player1_viking->is_running_left) {
-                                                if (time_frame >= FRAME_DURATION_RUNNING) {
-                                                        time_frame = 0;
-                                                        current_frame = (current_frame + 1) % NUM_RUNNING_FRAMES;
-                                                }
-
-                                                if (!player1_viking->is_running_right)
-                                                        al_draw_bitmap(
-                                                                player1_viking->running_spriteset[current_frame], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->running_spriteset[current_frame]) / 2, 
-                                                                player1_viking->hitbox->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
-                                                        );
-                                                else if (player1_viking->is_running_right)
-                                                        al_draw_bitmap(
-                                                                player1_viking->idle_spriteset[current_frame_idle], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->idle_spriteset[current_frame_idle]) / 2, 
-                                                                player1_viking->hitbox->hitbox_y, 0
-                                                        );   
+                                        if (player1_viking->is_running_right || player1_viking->is_running_left) {
+                                                draw_running_animation(player1_viking, FRAME_DURATION_RUNNING, &time_frame_running, &current_frame_running, &current_frame_idle, NUM_RUNNING_FRAMES);
                                         } else if (player1_viking->is_punching) {
                                                 draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &time_frame_hi_punch, &current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
-                                        } else if (player1_viking->is_blocking) {
-                                                al_draw_bitmap(
-                                                        player1_viking->hi_block_spriteset[0], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->hi_block_spriteset[0]) / 2, 
-                                                        player1_viking->hitbox->hitbox_y, 0
-                                                );
                                         } else if (player1_viking->is_kicking) {
                                                 draw_hi_kick_animation(player1_viking, FRAME_DURATION_KICK, &time_frame_hi_kick, &current_frame_hi_kick, NUM_KICK_FRAMES);
+                                        } else if (player1_viking->is_special) {
+                                                draw_special_animation(player1_viking, FRAME_DURATION_SPECIAL, &time_frame_special, &current_frame_special, NUM_SPECIAL_FRAMES);
                                         } else if (player1_viking->is_crouching) {
                                                 al_draw_bitmap(
                                                         player1_viking->crouch_spriteset[0], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->crouch_spriteset[0]) / 2, 
                                                         player1_viking->hitbox->hitbox_y + (float)al_get_bitmap_width(player1_viking->crouch_spriteset[0]) / 2, 0
                                                 );
-                                        } else if (player1_viking->is_special) {
-                                                if (time_frame_special >= FRAME_DURATION_SPECIAL) {
-                                                        time_frame_special = 0;
-                                                        current_frame_special = (current_frame_special + 1) % NUM_SPECIAL_FRAMES;
-
-                                                        if (current_frame_special == 0)
-                                                                player1_viking->is_special = 0;
-                                                }
-
+                                        } else if (player1_viking->is_blocking) {
                                                 al_draw_bitmap(
-                                                        player1_viking->special_spriteset[current_frame_special], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->special_spriteset[current_frame_special]) / 2,
+                                                        player1_viking->hi_block_spriteset[0], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->hi_block_spriteset[0]) / 2, 
                                                         player1_viking->hitbox->hitbox_y, 0
                                                 );
                                         } else {
-                                                if (time_frame_idle >= FRAME_DURATION_IDLE) {
-                                                        time_frame_idle = 0;
-                                                        current_frame_idle = (current_frame_idle + 1) % NUM_IDLE_FRAMES;
-                                                }
-
                                                 al_draw_bitmap(
                                                         player1_viking->idle_spriteset[current_frame_idle], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->idle_spriteset[current_frame_idle]) / 2, 
                                                         player1_viking->hitbox->hitbox_y, 0

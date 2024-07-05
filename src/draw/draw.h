@@ -45,6 +45,12 @@ void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_
 /* Anima o chute do lutador na tela */
 void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
+/* Anima o especial do lutador na tela */
+void draw_special_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
+
+/* Anima o personagem correndo TODO: implementar mudança de sentido posteriormente, quando os jogadores puderem mudar de lado na tela (pulando) */
+void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int *current_frame_idle, unsigned int num_frames);
+
 /* Renderiza a tela de pause */
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
 
