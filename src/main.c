@@ -435,10 +435,7 @@ int main(void) {
                                         } else if (player1_viking->is_special) {
                                                 draw_special_animation(player1_viking, FRAME_DURATION_SPECIAL, &time_frame_special, &current_frame_special, NUM_SPECIAL_FRAMES);
                                         } else if (player1_viking->is_crouching) {
-                                                al_draw_bitmap(
-                                                        player1_viking->crouch_spriteset[0], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->crouch_spriteset[0]) / 2, 
-                                                        player1_viking->hitbox->hitbox_y + (float)al_get_bitmap_width(player1_viking->crouch_spriteset[0]) / 2, 0
-                                                );
+                                                draw_crouching_animation(player1_viking);
                                         } else if (player1_viking->is_blocking) {
                                                 draw_blocking_animation(player1_viking);
                                         } else {
