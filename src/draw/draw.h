@@ -51,6 +51,15 @@ void draw_special_animation(Fighter *player, float frame_duration, float *time_f
 /* Anima o personagem correndo TODO: implementar mudança de sentido posteriormente, quando os jogadores puderem mudar de lado na tela (pulando) */
 void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int *current_frame_idle, unsigned int num_frames);
 
+/* Anima o personagem em repouso, cálculo de frame atual e de duração de frame é feito externamente */
+void draw_idle_animation(Fighter *player, unsigned int current_frame);
+
+/* Anima o personagem bloqueando */
+void draw_blocking_animation(Fighter *player);
+
+/* Anima o personagem abaixado */
+void draw_crouching_animation(Fighter *player);
+
 /* Renderiza a tela de pause */
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
 

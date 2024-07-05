@@ -440,15 +440,9 @@ int main(void) {
                                                         player1_viking->hitbox->hitbox_y + (float)al_get_bitmap_width(player1_viking->crouch_spriteset[0]) / 2, 0
                                                 );
                                         } else if (player1_viking->is_blocking) {
-                                                al_draw_bitmap(
-                                                        player1_viking->hi_block_spriteset[0], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->hi_block_spriteset[0]) / 2, 
-                                                        player1_viking->hitbox->hitbox_y, 0
-                                                );
+                                                draw_blocking_animation(player1_viking);
                                         } else {
-                                                al_draw_bitmap(
-                                                        player1_viking->idle_spriteset[current_frame_idle], player1_viking->hitbox->hitbox_x - (float)al_get_bitmap_width(player1_viking->idle_spriteset[current_frame_idle]) / 2, 
-                                                        player1_viking->hitbox->hitbox_y, 0
-                                                );
+                                                draw_idle_animation(player1_viking, current_frame_idle);
                                         }
                                 } else if (game_states->rumble_pause == 1) {
                                         draw_pause(menu_header_font, menu_options_font, display, game_states);

@@ -1,4 +1,5 @@
 #include "draw.h"
+#include <allegro5/bitmap_draw.h>
 
 void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
         al_clear_to_color(COLOR_DARK_BLUE);
@@ -250,8 +251,36 @@ void draw_running_animation(Fighter *player, float frame_duration, float *time_f
                                 );
                 }
         } else {
-
+                /* ...*/
         }
+}
+
+void draw_idle_animation(Fighter *player, unsigned int current_frame) {
+        if (player->direction_facing == 0) {
+                al_draw_bitmap(
+                        player->idle_spriteset[current_frame], player->hitbox->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[current_frame]) / 2, 
+                        player->hitbox->hitbox_y, 0
+                );
+        } else {
+                al_draw_bitmap(
+                        player->idle_spriteset[current_frame], player->hitbox->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[current_frame]) / 2, 
+                        player->hitbox->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                );
+        }
+}
+
+void draw_blocking_animation(Fighter *player) {
+        al_draw_bitmap(
+                player->hi_block_spriteset[0], player->hitbox->hitbox_x - (float)al_get_bitmap_width(player->hi_block_spriteset[0]) / 2, 
+                player->hitbox->hitbox_y, 0
+        );
+}
+
+void draw_crouching_animation(Fighter *player) {
+        al_draw_bitmap(
+                player->crouch_spriteset[0], player->hitbox->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
+                player->hitbox->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 0
+        );
 }
 
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
