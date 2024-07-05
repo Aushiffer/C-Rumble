@@ -340,18 +340,15 @@ int main(void) {
 
         float player1_x = 94.5;
         float player2_x = al_get_display_width(display) - 94.5;
-        float time_frame = 0.0;
         float time_frame_idle = 0.0;
         float time_frame_hi_punch = 0.0;
         float time_frame_hi_kick = 0.0;
         float time_frame_block = 0.0;
         float time_frame_running = 0.0;
         float time_frame_special = 0.0;
-        unsigned int current_frame = 0;
         unsigned int current_frame_idle = 0;
         unsigned int current_frame_hi_punch = 0;
         unsigned int current_frame_hi_kick = 0;
-        unsigned int current_frame_block = 0;
         unsigned int current_frame_running = 0;
         unsigned int current_frame_special = 0;
 
@@ -418,21 +415,21 @@ int main(void) {
 
                                         draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
                                         al_draw_rectangle(
-                                                player1_viking->hitbox->hitbox_x - player1_viking->hitbox->hitbox_width / 2, (player1_viking->hitbox->hitbox_y - player1_viking->hitbox->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_frame])) / 2,
+                                                player1_viking->hitbox->hitbox_x - player1_viking->hitbox->hitbox_width / 2, (player1_viking->hitbox->hitbox_y - player1_viking->hitbox->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_frame_idle])) / 2,
                                                 player1_viking->hitbox->hitbox_x + player1_viking->hitbox->hitbox_width / 2, (player1_viking->hitbox->hitbox_y + player1_viking->hitbox->hitbox_height / 2) + (float)al_get_display_height(display) - 256.0,
                                                 al_map_rgb(255, 0, 0), 2.0
                                         );
                                         al_draw_rectangle(
-                                                player2_viking->hitbox->hitbox_x - player2_viking->hitbox->hitbox_width / 2, (player2_viking->hitbox->hitbox_y - player2_viking->hitbox->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_frame])) / 2,
+                                                player2_viking->hitbox->hitbox_x - player2_viking->hitbox->hitbox_width / 2, (player2_viking->hitbox->hitbox_y - player2_viking->hitbox->hitbox_height / 2) + ((float)al_get_bitmap_height(viking_idle_spriteset[current_frame_idle])) / 2,
                                                 player2_viking->hitbox->hitbox_x + player2_viking->hitbox->hitbox_width / 2, (player2_viking->hitbox->hitbox_y + player2_viking->hitbox->hitbox_height / 2) + (float)al_get_display_height(display) - 256.0,
                                                 al_map_rgb(255, 0, 0), 2.0
                                         );
                                         update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), al_get_display_height(display));
 
-                                        if (player1_viking->is_running_right || player1_viking->is_running_left) {
-                                                draw_running_animation(player1_viking, FRAME_DURATION_RUNNING, &time_frame_running, &current_frame_running, &current_frame_idle, NUM_RUNNING_FRAMES);
-                                        } else if (player1_viking->is_punching) {
+                                        if (player1_viking->is_punching) {
                                                 draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &time_frame_hi_punch, &current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
+                                        } else if (player1_viking->is_running_right || player1_viking->is_running_left) {
+                                                draw_running_animation(player1_viking, FRAME_DURATION_RUNNING, &time_frame_running, &current_frame_running, &current_frame_idle, NUM_RUNNING_FRAMES);
                                         } else if (player1_viking->is_kicking) {
                                                 draw_hi_kick_animation(player1_viking, FRAME_DURATION_KICK, &time_frame_hi_kick, &current_frame_hi_kick, NUM_KICK_FRAMES);
                                         } else if (player1_viking->is_special) {
