@@ -150,6 +150,10 @@ void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO
         }
 }
 
+void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
+        
+}
+
 void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
         if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_crouching || player->is_kicking || player->is_special) {
                 player->is_punching = 0;
@@ -226,32 +230,28 @@ void draw_running_animation(Fighter *player, float frame_duration, float *time_f
                 (*current_frame) = ((*current_frame) + 1) % num_frames;
         }
 
-        if (player->direction_facing == 0) {
-                if (player->is_running_left) {
-                        if (!player->is_running_right)
-                                al_draw_bitmap(
-                                        player->running_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->running_spriteset[(*current_frame)]) / 2, 
-                                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
-                                );
-                        else if (player->is_running_right)
-                                al_draw_bitmap(
-                                        player->idle_spriteset[(*current_frame_idle)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[(*current_frame_idle)]) / 2, 
-                                        player->hitbox_upper->hitbox_y, 0
-                                );  
-                } else if (player->is_running_right) {
-                        if (!player->is_running_left)
-                                al_draw_bitmap(
-                                        player->running_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->running_spriteset[(*current_frame)]) / 2, 
-                                        player->hitbox_upper->hitbox_y, 0
-                                );
-                        else if (player->is_running_left)
-                                al_draw_bitmap(
-                                        player->idle_spriteset[(*current_frame_idle)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[(*current_frame_idle)]) / 2, 
-                                        player->hitbox_upper->hitbox_y, 0
-                                );
-                }
-        } else {
-                /* ...*/
+        if (player->is_running_left) {
+                if (!player->is_running_right)
+                        al_draw_bitmap(
+                                player->running_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->running_spriteset[(*current_frame)]) / 2, 
+                                player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                        );
+                else if (player->is_running_right)
+                        al_draw_bitmap(
+                                player->idle_spriteset[(*current_frame_idle)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[(*current_frame_idle)]) / 2, 
+                                player->hitbox_upper->hitbox_y, 0
+                        );  
+        } else if (player->is_running_right) {
+                if (!player->is_running_left)
+                        al_draw_bitmap(
+                                player->running_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->running_spriteset[(*current_frame)]) / 2, 
+                                player->hitbox_upper->hitbox_y, 0
+                        );
+                else if (player->is_running_left)
+                        al_draw_bitmap(
+                                player->idle_spriteset[(*current_frame_idle)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[(*current_frame_idle)]) / 2, 
+                                player->hitbox_upper->hitbox_y, 0
+                        );
         }
 }
 
@@ -270,17 +270,29 @@ void draw_idle_animation(Fighter *player, unsigned int current_frame) {
 }
 
 void draw_blocking_animation(Fighter *player) {
-        al_draw_bitmap(
-                player->hi_block_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_block_spriteset[0]) / 2, 
-                player->hitbox_upper->hitbox_y, 0
-        );
+        if (player->direction_facing == 0)
+                al_draw_bitmap(
+                        player->hi_block_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_block_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y, 0
+                );
+        else
+                al_draw_bitmap(
+                        player->hi_block_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_block_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                );
 }
 
 void draw_crouching_animation(Fighter *player) {
-        al_draw_bitmap(
-                player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
-                player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 0
-        );
+        if (player->direction_facing == 0)
+                al_draw_bitmap(
+                        player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 0
+                );
+        else
+                al_draw_bitmap(
+                        player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, ALLEGRO_FLIP_HORIZONTAL
+                );
 }
 
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {

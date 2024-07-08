@@ -1,4 +1,5 @@
 #include "fighter.h"
+#include <allegro5/bitmap.h>
 
 Fighter *create_fighter(
         float width, float height, 
@@ -19,11 +20,6 @@ Fighter *create_fighter(
         if (!fighter)
                 return NULL;
 
-        fighter->hitbox_upper = create_hitbox(width, height, x, y, max_x, max_y);
-
-        if (!fighter->hitbox_upper)
-                return NULL;
-
         fighter->controller = create_controller();
 
         if (!fighter->controller)
@@ -39,6 +35,17 @@ Fighter *create_fighter(
         fighter->special_spriteset = special_spriteset;
         fighter->running_spriteset = running_spriteset;
         fighter->crouch_spriteset = crouch_spriteset;
+
+        fighter->hitbox_upper = create_hitbox(width, height, x, y, max_x, max_y);
+
+        if (!fighter->hitbox_upper)
+                return NULL;
+
+        fighter->hitbox_lower = create_hitbox(width, height, x, y + (float)al_get_bitmap_width(idle_spriteset[0]) / 2, max_x, max_y);
+
+        if (!fighter->hitbox_lower)
+                return NULL;
+
         fighter->health = 100.0;
         fighter->stamina = 100.0;
         fighter->direction_facing = direction_facing;
@@ -60,6 +67,11 @@ void move_fighter_right(Fighter *fighter, unsigned short max_x) {
 
         if (((fighter->hitbox_upper->hitbox_x + PLAYER_STEPS) + fighter->hitbox_upper->hitbox_width / 2) > max_x)
                 fighter->hitbox_upper->hitbox_x = fighter->hitbox_upper->hitbox_x - PLAYER_STEPS;
+
+        fighter->hitbox_lower->hitbox_x = fighter->hitbox_lower->hitbox_x + PLAYER_STEPS;
+
+        if (((fighter->hitbox_lower->hitbox_x + PLAYER_STEPS) + fighter->hitbox_lower->hitbox_width / 2) > max_x)
+                fighter->hitbox_lower->hitbox_x = fighter->hitbox_lower->hitbox_x - PLAYER_STEPS;
 }
 
 void move_fighter_left(Fighter *fighter) {
@@ -67,6 +79,11 @@ void move_fighter_left(Fighter *fighter) {
 
         if (((fighter->hitbox_upper->hitbox_x - PLAYER_STEPS) - fighter->hitbox_upper->hitbox_width / 2) < 0)
                 fighter->hitbox_upper->hitbox_x = fighter->hitbox_upper->hitbox_x + PLAYER_STEPS;
+
+        fighter->hitbox_lower->hitbox_x = fighter->hitbox_lower->hitbox_x - PLAYER_STEPS;
+
+        if (((fighter->hitbox_lower->hitbox_x - PLAYER_STEPS) - fighter->hitbox_lower->hitbox_width / 2) < 0)
+                fighter->hitbox_lower->hitbox_x = fighter->hitbox_lower->hitbox_x + PLAYER_STEPS;
 }
 
 void move_fighter_crouch(Fighter *fighter) {
@@ -78,12 +95,12 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
                 if (player1->controller->right) {
                 move_fighter_right(player1, max_x);
 
-                if (calc_collision(player1->hitbox_upper, player2->hitbox_upper))
+                if (calc_collision(player1->hitbox_upper, player2->hitbox_upper) || calc_collision(player1->hitbox_lower, player2->hitbox_lower))
                         move_fighter_left(player1);
                 } else if (player1->controller->left) {
                         move_fighter_left(player1);
 
-                        if (calc_collision(player1->hitbox_upper, player2->hitbox_upper))
+                        if (calc_collision(player1->hitbox_upper, player2->hitbox_upper) || calc_collision(player1->hitbox_lower, player2->hitbox_lower))
                                 move_fighter_right(player1, max_x);
                 } else if (player1->controller->down) {
                         move_fighter_crouch(player1);
@@ -94,12 +111,12 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
                 if (player2->controller->right) {
                         move_fighter_right(player2, max_x);
 
-                        if (calc_collision(player2->hitbox_upper, player1->hitbox_upper))
+                        if (calc_collision(player1->hitbox_upper, player2->hitbox_upper) || calc_collision(player1->hitbox_lower, player2->hitbox_lower))
                                 move_fighter_left(player2);
                 } else if (player2->controller->left) {
                         move_fighter_left(player2);
 
-                        if (calc_collision(player2->hitbox_upper, player1->hitbox_upper))
+                        if (calc_collision(player1->hitbox_upper, player2->hitbox_upper) || calc_collision(player1->hitbox_lower, player2->hitbox_lower))
                                 move_fighter_right(player2, max_x);
                 } else if (player2->controller->down) {
                         move_fighter_crouch(player2);
@@ -110,6 +127,7 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
 void destroy_fighter(Fighter *fighter) {
         if (fighter) {
                 destroy_hitbox(fighter->hitbox_upper);
+                destroy_hitbox(fighter->hitbox_lower);
                 destroy_controller(fighter->controller);
                 free(fighter);
         }
