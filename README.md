@@ -24,8 +24,3 @@
 
 ## Comando rápido para aplicar mudanças, compilar e executar o código
 - make test_run
-
-## Créditos
-- Programação: eu (Caio)
-- Música: DavidKBD, Daisuke Ishikawa
-- Sprites: pixramen (Iron Sentinel A.K.A Knight), Dreamir (Viking, Spearwoman, Fire Warrior)
