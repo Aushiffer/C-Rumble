@@ -167,8 +167,8 @@ void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *d
                 al_map_rgb(255, 0, 0), 2.0
         );
         al_draw_rectangle(
-               player2->hitbox_lower->hitbox_x -player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2) + ((float)al_get_bitmap_height(player2->idle_spriteset[current_frame_idle])) / 2,
-               player2->hitbox_lower->hitbox_x +player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y + player2->hitbox_lower->hitbox_height / 2),
+               player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2) + ((float)al_get_bitmap_height(player2->idle_spriteset[current_frame_idle])) / 2,
+               player2->hitbox_lower->hitbox_x + player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y + player2->hitbox_lower->hitbox_height / 2),
                 al_map_rgb(0, 0, 255), 2.0
         );
 }
