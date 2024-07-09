@@ -10,7 +10,7 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **damage_spriteset, ALLEGRO_BITMAP **death_spriteset,
         ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **special_spriteset,
         ALLEGRO_BITMAP **running_spriteset, ALLEGRO_BITMAP **crouch_spriteset,
-        unsigned char direction_facing
+        unsigned char direction_facing, float absolute_height
 ) {
         if ((x - width / 2 < 0) || (x + width / 2 > max_x) || (y - height / 2 < 0) || (y + height / 2 > max_y))
                 return NULL;
@@ -48,6 +48,7 @@ Fighter *create_fighter(
 
         fighter->health = 100.0;
         fighter->stamina = 100.0;
+        fighter->absolute_height = absolute_height;
         fighter->direction_facing = direction_facing;
         fighter->rounds_won = 0;
         fighter->is_running_right = 0;
@@ -89,6 +90,8 @@ void move_fighter_left(Fighter *fighter) {
 void move_fighter_crouch(Fighter *fighter) {
         if (fighter->is_crouching)
                 fighter->hitbox_upper->hitbox_y = fighter->hitbox_lower->hitbox_y;
+        else
+                fighter->hitbox_upper->hitbox_y = fighter->absolute_height;
 }
 
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {

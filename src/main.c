@@ -17,8 +17,8 @@
 #include "destroy_resources/destroy_resources.h"
 
 /* As macros de frames valem PARA O VIKING APENAS, definir um valor para cada sprite de CADA personagem */
-#define WIN_WIDTH 1028
-#define WIN_HEIGHT 720
+#define WIN_WIDTH 1366
+#define WIN_HEIGHT 768
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define NUM_STAGES 2
@@ -49,7 +49,6 @@ int main(void) {
         al_init_ttf_addon();
         al_init_primitives_addon();
         al_init_image_addon();
-        al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
         ALLEGRO_DISPLAY *display = al_create_display(WIN_WIDTH, WIN_HEIGHT);
 
@@ -358,7 +357,7 @@ int main(void) {
                 viking_damage_spriteset, viking_death_spriteset, 
                 viking_hi_block_spriteset, viking_special_spriteset, 
                 viking_running_spriteset, viking_crouch_spriteset,
-                0
+                0, (float)al_get_display_height(display) - 256.0
         );
 
         if (!player1_viking) {
@@ -375,7 +374,7 @@ int main(void) {
                 viking_damage_spriteset, viking_death_spriteset, 
                 viking_hi_block_spriteset, viking_special_spriteset, 
                 viking_running_spriteset, viking_crouch_spriteset,
-                1
+                1, (float)al_get_display_height(display) - 256.0
         );
 
         printf("\n[+] main(): success, starting game...\n");
@@ -384,6 +383,8 @@ int main(void) {
                 al_wait_for_event(event_queue, &event);
 
                 if (event.type == ALLEGRO_EVENT_TIMER) {
+
+                        printf("%d ", player1_viking->is_crouching);
                         if (game_states->menu) {
                                 draw_menu(menu_header_font, menu_options_font, display, game_states);
                         } else if (game_states->character_select) {
