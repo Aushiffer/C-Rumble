@@ -7,6 +7,8 @@
 #include "../controller/controller.h"
 
 #define PLAYER_STEPS 15.0
+#define MAX_HEALTH 100.0
+#define MAX_STAMINA 100.0
 
 /* Lutador */
 typedef struct Fighter {

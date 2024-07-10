@@ -46,8 +46,8 @@ Fighter *create_fighter(
         if (!fighter->hitbox_lower)
                 return NULL;
 
-        fighter->health = 100.0;
-        fighter->stamina = 100.0;
+        fighter->health = MAX_HEALTH;
+        fighter->stamina = MAX_STAMINA;
         fighter->absolute_height = absolute_height;
         fighter->direction_facing = direction_facing;
         fighter->rounds_won = 0;

@@ -1,4 +1,7 @@
 #include "draw.h"
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/bitmap.h>
+#include <allegro5/display.h>
 
 void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
         al_clear_to_color(COLOR_DARK_BLUE);
@@ -285,6 +288,8 @@ void draw_idle_animation(Fighter *player, unsigned int current_frame) {
                         player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                 );
         }
+
+        player->hitbox_upper->hitbox_y = player->absolute_height;
 }
 
 void draw_blocking_animation(Fighter *player) {
@@ -313,8 +318,16 @@ void draw_crouching_animation(Fighter *player) {
                 );
 }
 
-void draw_health_bar(Fighter *player, ALLEGRO_DISPLAY *display) {
+void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
+        al_draw_filled_rectangle(32, 32, 512, 64, COLOR_LIGHT_RED);
 
+        if (player1->health >= 1)
+                al_draw_filled_rectangle(32, 32, 512 * (player1->health / 100.0), 64, COLOR_LIGHT_GREEN);
+
+        al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, (float)al_get_display_width(display) - 512, 64, COLOR_LIGHT_RED);
+
+        if (player2->health >= 1)
+                al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, ((float)al_get_display_width(display) - 512) * (player2->health / 100.0), 64, COLOR_LIGHT_GREEN);
 }
 
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {

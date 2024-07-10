@@ -401,7 +401,7 @@ int main(void) {
                         } else if (game_states->stage_select) {
                                 draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                         } else if (game_states->rumble) {
-                                if (game_states->rumble_pause == 0) {
+                                if (!game_states->rumble_pause) {
                                         viking_time_frame_idle += 1.0 / FRAMES_PER_SECOND;
                                         viking_time_frame_hi_punch += 1.0 / FRAMES_PER_SECOND;
                                         viking_time_frame_kick += 1.0 / FRAMES_PER_SECOND;
@@ -432,8 +432,6 @@ int main(void) {
                                                 draw_blocking_animation(player1_viking);
                                         } else {
                                                 draw_idle_animation(player1_viking, viking_current_frame_idle);
-                                                
-                                                player1_viking->hitbox_upper->hitbox_y = player1_viking->absolute_height;
                                         }
 
                                         if (player2_viking->is_special) {
@@ -452,6 +450,7 @@ int main(void) {
                                                 draw_idle_animation(player2_viking, viking_current_frame_idle);
                                         }
 
+                                        draw_health_bars(player1_viking, player2_viking, display);
                                 } else if (game_states->rumble_pause == 1) {
                                         draw_pause(menu_header_font, menu_options_font, display, game_states);
                                 }
@@ -715,6 +714,7 @@ int main(void) {
 
                                 if (event.keyboard.keycode == ALLEGRO_KEY_Z && !game_states->rumble_pause) {
                                         player1_viking->is_punching = 1;
+                                        player1_viking->health -= 5.0;
                                         viking_current_frame_hi_punch = 0;
                                         viking_time_frame_hi_punch = 0;
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {
