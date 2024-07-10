@@ -11,6 +11,7 @@
 #include "fighter/fighter.h"
 #include "game_states/game_states.h"
 #include "draw/draw.h"
+#include "hitbox/hitbox.h"
 #include "load_spriteset/load_spriteset.h"
 #include "pause_menu/handle_pause.h"
 #include "selector/selector.h"
@@ -714,7 +715,7 @@ int main(void) {
 
                                 if (event.keyboard.keycode == ALLEGRO_KEY_Z && !game_states->rumble_pause) {
                                         player1_viking->is_punching = 1;
-                                        player1_viking->health -= 5.0;
+                                        player2_viking->health -= 5.0;
                                         viking_current_frame_hi_punch = 0;
                                         viking_time_frame_hi_punch = 0;
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {
