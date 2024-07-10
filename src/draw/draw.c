@@ -1,5 +1,4 @@
 #include "draw.h"
-#include <allegro5/bitmap_draw.h>
 
 void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
         al_clear_to_color(COLOR_DARK_BLUE);
@@ -305,13 +304,17 @@ void draw_crouching_animation(Fighter *player) {
         if (player->direction_facing == 0)
                 al_draw_bitmap(
                         player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
-                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 0
+                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 8 - 32, 0
                 );
         else
                 al_draw_bitmap(
                         player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
-                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, ALLEGRO_FLIP_HORIZONTAL
+                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 8 - 32, ALLEGRO_FLIP_HORIZONTAL
                 );
+}
+
+void draw_health_bar(Fighter *player, ALLEGRO_DISPLAY *display) {
+
 }
 
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {

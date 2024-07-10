@@ -17,8 +17,8 @@
 #include "destroy_resources/destroy_resources.h"
 
 /* As macros de frames valem PARA O VIKING APENAS, definir um valor para cada sprite de CADA personagem */
-#define WIN_WIDTH 1366
-#define WIN_HEIGHT 768
+#define WIN_WIDTH 1280
+#define WIN_HEIGHT 720
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define NUM_STAGES 2
@@ -377,14 +377,17 @@ int main(void) {
                 1, (float)al_get_display_height(display) - 256.0
         );
 
+        if (!player2_viking) {
+                fprintf(stderr, "[-] main(): failed to load player 2\n");
+                exit(INVALID_FIGHTER_ERROR);
+        }
+
         printf("\n[+] main(): success, starting game...\n");
 
         while (1) {
                 al_wait_for_event(event_queue, &event);
 
                 if (event.type == ALLEGRO_EVENT_TIMER) {
-
-                        printf("%d ", player1_viking->is_crouching);
                         if (game_states->menu) {
                                 draw_menu(menu_header_font, menu_options_font, display, game_states);
                         } else if (game_states->character_select) {
@@ -429,6 +432,8 @@ int main(void) {
                                                 draw_blocking_animation(player1_viking);
                                         } else {
                                                 draw_idle_animation(player1_viking, viking_current_frame_idle);
+                                                
+                                                player1_viking->hitbox_upper->hitbox_y = player1_viking->absolute_height;
                                         }
 
                                         if (player2_viking->is_special) {

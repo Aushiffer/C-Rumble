@@ -88,10 +88,7 @@ void move_fighter_left(Fighter *fighter) {
 }
 
 void move_fighter_crouch(Fighter *fighter) {
-        if (fighter->is_crouching)
-                fighter->hitbox_upper->hitbox_y = fighter->hitbox_lower->hitbox_y;
-        else
-                fighter->hitbox_upper->hitbox_y = fighter->absolute_height;
+        fighter->hitbox_upper->hitbox_y = fighter->hitbox_lower->hitbox_y;
 }
 
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {

@@ -4,6 +4,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/display.h>
 #include "../game_states/game_states.h"
 #include "../fighter/fighter.h"
 
@@ -53,6 +54,9 @@ void draw_running_animation(Fighter *player, float frame_duration, float *time_f
 
 /* Anima o personagem em repouso, cálculo de frame atual e de duração de frame é feito externamente */
 void draw_idle_animation(Fighter *player, unsigned int current_frame);
+
+/* Renderiza a barra de vida do jogador */
+void draw_health_bar(Fighter *player, ALLEGRO_DISPLAY *display);
 
 /* Anima o personagem bloqueando */
 void draw_blocking_animation(Fighter *player);
