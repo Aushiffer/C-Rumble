@@ -8,9 +8,9 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
         ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
         ALLEGRO_BITMAP **damage_spriteset, ALLEGRO_BITMAP **death_spriteset,
-        ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **special_spriteset,
-        ALLEGRO_BITMAP **running_spriteset, ALLEGRO_BITMAP **crouch_spriteset,
-        unsigned char direction_facing, float absolute_height
+        ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
+        ALLEGRO_BITMAP **crouch_spriteset, unsigned char direction_facing, 
+        float absolute_height
 ) {
         if ((x - width / 2 < 0) || (x + width / 2 > max_x) || (y - height / 2 < 0) || (y + height / 2 > max_y))
                 return NULL;
@@ -32,7 +32,6 @@ Fighter *create_fighter(
         fighter->damage_spriteset = damage_spriteset;
         fighter->death_spriteset = death_spriteset;
         fighter->hi_block_spriteset = hi_block_spriteset;
-        fighter->special_spriteset = special_spriteset;
         fighter->running_spriteset = running_spriteset;
         fighter->crouch_spriteset = crouch_spriteset;
 

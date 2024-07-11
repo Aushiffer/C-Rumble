@@ -300,13 +300,6 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_special_spriteset = load_spriteset(NUM_SPECIAL_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_special/viking_special", MAXLEN_SPRITE_PATH);
-
-        if (!viking_special_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's special sprite set\n");
-                exit(AL_LOAD_SPRITE_ERROR);
-        }
-
         ALLEGRO_BITMAP **viking_hi_block_spriteset = load_spriteset(NUM_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_block/viking_block", MAXLEN_SPRITE_PATH);
 
         if (!viking_hi_block_spriteset) {
@@ -342,12 +335,10 @@ int main(void) {
         float viking_time_frame_kick = 0.0;
         float viking_time_frame_block = 0.0;
         float viking_time_frame_running = 0.0;
-        float viking_time_frame_special = 0.0;
         unsigned int viking_current_frame_idle = 0;
         unsigned int viking_current_frame_hi_punch = 0;
         unsigned int viking_current_frame_kick = 0;
         unsigned int viking_current_frame_running = 0;
-        unsigned int viking_current_frame_special = 0;
 
         Fighter *player1_viking = create_fighter(
                 189.0, 256.0, 
@@ -356,9 +347,9 @@ int main(void) {
                 viking_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
                 viking_damage_spriteset, viking_death_spriteset, 
-                viking_hi_block_spriteset, viking_special_spriteset, 
-                viking_running_spriteset, viking_crouch_spriteset,
-                0, (float)al_get_display_height(display) - 256.0
+                viking_hi_block_spriteset, viking_running_spriteset, 
+                viking_crouch_spriteset, 0, 
+                (float)al_get_display_height(display) - 256.0
         );
 
         if (!player1_viking) {
@@ -373,9 +364,9 @@ int main(void) {
                 viking_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
                 viking_damage_spriteset, viking_death_spriteset, 
-                viking_hi_block_spriteset, viking_special_spriteset, 
-                viking_running_spriteset, viking_crouch_spriteset,
-                1, (float)al_get_display_height(display) - 256.0
+                viking_hi_block_spriteset, viking_running_spriteset, 
+                viking_crouch_spriteset, 1, 
+                (float)al_get_display_height(display) - 256.0
         );
 
         if (!player2_viking) {
@@ -408,7 +399,6 @@ int main(void) {
                                         viking_time_frame_kick += 1.0 / FRAMES_PER_SECOND;
                                         viking_time_frame_block += 1.0 / FRAMES_PER_SECOND;
                                         viking_time_frame_running += 1.0 / FRAMES_PER_SECOND;
-                                        viking_time_frame_special += 1.0 / FRAMES_PER_SECOND;
         
                                         if (viking_time_frame_idle >= FRAME_DURATION_IDLE) {
                                                 viking_time_frame_idle = 0;
@@ -421,9 +411,7 @@ int main(void) {
                                         al_draw_text(character_select_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 - 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
                                         al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
 
-                                        if (player1_viking->is_special) {
-                                                draw_special_animation(player1_viking, FRAME_DURATION_SPECIAL, &viking_time_frame_special, &viking_current_frame_special, NUM_SPECIAL_FRAMES);
-                                        } else if (player1_viking->is_punching) {
+                                        if (player1_viking->is_punching) {
                                                 draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &viking_time_frame_hi_punch, &viking_current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
                                         } else if (player1_viking->is_running_right || player1_viking->is_running_left) {
                                                 draw_running_animation(player1_viking, FRAME_DURATION_RUNNING, &viking_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_RUNNING_FRAMES);
@@ -437,9 +425,7 @@ int main(void) {
                                                 draw_idle_animation(player1_viking, viking_current_frame_idle);
                                         }
 
-                                        if (player2_viking->is_special) {
-                                                draw_special_animation(player2_viking, FRAME_DURATION_SPECIAL, &viking_time_frame_special, &viking_current_frame_special, NUM_SPECIAL_FRAMES);
-                                        } else if (player2_viking->is_punching) {
+                                        if (player2_viking->is_punching) {
                                                 draw_hi_punch_animation(player2_viking, FRAME_DURATION_PUNCH, &viking_time_frame_hi_punch, &viking_current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
                                         } else if (player2_viking->is_running_right || player2_viking->is_running_left) {
                                                 draw_running_animation(player2_viking, FRAME_DURATION_RUNNING, &viking_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_RUNNING_FRAMES);
@@ -727,12 +713,14 @@ int main(void) {
                                         viking_time_frame_hi_punch = 0;
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {
                                         player1_viking->is_kicking = 1;
+
+                                        printf("distance between p1 and p2 on kick: %f\n", player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x);
+
+                                        if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 251.0)
+                                                player2_viking->health -= 7.5;
+
                                         viking_current_frame_kick = 0;
                                         viking_time_frame_kick = 0;
-                                } else if (event.keyboard.keycode == ALLEGRO_KEY_V && !game_states->rumble_pause) {
-                                        player1_viking->is_special = 1;
-                                        viking_current_frame_special = 0;
-                                        viking_time_frame_special = 0;
                                 }
                         }
 
@@ -798,7 +786,6 @@ int main(void) {
         );
         destroy_spriteset(viking_idle_spriteset, NUM_IDLE_FRAMES);
         destroy_spriteset(viking_running_spriteset, NUM_RUNNING_FRAMES);
-        destroy_spriteset(viking_special_spriteset, NUM_SPECIAL_FRAMES);
         destroy_spriteset(viking_hi_block_spriteset, NUM_BLOCK_FRAMES);
         destroy_spriteset(viking_hi_punch_spriteset, NUM_HI_PUNCH_FRAMES);
         destroy_spriteset(viking_lo_punch_spriteset, NUM_LO_PUNCH_FRAMES);

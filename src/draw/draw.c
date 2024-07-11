@@ -156,7 +156,7 @@ void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *d
         al_draw_rectangle(
                 player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2) + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
                 player1->hitbox_upper->hitbox_x + player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y + player1->hitbox_upper->hitbox_height / 2),
-                al_map_rgb(255, 0, 0), 2.0
+                COLOR_LIGHT_RED, 2.0
         );
         al_draw_rectangle(
                 player1->hitbox_lower->hitbox_x - player1->hitbox_lower->hitbox_width / 2, (player1->hitbox_lower->hitbox_y - player1->hitbox_lower->hitbox_height / 2) + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
@@ -166,7 +166,7 @@ void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *d
         al_draw_rectangle(
                player2->hitbox_upper->hitbox_x -player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y - player2->hitbox_upper->hitbox_height / 2 + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
                player2->hitbox_upper->hitbox_x +player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y + player2->hitbox_upper->hitbox_height / 2,
-                al_map_rgb(255, 0, 0), 2.0
+                COLOR_LIGHT_RED, 2.0
         );
         al_draw_rectangle(
                player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2) + ((float)al_get_bitmap_height(player2->idle_spriteset[current_frame_idle])) / 2,
@@ -222,27 +222,6 @@ void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_f
                         player->hitbox_upper->hitbox_y, 0
                 );
         }
-}
-
-void draw_special_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
-        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_crouching || player->is_punching || player->is_kicking) {
-                player->is_special = 0;
-
-                return;
-        }
-        
-        if ((*time_frame) >= frame_duration) {
-                (*time_frame) = 0;
-                (*current_frame) = ((*current_frame) + 1) % num_frames;
-
-                if ((*current_frame) == 0)
-                        player->is_special = 0;
-        }
-
-        al_draw_bitmap(
-                player->special_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->special_spriteset[(*current_frame)]) / 2,
-                player->hitbox_upper->hitbox_y, 0
-        );
 }
 
 void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int *current_frame_idle, unsigned int num_frames) {
