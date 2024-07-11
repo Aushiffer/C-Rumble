@@ -323,10 +323,10 @@ void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *displ
         al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, (float)al_get_display_width(display) - 512, 64, COLOR_LIGHT_RED);
 
         if (player1->health >= 1)
-                al_draw_filled_rectangle(32, 32, 512 * (player1->health / 100.0), 64, COLOR_LIGHT_GREEN);
+                al_draw_filled_rectangle(32, 32, 512 * (player1->health / MAX_HEALTH), 64, COLOR_LIGHT_GREEN);
 
         if (player2->health >= 1)
-                al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, ((float)al_get_display_width(display) - 512) /* ... */, 64, COLOR_LIGHT_GREEN);
+                al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, ((float)al_get_display_width(display) - 512) + (player2->health / MAX_HEALTH), 64, COLOR_LIGHT_GREEN);
 }
 
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {

@@ -715,7 +715,10 @@ int main(void) {
 
                                 if (event.keyboard.keycode == ALLEGRO_KEY_Z && !game_states->rumble_pause) {
                                         player1_viking->is_punching = 1;
-                                        player2_viking->health -= 5.0;
+
+                                        if (player1_viking->hitbox_upper->hitbox_x - player2_viking->hitbox_upper->hitbox_x < 0.00001)
+                                                player2_viking->health -= 5.0;
+
                                         viking_current_frame_hi_punch = 0;
                                         viking_time_frame_hi_punch = 0;
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {

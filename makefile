@@ -11,31 +11,31 @@ $(PROGRAM): main.o game_states.o draw.o destroy_resources.o selector.o fighter.o
 main.o:
 	$(CC) -c src/main.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
-game_states.o:
+game_states.o: src/game_states/game_states.h src/game_states/game_states.c
 	$(CC) -c src/game_states/game_states.c $(CCFLAGS)
 
-draw.o:
+draw.o: src/draw/draw.h src/draw/draw.c
 	$(CC) -c src/draw/draw.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
-destroy_resources.o:
+destroy_resources.o: src/destroy_resources/destroy_resources.h src/destroy_resources/destroy_resources.c
 	$(CC) -c src/destroy_resources/destroy_resources.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
-selector.o:
+selector.o: src/selector/selector.h  src/selector/selector.c
 	$(CC) -c src/selector/selector.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
-fighter.o:
+fighter.o: src/fighter/fighter.h src/fighter/fighter.c
 	$(CC) -c src/fighter/fighter.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
-controller.o:
+controller.o: src/controller/controller.h src/controller/controller.c
 	$(CC) -c src/controller/controller.c $(CCFLAGS)
 
-hitbox.o:
+hitbox.o: src/hitbox/hitbox.h src/hitbox/hitbox.c
 	$(CC) -c src/hitbox/hitbox.c $(CCFLAGS)
 
-load_spriteset.o:
+load_spriteset.o: src/load_spriteset/load_spriteset.h src/load_spriteset/load_spriteset.c
 	$(CC) -c src/load_spriteset/load_spriteset.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
-handle_pause.o:
+handle_pause.o: src/pause_menu/handle_pause.h src/pause_menu/handle_pause.c
 	$(CC) -c src/pause_menu/handle_pause.c $(CCFLAGS) $(ALLEGRO_LIBS)
 
 run:
