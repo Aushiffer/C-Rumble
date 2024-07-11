@@ -418,6 +418,8 @@ int main(void) {
                                         draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
                                         draw_player_hitboxes(player1_viking, player2_viking, display, viking_current_frame_idle);
                                         update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), al_get_display_height(display));
+                                        al_draw_text(character_select_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 - 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
+                                        al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
 
                                         if (player1_viking->is_special) {
                                                 draw_special_animation(player1_viking, FRAME_DURATION_SPECIAL, &viking_time_frame_special, &viking_current_frame_special, NUM_SPECIAL_FRAMES);
@@ -716,8 +718,10 @@ int main(void) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_Z && !game_states->rumble_pause) {
                                         player1_viking->is_punching = 1;
 
-                                        if (player1_viking->hitbox_upper->hitbox_x - player2_viking->hitbox_upper->hitbox_x < 0.00001)
-                                                player2_viking->health -= 5.0;
+                                        printf("distance between p1 and p2 on hi punch: %f\n", player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x);
+
+                                        if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 251.0)
+                                                player2_viking->health -= 7.5;
 
                                         viking_current_frame_hi_punch = 0;
                                         viking_time_frame_hi_punch = 0;

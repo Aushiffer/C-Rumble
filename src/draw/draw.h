@@ -16,6 +16,7 @@
 #define COLOR_DARK_GREEN al_map_rgb(0, 42, 0)
 #define COLOR_LIGHT_GREEN al_map_rgb(0, 255, 0)
 #define COLOR_LIGHT_RED al_map_rgb(255, 0, 0)
+#define COLOR_YELLOW al_map_rgb(255, 255, 0)
 
 /* Renderiza o menu principal */
 void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);

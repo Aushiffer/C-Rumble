@@ -319,14 +319,20 @@ void draw_crouching_animation(Fighter *player) {
 }
 
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
-        al_draw_filled_rectangle(32, 32, 512, 64, COLOR_LIGHT_RED);
-        al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, (float)al_get_display_width(display) - 512, 64, COLOR_LIGHT_RED);
+        const float health_bar_width = 512.0;
 
-        if (player1->health >= 1)
-                al_draw_filled_rectangle(32, 32, 512 * (player1->health / MAX_HEALTH), 64, COLOR_LIGHT_GREEN);
+        al_draw_filled_rectangle(32, 32, health_bar_width, 64, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, (float)al_get_display_width(display) - health_bar_width, 64, COLOR_LIGHT_RED);
 
-        if (player2->health >= 1)
-                al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, ((float)al_get_display_width(display) - 512) + (player2->health / MAX_HEALTH), 64, COLOR_LIGHT_GREEN);
+        if (player1->health > 0)
+                al_draw_filled_rectangle(32, 32, health_bar_width * (player1->health / MAX_HEALTH), 64, COLOR_YELLOW);
+
+        if (player2->health > 0) {
+                float player2_health_bar_width = health_bar_width * (player2->health / MAX_HEALTH);
+                float player2_health_bar_start_x = (float)al_get_display_width(display) - 32 - player2_health_bar_width;
+                
+                al_draw_filled_rectangle(player2_health_bar_start_x + 32, 32, player2_health_bar_start_x + player2_health_bar_width, 64, COLOR_YELLOW);
+        }
 }
 
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
