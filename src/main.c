@@ -19,8 +19,8 @@
 #include "destroy_resources/destroy_resources.h"
 
 /* As macros de frames valem PARA O VIKING APENAS, definir um valor para cada sprite de CADA personagem */
-#define WIN_WIDTH 1280
-#define WIN_HEIGHT 720
+#define WIN_WIDTH 1366
+#define WIN_HEIGHT 768
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define NUM_STAGES 2
@@ -392,8 +392,19 @@ int main(void) {
                 if (event.type == ALLEGRO_EVENT_TIMER) {
                         if (game_states->rumble_end) {
                                 al_clear_to_color(COLOR_WHITE);
-                                al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, (float)al_get_display_height(display) / 2 - 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
-                                al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) / 2 - 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
+                                al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
+                                al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
+
+                                if (player1_viking->rounds_won == 3 && !(player2_viking->rounds_won == 3)) {
+                                        al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "P1 WINS!");
+                                        al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "P1 WINS!");
+                                } else if (player2_viking->rounds_won == 3 && !(player1_viking->rounds_won == 3)) {
+                                        al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "P2 WINS!");
+                                        al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "P2 WINS!");
+                                } else {
+                                        al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
+                                        al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
+                                }
                         } else {
                                 if (game_states->menu) {
                                         draw_menu(menu_header_font, menu_options_font, display, game_states);
@@ -405,6 +416,11 @@ int main(void) {
                                                 spearwoman_icon, fire_warrior_icon, 
                                                 game_states
                                         );
+
+                                        player1_viking->hitbox_upper->hitbox_x = 94.5;
+                                        player2_viking->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
+                                        player1_viking->hitbox_lower->hitbox_x = 94.5;
+                                        player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
                                 } else if (game_states->stage_select) {
                                         draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                                 } else if (game_states->rumble) {
@@ -420,8 +436,33 @@ int main(void) {
                                                         viking_current_frame_idle = (viking_current_frame_idle + 1) % NUM_IDLE_FRAMES;
                                                 }
 
-                                                if (player2_viking->health <= 0)
-                                                        game_states->rumble_end = 1;
+                                                if (player2_viking->health <= 0) {
+                                                        player1_viking->rounds_won++;
+
+                                                        if (player1_viking->rounds_won == 3)
+                                                                game_states->rumble_end = 1;
+                                                        else
+                                                                player2_viking->health = MAX_HEALTH;
+
+                                                        player1_viking->hitbox_upper->hitbox_x = 94.5;
+                                                        player2_viking->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
+                                                        player1_viking->hitbox_lower->hitbox_x = 94.5;
+                                                        player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
+                                                }
+
+                                                if (player1_viking->health <= 0) {
+                                                        player2_viking->rounds_won++;
+
+                                                        if (player2_viking->rounds_won == 3)
+                                                                game_states->rumble_end = 1;
+                                                        else
+                                                                player1_viking->health = MAX_HEALTH;
+
+                                                        player1_viking->hitbox_upper->hitbox_x = 94.5;
+                                                        player2_viking->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
+                                                        player1_viking->hitbox_lower->hitbox_x = 94.5;
+                                                        player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
+                                                }
 
                                                 draw_stage(display, stage_dark_forest, stage_abandoned_factory, game_states);
                                                 draw_player_hitboxes(player1_viking, player2_viking, display, viking_current_frame_idle);
@@ -542,10 +583,6 @@ int main(void) {
                         game_states->stage_select_nav = 0;
                         game_states->play_stage_select_sample = 1;
                         game_states->menu_select = 0;
-                        player1_viking->hitbox_upper->hitbox_x = 94.5;
-                        player2_viking->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
-                        player1_viking->hitbox_lower->hitbox_x = 94.5;
-                        player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
