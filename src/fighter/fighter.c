@@ -57,7 +57,6 @@ Fighter *create_fighter(
         fighter->is_kicking = 0;
         fighter->is_blocking = 0;
         fighter->is_crouching = 0;
-        fighter->is_special = 0;
 
         return fighter;
 }
@@ -93,10 +92,10 @@ void move_fighter_crouch(Fighter *fighter) {
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {
         if (!(player1->controller->left && player1->controller->right)) {
                 if (player1->controller->right) {
-                move_fighter_right(player1, max_x);
-
-                if (calc_collision(player1->hitbox_upper, player2->hitbox_upper) || calc_collision(player1->hitbox_lower, player2->hitbox_lower))
-                        move_fighter_left(player1);
+                        move_fighter_right(player1, max_x);
+        
+                        if (calc_collision(player1->hitbox_upper, player2->hitbox_upper) || calc_collision(player1->hitbox_lower, player2->hitbox_lower))
+                                move_fighter_left(player1);
                 } else if (player1->controller->left) {
                         move_fighter_left(player1);
 

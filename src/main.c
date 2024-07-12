@@ -1,3 +1,4 @@
+#include <allegro5/display.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
@@ -411,12 +412,58 @@ int main(void) {
                                         al_draw_text(character_select_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 - 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
                                         al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
 
+                                        switch (game_states->rumble_fighter_p1) {
+                                                case 0:
+                                                        al_draw_text(character_select_display_name_font, COLOR_BLACK, 28, 80, ALLEGRO_ALIGN_LEFT, "VIKING");
+                                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 32, 80, ALLEGRO_ALIGN_LEFT, "VIKING");
+
+                                                        break;
+                                                case 1:
+                                                        al_draw_text(character_select_display_name_font, COLOR_BLACK, 28, 80, ALLEGRO_ALIGN_LEFT, "KNIGHT");
+                                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 32, 80, ALLEGRO_ALIGN_LEFT, "KNIGHT");
+
+                                                        break;
+                                                case 2:
+                                                        al_draw_text(character_select_display_name_font, COLOR_BLACK, 28, 80, ALLEGRO_ALIGN_LEFT, "SPEARWOMAN");
+                                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 32, 80, ALLEGRO_ALIGN_LEFT, "SPEARWOMAN");
+
+                                                        break;
+                                                case 3:
+                                                        al_draw_text(character_select_display_name_font, COLOR_BLACK, 28, 80, ALLEGRO_ALIGN_LEFT, "FIRE WARRIOR");
+                                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 32, 80, ALLEGRO_ALIGN_LEFT, "FIRE WARRIOR");
+
+                                                        break;
+                                        }
+
+                                        switch (game_states->rumble_fighter_p2) {
+                                                case 0:
+                                                        al_draw_text(character_select_display_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 80, ALLEGRO_ALIGN_RIGHT, "VIKING");
+                                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 80, ALLEGRO_ALIGN_RIGHT, "VIKING");
+
+                                                        break;
+                                                case 1:
+                                                        al_draw_text(character_select_display_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 80, ALLEGRO_ALIGN_RIGHT, "KNIGHT");
+                                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 80, ALLEGRO_ALIGN_RIGHT, "KNIGHT");
+
+                                                        break;
+                                                case 2:
+                                                        al_draw_text(character_select_display_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 80, ALLEGRO_ALIGN_RIGHT, "SPEARWOMAN");
+                                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 80, ALLEGRO_ALIGN_RIGHT, "SPEARWOMAN");
+
+                                                        break;
+                                                case 3:
+                                                        al_draw_text(character_select_display_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 80, ALLEGRO_ALIGN_RIGHT, "FIRE WARRIOR");
+                                                        al_draw_text(character_select_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 80, ALLEGRO_ALIGN_RIGHT, "FIRE WARRIOR");
+
+                                                        break;
+                                        }
+
                                         if (player1_viking->is_punching) {
                                                 draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &viking_time_frame_hi_punch, &viking_current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
-                                        } else if (player1_viking->is_running_right || player1_viking->is_running_left) {
-                                                draw_running_animation(player1_viking, FRAME_DURATION_RUNNING, &viking_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_RUNNING_FRAMES);
                                         } else if (player1_viking->is_kicking) {
                                                 draw_hi_kick_animation(player1_viking, FRAME_DURATION_KICK, &viking_time_frame_kick, &viking_current_frame_kick, NUM_KICK_FRAMES);
+                                        } else if (player1_viking->is_running_right || player1_viking->is_running_left) {
+                                                draw_running_animation(player1_viking, FRAME_DURATION_RUNNING, &viking_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_RUNNING_FRAMES);
                                         } else if (player1_viking->is_crouching) {
                                                 draw_crouching_animation(player1_viking);
                                         } else if (player1_viking->is_blocking) {
@@ -706,7 +753,7 @@ int main(void) {
 
                                         printf("distance between p1 and p2 on hi punch: %f\n", player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x);
 
-                                        if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 251.0)
+                                        if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 251.0 && !(player1_viking->is_running_right || player1_viking->is_running_left))
                                                 player2_viking->health -= 7.5;
 
                                         viking_current_frame_hi_punch = 0;
@@ -717,7 +764,7 @@ int main(void) {
                                         printf("distance between p1 and p2 on kick: %f\n", player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x);
 
                                         if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 251.0)
-                                                player2_viking->health -= 7.5;
+                                                player2_viking->health -= 8.5;
 
                                         viking_current_frame_kick = 0;
                                         viking_time_frame_kick = 0;

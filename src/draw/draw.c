@@ -176,7 +176,7 @@ void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *d
 }
 
 void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
-        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_crouching || player->is_kicking || player->is_special) {
+        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_crouching || player->is_kicking) {
                 player->is_punching = 0;
 
                 return;
@@ -197,7 +197,7 @@ void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_
 }
 
 void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
-        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_crouching || player->is_punching || player->is_special) {
+        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_crouching || player->is_punching) {
                 player->is_kicking = 0;
 
                 return;
