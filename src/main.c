@@ -340,11 +340,13 @@ int main(void) {
         float player2_x = al_get_display_width(display) - 94.5;
         float viking_time_frame_idle = 0.0;
         float viking_time_frame_hi_punch = 0.0;
+        float viking_time_frame_lo_punch = 0.0;
         float viking_time_frame_kick = 0.0;
         float viking_time_frame_block = 0.0;
         float viking_time_frame_running = 0.0;
         unsigned int viking_current_frame_idle = 0;
         unsigned int viking_current_frame_hi_punch = 0;
+        unsigned int viking_current_frame_lo_punch = 0;
         unsigned int viking_current_frame_kick = 0;
         unsigned int viking_current_frame_running = 0;
         char wins_text_p1[MAXLEN_PLAYER_WINS];
@@ -427,6 +429,7 @@ int main(void) {
                                         if (!game_states->rumble_pause) {
                                                 viking_time_frame_idle += 1.0 / FRAMES_PER_SECOND;
                                                 viking_time_frame_hi_punch += 1.0 / FRAMES_PER_SECOND;
+                                                viking_time_frame_lo_punch += 1.0 / FRAMES_PER_SECOND;
                                                 viking_time_frame_kick += 1.0 / FRAMES_PER_SECOND;
                                                 viking_time_frame_block += 1.0 / FRAMES_PER_SECOND;
                                                 viking_time_frame_running += 1.0 / FRAMES_PER_SECOND;
@@ -481,7 +484,11 @@ int main(void) {
                                                 switch (game_states->rumble_fighter_p1) {
                                                         case 0:
                                                                 if (player1_viking->is_punching) {
-                                                                        draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &viking_time_frame_hi_punch, &viking_current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
+                                                                        if (player1_viking->is_crouching) {
+                                                                                draw_lo_punch_animation(player1_viking, FRAME_DURATION_LO_PUNCH, &viking_time_frame_lo_punch, &viking_current_frame_lo_punch, NUM_LO_PUNCH_FRAMES);
+                                                                        } else {
+                                                                                draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &viking_time_frame_hi_punch, &viking_current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
+                                                                        }
                                                                 } else if (player1_viking->is_kicking) {
                                                                         draw_hi_kick_animation(player1_viking, FRAME_DURATION_KICK, &viking_time_frame_kick, &viking_current_frame_kick, NUM_KICK_FRAMES);
                                                                 } else if (player1_viking->is_running_right || player1_viking->is_running_left) {
@@ -787,6 +794,8 @@ int main(void) {
 
                                         viking_current_frame_hi_punch = 0;
                                         viking_time_frame_hi_punch = 0;
+                                        viking_current_frame_lo_punch = 0;
+                                        viking_time_frame_lo_punch = 0;
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {
                                         player1_viking->is_kicking = 1;
 

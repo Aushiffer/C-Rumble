@@ -47,6 +47,9 @@ void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *d
 /* Anima o soco do lutador na tela */
 void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
+/* Anima o personagem dando um soco baixo */
+void draw_lo_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
+
 /* Anima o chute do lutador na tela */
 void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
@@ -56,17 +59,17 @@ void draw_running_animation(Fighter *player, float frame_duration, float *time_f
 /* Anima o personagem em repouso, cálculo de frame atual e de duração de frame é feito externamente */
 void draw_idle_animation(Fighter *player, unsigned int current_frame);
 
-/* Renderiza a barra de vida do jogador */
-void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
-
-/* Renderiza nomes dos personagens embaixo das barras de vida */
-void draw_character_display_fighter_names(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *rumble_display_character_name_font);
-
 /* Anima o personagem bloqueando */
 void draw_blocking_animation(Fighter *player);
 
 /* Anima o personagem abaixado */
 void draw_crouching_animation(Fighter *player);
+
+/* Renderiza a barra de vida do jogador */
+void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
+
+/* Renderiza nomes dos personagens embaixo das barras de vida */
+void draw_character_display_fighter_names(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *rumble_display_character_name_font);
 
 /* Renderiza a tela de pause */
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
