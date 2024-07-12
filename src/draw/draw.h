@@ -17,6 +17,7 @@
 #define COLOR_LIGHT_GREEN al_map_rgb(0, 255, 0)
 #define COLOR_LIGHT_RED al_map_rgb(255, 0, 0)
 #define COLOR_YELLOW al_map_rgb(255, 255, 0)
+#define COLOR_ORANGE al_map_rgb(255, 165, 0)
 
 /* Renderiza o menu principal */
 void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
@@ -57,6 +58,9 @@ void draw_idle_animation(Fighter *player, unsigned int current_frame);
 
 /* Renderiza a barra de vida do jogador */
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
+
+/* Renderiza nomes dos personagens embaixo das barras de vida */
+void draw_character_display_fighter_names(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *rumble_display_character_name_font);
 
 /* Anima o personagem bloqueando */
 void draw_blocking_animation(Fighter *player);

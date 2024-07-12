@@ -21,7 +21,6 @@ GameStates *create_game_states(void) {
         game_states->rumble_fighter_p2 = 0;
         game_states->rumble_pause = 0;
         game_states->rumble_pause_select = 0;
-        game_states->rumble_round = 1;
         game_states->rumble_end = 0;
         game_states->menu_select = 0;
         game_states->character_select_nav_p1 = 0;
