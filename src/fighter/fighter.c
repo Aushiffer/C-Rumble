@@ -102,9 +102,18 @@ void update_stamina(Fighter *player1, Fighter *player2) {
                 player1->stamina += 0.25;
 }
 
+void reset_fighter_flags(Fighter *player) {
+        player->is_blocking = 0;
+        player->is_crouching = 0;
+        player->is_kicking = 0;
+        player->is_punching = 0;
+        player->is_running_left = 0;
+        player->is_running_right = 0;
+}
+
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {
         if (!(player1->controller->left && player1->controller->right)) {
-                if (player1->controller->right) {
+                if (player1->controller->right && !(player1->is_blocking || player1->is_crouching)) {
                         move_fighter_right(player1, max_x);
         
                         if (calc_collision(player1->hitbox_upper, player2->hitbox_upper) || calc_collision(player1->hitbox_lower, player2->hitbox_lower))

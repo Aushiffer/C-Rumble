@@ -71,6 +71,9 @@ void move_fighter_kick(Fighter *fighter);
 /* Atualiza a stamina os jogadores */
 void update_stamina(Fighter *player1, Fighter *player2);
 
+/* Reseta todas as flags do jogador */
+void reset_fighter_flags(Fighter *player);
+
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y);
 

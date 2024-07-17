@@ -416,8 +416,6 @@ int main(void) {
                                         al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
                                 }
 
-                                player1_viking->rounds_won = 0;
-                                player2_viking->rounds_won = 0;
                                 game_states->rumble = 0;
                         } else {
                                 if (game_states->menu) {
@@ -437,6 +435,9 @@ int main(void) {
                                         player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
                                 } else if (game_states->stage_select) {
                                         draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
+
+                                        player1_viking->rounds_won = 0;
+                                        player2_viking->rounds_won = 0;
                                 } else if (game_states->rumble) {
                                         if (!game_states->rumble_pause) {
                                                 viking_time_frame_idle += 1.0 / FRAMES_PER_SECOND;
@@ -463,6 +464,8 @@ int main(void) {
                                                         player2_viking->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
                                                         player1_viking->hitbox_lower->hitbox_x = 94.5;
                                                         player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
+                                                        player1_viking->is_running_right = 0;
+                                                        player1_viking->is_running_left = 0;
                                                 }
 
                                                 if (player1_viking->health <= 0) {
@@ -535,7 +538,7 @@ int main(void) {
                                                                 break;
                                                 }
 
-                                        } else if (game_states->rumble_pause == 1) {
+                                        } else if (game_states->rumble_pause) {
                                                 draw_pause(menu_header_font, menu_options_font, display, game_states);
                                         }
                                 }
