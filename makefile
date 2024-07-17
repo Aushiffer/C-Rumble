@@ -45,7 +45,7 @@ run:
 	./$(BIN)/$(PROGRAM)
 
 test_run:
-	make && make clean && make run
+	make purge && make && make run
 
 clean:
 	rm -f $(OBJ)/*.o

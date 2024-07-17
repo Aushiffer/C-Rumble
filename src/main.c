@@ -416,11 +416,9 @@ int main(void) {
                                         al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
                                 }
 
-                                if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                        game_states->rumble_end = 0;
-                                        game_states->rumble = 0;
-                                        game_states->menu = 1;
-                                }
+                                player1_viking->rounds_won = 0;
+                                player2_viking->rounds_won = 0;
+                                game_states->rumble = 0;
                         } else {
                                 if (game_states->menu) {
                                         draw_menu(menu_header_font, menu_options_font, display, game_states);
@@ -481,9 +479,16 @@ int main(void) {
                                                         player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
                                                 }
 
+                                                if (player2_viking->stamina < 0)
+                                                        player2_viking->is_blocking = 0;
+
+                                                if (player1_viking->stamina < 0)
+                                                        player1_viking->is_blocking = 0;
+
                                                 draw_stage(display, stage_dark_forest, stage_abandoned_factory, stage_calm_forest, game_states);
                                                 draw_player_hitboxes(player1_viking, player2_viking, display, viking_current_frame_idle);
                                                 draw_health_bars(player1_viking, player2_viking, display);
+                                                update_stamina(player1_viking, player2_viking);
                                                 draw_stamina_bars(player1_viking, player2_viking, display);
                                                 update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), al_get_display_height(display));
                                                 snprintf(wins_text_p1, MAXLEN_PLAYER_WINS, "WINS: %d", player1_viking->rounds_won);
@@ -492,8 +497,6 @@ int main(void) {
 
                                                 switch (game_states->rumble_fighter_p1) {
                                                         case 0:
-                                                                printf("%d %f", viking_current_frame_lo_punch, viking_time_frame_lo_punch);
-
                                                                 if (player1_viking->is_punching && player1_viking->is_crouching) {
                                                                         draw_lo_punch_animation(player1_viking, FRAME_DURATION_LO_PUNCH, &viking_time_frame_lo_punch, &viking_current_frame_lo_punch, NUM_LO_PUNCH_FRAMES);
                                                                 } else if (player1_viking->is_punching && viking_current_frame_lo_punch == 0) {
@@ -504,7 +507,7 @@ int main(void) {
                                                                         draw_running_animation(player1_viking, FRAME_DURATION_RUNNING, &viking_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_RUNNING_FRAMES);
                                                                 } else if (player1_viking->is_crouching) {
                                                                         draw_crouching_animation(player1_viking);
-                                                                } else if (player1_viking->is_blocking && player1_viking->stamina > 0) {
+                                                                } else if (player1_viking->is_blocking) {
                                                                         draw_blocking_animation(player1_viking);
                                                                 } else {
                                                                         draw_idle_animation(player1_viking, viking_current_frame_idle);
@@ -804,8 +807,6 @@ int main(void) {
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {
                                         player1_viking->is_kicking = 1;
 
-                                        printf("distance between p1 and p2 on kick: %f\n", player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x);
-
                                         if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 206.0 
                                         && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking || player1_viking->is_crouching || player2_viking->is_blocking))
                                                 player2_viking->health -= 8.0;
@@ -832,9 +833,11 @@ int main(void) {
 
                                                 player1_viking->is_crouching ^= 1;
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_C && !game_states->rumble_pause) {
-                                                move_controller_block(player1_viking->controller);
+                                                if (player1_viking->stamina > 0) {
+                                                        move_controller_block(player1_viking->controller);
 
-                                                player1_viking->is_blocking ^= 1;
+                                                        player1_viking->is_blocking ^= 1;
+                                                }
                                         }
 
                                         if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT && !game_states->rumble_pause) {
@@ -855,6 +858,12 @@ int main(void) {
                                                 player2_viking->is_blocking ^= 1;
                                         }
                                 }
+                        }
+                } else if (game_states->rumble_end) {
+                        if (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+                                game_states->rumble_end = 0;
+                                game_states->rumble = 0;
+                                game_states->menu = 1;
                         }
                 }
         }
