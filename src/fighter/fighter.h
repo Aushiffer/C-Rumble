@@ -69,6 +69,9 @@ void move_fighter_punch(Fighter *fighter);
 /* Chute */
 void move_fighter_kick(Fighter *fighter);
 
+/* Atualiza a stamina os jogadores */
+void update_stamina(Fighter *player1, Fighter *player2, unsigned int *current_frame_idle_p1, unsigned int *current_frame_idle_p2);
+
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y);
 

@@ -2,50 +2,53 @@ CCFLAGS = -O3 -std=c99 -g -Wall -Wextra -pedantic
 CC = gcc
 ALLEGRO_LIBS = -lallegro -lallegro_main -lallegro_primitives -lallegro_font -lallegro_ttf -lallegro_audio -lallegro_acodec -lallegro_image
 PROGRAM = C-Rumble
+OBJ = obj
+BIN = bin
+SRC = src
 
-all: $(PROGRAM)
+all: $(BIN)/$(PROGRAM)
 
-$(PROGRAM): main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o load_spriteset.o handle_pause.o
-	$(CC) -o $(PROGRAM) main.o game_states.o draw.o destroy_resources.o selector.o fighter.o controller.o hitbox.o load_spriteset.o handle_pause.o $(CCFLAGS) $(ALLEGRO_LIBS)
+$(BIN)/$(PROGRAM): $(OBJ)/main.o $(OBJ)/game_states.o $(OBJ)/draw.o $(OBJ)/destroy_resources.o $(OBJ)/selector.o $(OBJ)/fighter.o $(OBJ)/controller.o $(OBJ)/hitbox.o $(OBJ)/load_spriteset.o $(OBJ)/handle_pause.o
+	$(CC) -o $@ $^ $(CCFLAGS) $(ALLEGRO_LIBS)
 
-main.o:
-	$(CC) -c src/main.c $(CCFLAGS) $(ALLEGRO_LIBS)
+$(OBJ)/main.o:
+	$(CC) -c $(SRC)/main.c -o $(OBJ)/main.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
-game_states.o: src/game_states/game_states.h src/game_states/game_states.c
-	$(CC) -c src/game_states/game_states.c $(CCFLAGS)
+$(OBJ)/game_states.o: $(SRC)/game_states/game_states.h $(SRC)/game_states/game_states.c
+	$(CC) -c $(SRC)/game_states/game_states.c -o $(OBJ)/game_states.o $(CCFLAGS)
 
-draw.o: src/draw/draw.h src/draw/draw.c
-	$(CC) -c src/draw/draw.c $(CCFLAGS) $(ALLEGRO_LIBS)
+$(OBJ)/draw.o: $(SRC)/draw/draw.h $(SRC)/draw/draw.c
+	$(CC) -c $(SRC)/draw/draw.c -o $(OBJ)/draw.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
-destroy_resources.o: src/destroy_resources/destroy_resources.h src/destroy_resources/destroy_resources.c
-	$(CC) -c src/destroy_resources/destroy_resources.c $(CCFLAGS) $(ALLEGRO_LIBS)
+$(OBJ)/destroy_resources.o: $(SRC)/destroy_resources/destroy_resources.h $(SRC)/destroy_resources/destroy_resources.c
+	$(CC) -c $(SRC)/destroy_resources/destroy_resources.c -o $(OBJ)/destroy_resources.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
-selector.o: src/selector/selector.h  src/selector/selector.c
-	$(CC) -c src/selector/selector.c $(CCFLAGS) $(ALLEGRO_LIBS)
+$(OBJ)/selector.o: $(SRC)/selector/selector.h  $(SRC)/selector/selector.c
+	$(CC) -c $(SRC)/selector/selector.c -o $(OBJ)/selector.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
-fighter.o: src/fighter/fighter.h src/fighter/fighter.c
-	$(CC) -c src/fighter/fighter.c $(CCFLAGS) $(ALLEGRO_LIBS)
+$(OBJ)/fighter.o: $(SRC)/fighter/fighter.h $(SRC)/fighter/fighter.c
+	$(CC) -c $(SRC)/fighter/fighter.c -o $(OBJ)/fighter.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
-controller.o: src/controller/controller.h src/controller/controller.c
-	$(CC) -c src/controller/controller.c $(CCFLAGS)
+$(OBJ)/controller.o: $(SRC)/controller/controller.h $(SRC)/controller/controller.c
+	$(CC) -c $(SRC)/controller/controller.c -o $(OBJ)/controller.o $(CCFLAGS)
 
-hitbox.o: src/hitbox/hitbox.h src/hitbox/hitbox.c
-	$(CC) -c src/hitbox/hitbox.c $(CCFLAGS)
+$(OBJ)/hitbox.o: $(SRC)/hitbox/hitbox.h $(SRC)/hitbox/hitbox.c
+	$(CC) -c $(SRC)/hitbox/hitbox.c -o $(OBJ)/hitbox.o $(CCFLAGS)
 
-load_spriteset.o: src/load_spriteset/load_spriteset.h src/load_spriteset/load_spriteset.c
-	$(CC) -c src/load_spriteset/load_spriteset.c $(CCFLAGS) $(ALLEGRO_LIBS)
+$(OBJ)/load_spriteset.o: $(SRC)/load_spriteset/load_spriteset.h $(SRC)/load_spriteset/load_spriteset.c
+	$(CC) -c $(SRC)/load_spriteset/load_spriteset.c -o $(OBJ)/load_spriteset.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
-handle_pause.o: src/pause_menu/handle_pause.h src/pause_menu/handle_pause.c
-	$(CC) -c src/pause_menu/handle_pause.c $(CCFLAGS) $(ALLEGRO_LIBS)
+$(OBJ)/handle_pause.o: $(SRC)/pause_menu/handle_pause.h $(SRC)/pause_menu/handle_pause.c
+	$(CC) -c $(SRC)/pause_menu/handle_pause.c -o $(OBJ)/handle_pause.o $(CCFLAGS) $(ALLEGRO_LIBS)
 
 run:
-	./$(PROGRAM)
+	./$(BIN)/$(PROGRAM)
 
 test_run:
 	make purge && make && make run
 
 clean:
-	rm -f *.o
+	rm -f $(OBJ)/*.o
 
-purge:
-	rm -f *.gch *.o $(PROGRAM)
+purge: clean
+	rm -f $(BIN)/$(PROGRAM)

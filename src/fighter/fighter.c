@@ -89,6 +89,12 @@ void move_fighter_crouch(Fighter *fighter) {
         fighter->hitbox_upper->hitbox_y = fighter->hitbox_lower->hitbox_y;
 }
 
+void update_stamina(Fighter *player1, Fighter *player2, unsigned int *current_frame_idle_p1, unsigned int *current_frame_idle_p2) {
+        if (player1->is_punching && (player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 251.0 
+        && !(player1->is_running_right || player1->is_running_left || player1->is_blocking) && player2->is_blocking)
+                player2->stamina -= 10.0;
+}
+
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {
         if (!(player1->controller->left && player1->controller->right)) {
                 if (player1->controller->right) {

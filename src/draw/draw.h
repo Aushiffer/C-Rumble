@@ -4,6 +4,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/bitmap.h>
 #include <allegro5/display.h>
 #include "../game_states/game_states.h"
 #include "../fighter/fighter.h"
@@ -39,7 +40,7 @@ void draw_stage_select(
 );
 
 /* Renderiza o cenário selecionado pelo jogador */
-void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, GameStates *game_states);
+void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states);
 
 /* Renderiza as hitboxes dos jogadores */
 void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display, unsigned int current_frame_idle);
@@ -68,8 +69,11 @@ void draw_crouching_animation(Fighter *player);
 /* Renderiza a barra de vida do jogador */
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
 
+/* Renderiza as barras de stamina */
+void draw_stamina_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
+
 /* Renderiza nomes dos personagens embaixo das barras de vida */
-void draw_character_display_fighter_names(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *rumble_display_character_name_font);
+void draw_rumble_header(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *rumble_display_character_name_font, ALLEGRO_FONT *character_select_header_font, char *wins_text_p1, char *wins_text_p2);
 
 /* Renderiza a tela de pause */
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);
