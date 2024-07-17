@@ -492,10 +492,11 @@ int main(void) {
 
                                                 switch (game_states->rumble_fighter_p1) {
                                                         case 0:
-                                                                
+                                                                printf("%d %f", viking_current_frame_lo_punch, viking_time_frame_lo_punch);
+
                                                                 if (player1_viking->is_punching && player1_viking->is_crouching) {
                                                                         draw_lo_punch_animation(player1_viking, FRAME_DURATION_LO_PUNCH, &viking_time_frame_lo_punch, &viking_current_frame_lo_punch, NUM_LO_PUNCH_FRAMES);
-                                                                } else if (player1_viking->is_punching) {
+                                                                } else if (player1_viking->is_punching && viking_current_frame_lo_punch == 0) {
                                                                         draw_hi_punch_animation(player1_viking, FRAME_DURATION_PUNCH, &viking_time_frame_hi_punch, &viking_current_frame_hi_punch, NUM_HI_PUNCH_FRAMES);
                                                                 } else if (player1_viking->is_kicking) {
                                                                         draw_hi_kick_animation(player1_viking, FRAME_DURATION_KICK, &viking_time_frame_kick, &viking_current_frame_kick, NUM_KICK_FRAMES);
@@ -799,14 +800,14 @@ int main(void) {
                                         viking_current_frame_hi_punch = 0;
                                         viking_time_frame_hi_punch = 0;
                                         viking_current_frame_lo_punch = 0;
-                                        viking_time_frame_lo_punch = 0;       
+                                        viking_time_frame_lo_punch = 0;      
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {
                                         player1_viking->is_kicking = 1;
 
                                         printf("distance between p1 and p2 on kick: %f\n", player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x);
 
                                         if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 206.0 
-                                        && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking || player2_viking->is_blocking))
+                                        && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking || player1_viking->is_crouching || player2_viking->is_blocking))
                                                 player2_viking->health -= 8.0;
 
                                         viking_current_frame_kick = 0;
