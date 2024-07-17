@@ -489,7 +489,7 @@ int main(void) {
                                                         player1_viking->is_blocking = 0;
 
                                                 draw_stage(display, stage_dark_forest, stage_abandoned_factory, stage_calm_forest, game_states);
-                                                draw_player_hitboxes(player1_viking, player2_viking, display, viking_current_frame_idle);
+                                                draw_player_hitboxes(player1_viking, player2_viking, viking_current_frame_idle);
                                                 draw_health_bars(player1_viking, player2_viking, display);
                                                 update_stamina(player1_viking, player2_viking);
                                                 draw_stamina_bars(player1_viking, player2_viking, display);

@@ -43,7 +43,7 @@ void draw_stage_select(
 void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states);
 
 /* Renderiza as hitboxes dos jogadores */
-void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display, unsigned int current_frame_idle);
+void draw_player_hitboxes(Fighter *player1, Fighter *player2, unsigned int current_frame_idle);
 
 /* Anima o soco do lutador na tela */
 void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);

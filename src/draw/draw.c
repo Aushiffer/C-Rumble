@@ -179,7 +179,7 @@ void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO
         }
 }
 
-void draw_player_hitboxes(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display, unsigned int current_frame_idle) {
+void draw_player_hitboxes(Fighter *player1, Fighter *player2, unsigned int current_frame_idle) {
         al_draw_rectangle(
                 player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2) + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
                 player1->hitbox_upper->hitbox_x + player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y + player1->hitbox_upper->hitbox_height / 2),
