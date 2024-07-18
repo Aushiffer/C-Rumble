@@ -1,7 +1,7 @@
 # C-Rumble
-- Jogo de luta feito em C com a biblioteca Allegro
+- Jogo de luta feito em C, com a biblioteca Allegro, para a disciplina de Programação 2 da UFPR
 
-## Plataformas suportadas
+## Plataformas suportadas (testadas)
 - Linux x86_64
 
 ## Dependências
