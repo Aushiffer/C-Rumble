@@ -120,7 +120,7 @@ void reset_players_x(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *displa
 }
 
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {
-        if (!(player1->controller->left && player1->controller->right)) {
+        if (!(player1->controller->left && player1->controller->right) && !player1->is_crouching) {
                 if (player1->controller->right && !(player1->is_blocking || player1->is_crouching)) {
                         move_fighter_right(player1, max_x);
         
@@ -136,7 +136,7 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
                 }
         }
 
-        if (!(player2->controller->left && player2->controller->right)) {
+        if (!(player2->controller->left && player2->controller->right) && !player2->is_crouching) {
                 if (player2->controller->right) {
                         move_fighter_right(player2, max_x);
 

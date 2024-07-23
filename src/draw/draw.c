@@ -137,7 +137,7 @@ void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_na
         }
 }
 
-void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states) {
+void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states) {
         switch (game_states->stage_select_nav) {
                 case 0:
                         al_draw_scaled_bitmap(
@@ -332,6 +332,19 @@ void draw_blocking_animation(Fighter *player) {
                 );
 }
 
+void draw_lo_blocking_animation(Fighter *player) {
+        if (player->direction_facing == 0)
+                al_draw_bitmap(
+                        player->lo_punch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->lo_punch_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y, 0
+                );
+        else
+                al_draw_bitmap(
+                        player->lo_punch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->lo_punch_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                );
+}
+
 void draw_crouching_animation(Fighter *player) {
         if (player->direction_facing == 0)
                 al_draw_bitmap(
@@ -348,34 +361,34 @@ void draw_crouching_animation(Fighter *player) {
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
         const float health_bar_width = 512.0;
 
-        al_draw_filled_rectangle(32, 32, health_bar_width, 64, COLOR_LIGHT_RED);
-        al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, (float)al_get_display_width(display) - health_bar_width, 64, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle(16, 32, health_bar_width, 64, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle((float)al_get_display_width(display) - 16, 32, (float)al_get_display_width(display) - health_bar_width, 64, COLOR_LIGHT_RED);
 
         if (player1->health > 0)
-                al_draw_filled_rectangle(32, 32, health_bar_width * (player1->health / MAX_HEALTH), 64, COLOR_YELLOW);
+                al_draw_filled_rectangle(16, 32, health_bar_width * (player1->health / MAX_HEALTH), 64, COLOR_YELLOW);
 
         if (player2->health > 0) {
                 float player2_health_bar_width = health_bar_width * (player2->health / MAX_HEALTH);
-                float player2_health_bar_start_x = (float)al_get_display_width(display) - 32 - player2_health_bar_width;
+                float player2_health_bar_start_x = (float)al_get_display_width(display) - 16 - player2_health_bar_width;
                 
-                al_draw_filled_rectangle(player2_health_bar_start_x + 32, 32, player2_health_bar_start_x + player2_health_bar_width, 64, COLOR_YELLOW);
+                al_draw_filled_rectangle(player2_health_bar_start_x + 16, 32, player2_health_bar_start_x + player2_health_bar_width, 64, COLOR_YELLOW);
         }
 }
 
 void draw_stamina_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
         const float stamina_bar_width = 512.0;
 
-        al_draw_filled_rectangle(32, 76, stamina_bar_width, 96, COLOR_LIGHT_RED);
-        al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 76, (float)al_get_display_width(display) - stamina_bar_width, 96, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle(16, 76, stamina_bar_width, 96, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle((float)al_get_display_width(display) - 16, 76, (float)al_get_display_width(display) - stamina_bar_width, 96, COLOR_LIGHT_RED);
 
         if (player1->stamina > 0)
-                al_draw_filled_rectangle(32, 76, stamina_bar_width * (player1->stamina / MAX_STAMINA), 96, COLOR_LIGHT_GREEN);
+                al_draw_filled_rectangle(16, 76, stamina_bar_width * (player1->stamina / MAX_STAMINA), 96, COLOR_LIGHT_GREEN);
 
         if (player2->stamina > 0) {
                 float player2_stamina_bar_width = stamina_bar_width * (player2->stamina / MAX_STAMINA);
-                float player2_stamina_bar_start_x = (float)al_get_display_width(display) - 32 - player2_stamina_bar_width;
+                float player2_stamina_bar_start_x = (float)al_get_display_width(display) - 16 - player2_stamina_bar_width;
                 
-                al_draw_filled_rectangle(player2_stamina_bar_start_x + 32, 76, player2_stamina_bar_start_x + player2_stamina_bar_width, 96, COLOR_LIGHT_GREEN);
+                al_draw_filled_rectangle(player2_stamina_bar_start_x + 16, 76, player2_stamina_bar_start_x + player2_stamina_bar_width, 96, COLOR_LIGHT_GREEN);
         }
 }
 

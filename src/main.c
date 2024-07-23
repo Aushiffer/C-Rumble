@@ -295,13 +295,6 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_damage_spriteset = load_spriteset(NUM_DAMAGE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_damage/viking_damage", MAXLEN_SPRITE_PATH);
-
-        if (!viking_damage_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's damage sprite set\n");
-                exit(AL_LOAD_SPRITE_ERROR);
-        }
-
         ALLEGRO_BITMAP **viking_death_spriteset = load_spriteset(NUM_DEATH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_death/viking_death", MAXLEN_SPRITE_PATH);
 
         if (!viking_death_spriteset) {
@@ -449,13 +442,13 @@ int main(void) {
                                                 handle_rumble_end(player1_viking, player2_viking, display, game_states);
                                                 handle_rumble_end(player2_viking, player1_viking, display, game_states);
 
-                                                if (player2_viking->stamina < 0)
+                                                if (player2_viking->stamina <= 0)
                                                         player2_viking->is_blocking = 0;
 
-                                                if (player1_viking->stamina < 0)
+                                                if (player1_viking->stamina <= 0)
                                                         player1_viking->is_blocking = 0;
 
-                                                draw_stage(display, stage_dark_forest, stage_abandoned_factory, stage_calm_forest, game_states);
+                                                draw_stages(display, stage_dark_forest, stage_abandoned_factory, stage_calm_forest, game_states);
                                                 draw_player_hitboxes(player1_viking, player2_viking, viking_current_frame_idle);
                                                 draw_health_bars(player1_viking, player2_viking, display);
                                                 update_stamina(player1_viking, player2_viking);
