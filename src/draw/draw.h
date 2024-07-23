@@ -63,6 +63,9 @@ void draw_idle_animation(Fighter *player, unsigned int current_frame);
 /* Anima o personagem bloqueando */
 void draw_blocking_animation(Fighter *player);
 
+/* Anima o personagem bloqueando agachado */
+void draw_lo_blocking_animation(Fighter *player);
+
 /* Anima o personagem abaixado */
 void draw_crouching_animation(Fighter *player);
 

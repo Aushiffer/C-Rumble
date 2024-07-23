@@ -7,7 +7,6 @@ Fighter *create_fighter(
         float max_x, float max_y, 
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
         ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
-        ALLEGRO_BITMAP **damage_spriteset, ALLEGRO_BITMAP **death_spriteset,
         ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
         ALLEGRO_BITMAP **crouch_spriteset, unsigned char direction_facing, 
         float absolute_height
@@ -29,8 +28,6 @@ Fighter *create_fighter(
         fighter->hi_punch_spriteset = hi_punch_spriteset;
         fighter->lo_punch_spriteset = lo_punch_spriteset;
         fighter->kick_spriteset = kick_spriteset;
-        fighter->damage_spriteset = damage_spriteset;
-        fighter->death_spriteset = death_spriteset;
         fighter->hi_block_spriteset = hi_block_spriteset;
         fighter->running_spriteset = running_spriteset;
         fighter->crouch_spriteset = crouch_spriteset;
@@ -102,13 +99,24 @@ void update_stamina(Fighter *player1, Fighter *player2) {
                 player1->stamina += 0.25;
 }
 
-void reset_fighter_flags(Fighter *player) {
-        player->is_blocking = 0;
-        player->is_crouching = 0;
-        player->is_kicking = 0;
-        player->is_punching = 0;
-        player->is_running_left = 0;
-        player->is_running_right = 0;
+void handle_rumble_end(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display, GameStates *game_states) {
+        if (player2->health <= 0) {
+                player1->rounds_won++;
+
+                if (player1->rounds_won == 3)
+                        game_states->rumble_end = 1;
+                else
+                        player2->health = MAX_HEALTH;
+
+                reset_players_x(player1, player2, display);
+        }
+}
+
+void reset_players_x(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
+        player1->hitbox_upper->hitbox_x = 94.5;
+        player2->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
+        player1->hitbox_lower->hitbox_x = 94.5;
+        player2->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
 }
 
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y) {

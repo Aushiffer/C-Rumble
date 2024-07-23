@@ -3,8 +3,10 @@
 
 #include <stdlib.h>
 #include <allegro5/bitmap.h>
+#include <allegro5/display.h>
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
+#include "../game_states/game_states.h"
 
 #define PLAYER_STEPS 15.0
 #define MAX_HEALTH 100.0
@@ -19,8 +21,6 @@ typedef struct Fighter {
         ALLEGRO_BITMAP **hi_punch_spriteset;
         ALLEGRO_BITMAP **lo_punch_spriteset;
         ALLEGRO_BITMAP **kick_spriteset;
-        ALLEGRO_BITMAP **damage_spriteset;
-        ALLEGRO_BITMAP **death_spriteset;
         ALLEGRO_BITMAP **hi_block_spriteset;
         ALLEGRO_BITMAP **running_spriteset;
         ALLEGRO_BITMAP **crouch_spriteset;
@@ -44,7 +44,6 @@ Fighter *create_fighter(
         float max_x, float max_y, 
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
         ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
-        ALLEGRO_BITMAP **damage_spriteset, ALLEGRO_BITMAP **death_spriteset,
         ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
         ALLEGRO_BITMAP **crouch_spriteset, unsigned char direction_facing, 
         float absolute_height
@@ -71,8 +70,11 @@ void move_fighter_kick(Fighter *fighter);
 /* Atualiza a stamina os jogadores */
 void update_stamina(Fighter *player1, Fighter *player2);
 
-/* Reseta todas as flags do jogador */
-void reset_fighter_flags(Fighter *player);
+/* Implementa lógica para um dos jogadores vencer */
+void handle_rumble_end(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display, GameStates *game_states);
+
+/* Reseta o x de ambos os jogadores */
+void reset_players_x(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
 
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
 void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y);

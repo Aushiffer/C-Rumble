@@ -32,7 +32,7 @@
 #define FRAME_DURATION_PUNCH 0.088888
 #define FRAME_DURATION_KICK 0.055555
 #define FRAME_DURATION_LO_PUNCH 0.055555
-#define NUM_IDLE_FRAMES 8
+#define NUM_VIKING_IDLE_FRAMES 8
 #define NUM_RUNNING_FRAMES 8
 #define NUM_DAMAGE_FRAMES 3
 #define NUM_DEATH_FRAMES 11
@@ -281,14 +281,14 @@ int main(void) {
         }
 
         char sprite_path_buf[MAXLEN_SPRITE_PATH]; /* String variável usada para encontrar o caminho dos sprites */
-        ALLEGRO_BITMAP **viking_idle_spriteset = load_spriteset(NUM_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_idle/viking_idle", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **viking_idle_spriteset = load_spriteset(NUM_VIKING_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_idle/viking_idle", MAXLEN_SPRITE_PATH);
 
         if (!viking_idle_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load the viking's idle sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_running_spriteset = load_spriteset(NUM_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_running/viking_running", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **viking_running_spriteset = load_spriteset(NUM_VIKING_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_running/viking_running", MAXLEN_SPRITE_PATH);
 
         if (!viking_running_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load the viking's running sprite set\n");
@@ -366,7 +366,6 @@ int main(void) {
                 al_get_display_width(display), al_get_display_height(display), 
                 viking_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
-                viking_damage_spriteset, viking_death_spriteset, 
                 viking_hi_block_spriteset, viking_running_spriteset, 
                 viking_crouch_spriteset, 0, 
                 (float)al_get_display_height(display) - 256.0
@@ -383,7 +382,6 @@ int main(void) {
                 al_get_display_width(display), al_get_display_height(display), 
                 viking_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
-                viking_damage_spriteset, viking_death_spriteset,
                 viking_hi_block_spriteset, viking_running_spriteset, 
                 viking_crouch_spriteset, 1, 
                 (float)al_get_display_height(display) - 256.0
@@ -428,11 +426,7 @@ int main(void) {
                                                 spearwoman_icon, fire_warrior_icon, 
                                                 game_states
                                         );
-
-                                        player1_viking->hitbox_upper->hitbox_x = 94.5;
-                                        player2_viking->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
-                                        player1_viking->hitbox_lower->hitbox_x = 94.5;
-                                        player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
+                                        reset_players_x(player1_viking, player2_viking, display);
                                 } else if (game_states->stage_select) {
                                         draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
 
@@ -449,38 +443,11 @@ int main(void) {
 
                                                 if (viking_time_frame_idle >= FRAME_DURATION_IDLE) {
                                                         viking_time_frame_idle = 0;
-                                                        viking_current_frame_idle = (viking_current_frame_idle + 1) % NUM_IDLE_FRAMES;
+                                                        viking_current_frame_idle = (viking_current_frame_idle + 1) % NUM_VIKING_IDLE_FRAMES;
                                                 }
 
-                                                if (player2_viking->health <= 0) {
-                                                        player1_viking->rounds_won++;
-
-                                                        if (player1_viking->rounds_won == 3)
-                                                                game_states->rumble_end = 1;
-                                                        else
-                                                                player2_viking->health = MAX_HEALTH;
-
-                                                        player1_viking->hitbox_upper->hitbox_x = 94.5;
-                                                        player2_viking->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
-                                                        player1_viking->hitbox_lower->hitbox_x = 94.5;
-                                                        player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
-                                                        player1_viking->is_running_right = 0;
-                                                        player1_viking->is_running_left = 0;
-                                                }
-
-                                                if (player1_viking->health <= 0) {
-                                                        player2_viking->rounds_won++;
-
-                                                        if (player2_viking->rounds_won == 3)
-                                                                game_states->rumble_end = 1;
-                                                        else
-                                                                player1_viking->health = MAX_HEALTH;
-
-                                                        player1_viking->hitbox_upper->hitbox_x = 94.5;
-                                                        player2_viking->hitbox_upper->hitbox_x = (float)al_get_display_width(display) - 94.5;
-                                                        player1_viking->hitbox_lower->hitbox_x = 94.5;
-                                                        player2_viking->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
-                                                }
+                                                handle_rumble_end(player1_viking, player2_viking, display, game_states);
+                                                handle_rumble_end(player2_viking, player1_viking, display, game_states);
 
                                                 if (player2_viking->stamina < 0)
                                                         player2_viking->is_blocking = 0;
@@ -887,7 +854,7 @@ int main(void) {
                 fire_warrior_icon, stage_select_arrow_icon, 
                 stage_dark_forest, stage_abandoned_factory
         );
-        destroy_spriteset(viking_idle_spriteset, NUM_IDLE_FRAMES);
+        destroy_spriteset(viking_idle_spriteset, NUM_VIKING_IDLE_FRAMES);
         destroy_spriteset(viking_running_spriteset, NUM_RUNNING_FRAMES);
         destroy_spriteset(viking_hi_block_spriteset, NUM_BLOCK_FRAMES);
         destroy_spriteset(viking_hi_punch_spriteset, NUM_HI_PUNCH_FRAMES);

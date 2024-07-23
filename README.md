@@ -10,10 +10,7 @@
 - Allegro (https://github.com/liballeg/allegro_wiki/wiki/Quickstart)
 
 ## Como rodar o jogo
-- git clone https://github.com/Aushiffer/C-Rumble.git
-- cd C-Rumble
-- make
-- make run
+- make && make run
 
 ## Como jogar
 - Leia a documentação no diretório "docs"
