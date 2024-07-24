@@ -14,7 +14,6 @@ enum AllegroFlags {
         AL_LOAD_FONT_ERROR,
         AL_LOAD_SAMPLE_ERROR,
         AL_SET_AUDIO_ERROR,
-        AL_PLAY_SAMPLE_ERROR,
         AL_CREATE_EVENT_QUEUE_ERROR,
         AL_CREATE_TIMER_ERROR
 };
