@@ -441,9 +441,6 @@ int main(void) {
                                         reset_players_x(player1_viking, player2_viking, display);
                                 } else if (game_states->stage_select) {
                                         draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
-
-                                        player1_viking->rounds_won = 0;
-                                        player2_viking->rounds_won = 0;
                                 } else if (game_states->rumble) {
                                         if (!game_states->rumble_pause) {
                                                 viking_time_frame_idle += 1.0 / FRAMES_PER_SECOND;
@@ -458,8 +455,11 @@ int main(void) {
                                                         viking_current_frame_idle = (viking_current_frame_idle + 1) % NUM_VIKING_IDLE_FRAMES;
                                                 }
 
-                                                handle_rumble_end(player1_viking, player2_viking, display, game_states);
-                                                handle_rumble_end(player2_viking, player1_viking, display, game_states);
+                                                if (player2_viking->health <= 0)
+                                                        handle_rumble_end(player1_viking, player2_viking, display, game_states);
+                                                
+                                                if (player1_viking->health <= 0)
+                                                        handle_rumble_end(player2_viking, player1_viking, display, game_states);
 
                                                 if (player2_viking->stamina <= 0)
                                                         player2_viking->is_blocking = 0;
@@ -591,6 +591,8 @@ int main(void) {
                         game_states->stage_select_nav = 0;
                         game_states->play_stage_select_sample = 1;
                         game_states->menu_select = 0;
+                        player1_viking->rounds_won = 0;
+                        player2_viking->rounds_won = 0;
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
@@ -785,7 +787,7 @@ int main(void) {
                                                 );
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                        handle_pause_selection(menu_confirm_sample, menu_confirm_sample_id, dark_forest_sample_id, abandoned_factory_sample_id, game_states);
+                                        handle_pause_selection(menu_confirm_sample, menu_confirm_sample_id, dark_forest_sample_id, abandoned_factory_sample_id, calm_forest_sample_id, game_states);
                                 }
 
                                 /* Botões on-press */

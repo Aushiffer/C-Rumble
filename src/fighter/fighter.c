@@ -100,18 +100,23 @@ void update_stamina(Fighter *player1, Fighter *player2) {
 }
 
 void handle_rumble_end(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display, GameStates *game_states) {
-        if (player2->health <= 0) {
-                player1->rounds_won++;
+        player1->rounds_won++;
 
-                if (player1->rounds_won == 3) {
-                        game_states->rumble_end = 1;
-                        game_states->play_rumble_end_sample = 1;
-                } else {
-                        player2->health = MAX_HEALTH;
-                }
-
-                reset_players_x(player1, player2, display);
+        if (player1->rounds_won == 3) {
+                game_states->rumble_end = 1;
+                game_states->play_rumble_end_sample = 1;
+                player2->health = MAX_HEALTH;
+                player2->stamina = MAX_STAMINA;
+                player1->health = MAX_HEALTH;
+                player1->stamina = MAX_STAMINA;
+        } else {
+                player2->health = MAX_HEALTH;
+                player2->stamina = MAX_STAMINA;
+                player1->health = MAX_HEALTH;
+                player1->stamina = MAX_STAMINA;
         }
+
+        reset_players_x(player1, player2, display);
 }
 
 void reset_players_x(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
