@@ -791,26 +791,28 @@ int main(void) {
                                 }
 
                                 /* Botões on-press */
-                                if (event.keyboard.keycode == ALLEGRO_KEY_Z && !game_states->rumble_pause) {
-                                        player1_viking->is_punching = 1;
+                                if (!game_states->rumble_pause) {
+                                        if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                                                player1_viking->is_punching = 1;
 
-                                        if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 251.0 
-                                        && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking || player2_viking->is_blocking))
-                                                player2_viking->health -= 7.0;
+                                                if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 251.0 
+                                                && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking || player2_viking->is_blocking))
+                                                        player2_viking->health -= 7.0;
 
-                                        viking_current_frame_hi_punch = 0;
-                                        viking_time_frame_hi_punch = 0;
-                                        viking_current_frame_lo_punch = 0;
-                                        viking_time_frame_lo_punch = 0;      
-                                } else if (event.keyboard.keycode == ALLEGRO_KEY_X && !game_states->rumble_pause) {
-                                        player1_viking->is_kicking = 1;
-
-                                        if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 206.0 
-                                        && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking || player1_viking->is_crouching || player2_viking->is_blocking))
-                                                player2_viking->health -= 8.0;
-
-                                        viking_current_frame_kick = 0;
-                                        viking_time_frame_kick = 0;
+                                                viking_current_frame_hi_punch = 0;
+                                                viking_time_frame_hi_punch = 0;
+                                                viking_current_frame_lo_punch = 0;
+                                                viking_time_frame_lo_punch = 0;      
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_X) {
+                                                player1_viking->is_kicking = 1;
+        
+                                                if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 206.0 
+                                                && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking || player1_viking->is_crouching || player2_viking->is_blocking))
+                                                        player2_viking->health -= 8.0;
+        
+                                                viking_current_frame_kick = 0;
+                                                viking_time_frame_kick = 0;
+                                        }
                                 }
                         }
 
