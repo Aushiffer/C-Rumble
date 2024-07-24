@@ -105,16 +105,14 @@ void handle_rumble_end(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *disp
         if (player1->rounds_won == 3) {
                 game_states->rumble_end = 1;
                 game_states->play_rumble_end_sample = 1;
-                player2->health = MAX_HEALTH;
-                player2->stamina = MAX_STAMINA;
-                player1->health = MAX_HEALTH;
-                player1->stamina = MAX_STAMINA;
-        } else {
-                player2->health = MAX_HEALTH;
-                player2->stamina = MAX_STAMINA;
-                player1->health = MAX_HEALTH;
-                player1->stamina = MAX_STAMINA;
         }
+
+        player1->direction_facing = 0;
+        player2->direction_facing = 1;
+        player2->health = MAX_HEALTH;
+        player2->stamina = MAX_STAMINA;
+        player1->health = MAX_HEALTH;
+        player1->stamina = MAX_STAMINA;
 
         reset_players_x(player1, player2, display);
 }
