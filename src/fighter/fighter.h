@@ -71,7 +71,7 @@ void move_fighter_kick(Fighter *fighter);
 void update_stamina(Fighter *player1, Fighter *player2);
 
 /* Implementa lógica para um dos jogadores vencer */
-void handle_rumble_end(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display, GameStates *game_states);
+void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_states);
 
 /* Reseta o x de ambos os jogadores */
 void reset_players_x(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
