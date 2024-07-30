@@ -33,7 +33,7 @@ Fighter *create_fighter(
         fighter->running_spriteset = running_spriteset;
         fighter->crouch_spriteset = crouch_spriteset;
 
-        fighter->hitbox_upper = create_hitbox(width, height, x, y, max_x, max_y);
+        fighter->hitbox_upper = create_hitbox(width, height, x, y + (float)al_get_bitmap_width(idle_spriteset[0]) / 2 + 32, max_x, max_y);
 
         if (!fighter->hitbox_upper)
                 return NULL;
@@ -93,8 +93,8 @@ void move_fighter_jump(Fighter *fighter, const float gravity, ALLEGRO_DISPLAY *d
         fighter->velocity_y += gravity;
         fighter->hitbox_upper->hitbox_y += fighter->velocity_y;
 
-        if (fighter->hitbox_upper->hitbox_y >= (float)al_get_display_height(display) - 256.0) {
-                fighter->hitbox_upper->hitbox_y = (float)al_get_display_height(display) - 256.0;
+        if (fighter->hitbox_upper->hitbox_y >= fighter->absolute_height) {
+                fighter->hitbox_upper->hitbox_y = fighter->absolute_height;
                 fighter->velocity_y = 0.0;
                 fighter->on_ground = 1;
         }
@@ -155,8 +155,6 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
         if (!player1->on_ground)
                 move_fighter_jump(player1, GRAVITY, display);
         
-        printf("%f\n", player1->velocity_y);
-
         if (!(player2->controller->left && player2->controller->right) && !player2->is_crouching) {
                 if (player2->controller->right) {
                         move_fighter_right(player2, max_x);

@@ -172,24 +172,24 @@ void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGR
 
 void draw_player_hitboxes(Fighter *player1, Fighter *player2) {
         al_draw_rectangle(
-                player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2),
-                player1->hitbox_upper->hitbox_x + player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y + player1->hitbox_upper->hitbox_height / 2),
+                player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2,
+                player1->hitbox_upper->hitbox_x + player1->hitbox_upper->hitbox_width / 2, player1->hitbox_upper->hitbox_y + player1->hitbox_upper->hitbox_height / 2,
                 COLOR_LIGHT_RED, 2.0
         );
         al_draw_rectangle(
-                player1->hitbox_lower->hitbox_x - player1->hitbox_lower->hitbox_width / 2, (player1->hitbox_lower->hitbox_y - player1->hitbox_lower->hitbox_height / 2),
-                player1->hitbox_lower->hitbox_x + player1->hitbox_lower->hitbox_width / 2, (player1->hitbox_lower->hitbox_y + player1->hitbox_lower->hitbox_height / 2),
+                player1->hitbox_lower->hitbox_x - player1->hitbox_lower->hitbox_width / 2, player1->hitbox_lower->hitbox_y - player1->hitbox_lower->hitbox_height / 2,
+                player1->hitbox_lower->hitbox_x + player1->hitbox_lower->hitbox_width / 2, player1->hitbox_lower->hitbox_y + player1->hitbox_lower->hitbox_height / 2,
                 al_map_rgb(0, 0, 255), 2.0
         );
         al_draw_rectangle(
-               player2->hitbox_upper->hitbox_x -player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y - player2->hitbox_upper->hitbox_height / 2,
-               player2->hitbox_upper->hitbox_x +player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y + player2->hitbox_upper->hitbox_height / 2,
-                COLOR_LIGHT_RED, 2.0
+               player2->hitbox_upper->hitbox_x - player2->hitbox_upper->hitbox_width / 2, player2->hitbox_upper->hitbox_y - player2->hitbox_upper->hitbox_height / 2,
+               player2->hitbox_upper->hitbox_x + player2->hitbox_upper->hitbox_width / 2, player2->hitbox_upper->hitbox_y + player2->hitbox_upper->hitbox_height / 2,
+               COLOR_LIGHT_RED, 2.0
         );
         al_draw_rectangle(
-               player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2),
-               player2->hitbox_lower->hitbox_x + player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y + player2->hitbox_lower->hitbox_height / 2),
-                al_map_rgb(0, 0, 255), 2.0
+               player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2,
+               player2->hitbox_lower->hitbox_x + player2->hitbox_lower->hitbox_width / 2, player2->hitbox_lower->hitbox_y + player2->hitbox_lower->hitbox_height / 2,
+               al_map_rgb(0, 0, 255), 2.0
         );
 }
 
@@ -328,8 +328,6 @@ void draw_idle_animation(Fighter *player, unsigned int current_frame) {
                         player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                 );
         }
-
-        player->hitbox_upper->hitbox_y = player->absolute_height;
 }
 
 void draw_blocking_animation(Fighter *player) {
