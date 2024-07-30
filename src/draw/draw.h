@@ -43,7 +43,7 @@ void draw_stage_select(
 void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states);
 
 /* Renderiza as hitboxes dos jogadores */
-void draw_player_hitboxes(Fighter *player1, Fighter *player2, unsigned int current_frame_idle);
+void draw_player_hitboxes(Fighter *player1, Fighter *player2);
 
 /* Anima o soco do lutador na tela */
 void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
@@ -77,6 +77,9 @@ void draw_stamina_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *disp
 
 /* Renderiza nomes dos personagens embaixo das barras de vida */
 void draw_rumble_header(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *rumble_display_character_name_font, ALLEGRO_FONT *character_select_header_font, char *wins_text_p1, char *wins_text_p2);
+
+/* Renderiza a tela de fim de jogo */
+void draw_rumble_end(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *header_font, ALLEGRO_FONT *prompt_input_font, Fighter *player1, Fighter *player2);
 
 /* Renderiza a tela de pause */
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states);

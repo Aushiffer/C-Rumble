@@ -414,25 +414,7 @@ int main(void) {
 
                 if (event.type == ALLEGRO_EVENT_TIMER) {
                         if (game_states->rumble_end) {
-                                al_clear_to_color(COLOR_WHITE);
-                                al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
-                                al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
-
-                                if (player1_viking->rounds_won == 3 && player2_viking->rounds_won != 3) {
-                                        al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "P1 WINS!");
-                                        al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "P1 WINS!");
-                                } else if (player2_viking->rounds_won == 3 && player1_viking->rounds_won != 3) {
-                                        al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "P2 WINS!");
-                                        al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "P2 WINS!");
-                                } else {
-                                        al_draw_text(menu_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
-                                        al_draw_text(menu_header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
-                                }
-
-                                al_draw_text(menu_options_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 4, (float)al_get_display_height(display) - 128, ALLEGRO_ALIGN_CENTRE, "PRESS ENTER");
-                                al_draw_text(menu_options_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) - 128, ALLEGRO_ALIGN_CENTRE, "PRESS ENTER");
-
-                                game_states->rumble = 0;
+                                draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_viking, player2_viking);
                         } else {
                                 if (game_states->menu) {
                                         draw_menu(menu_header_font, menu_options_font, display, game_states);
@@ -481,11 +463,11 @@ int main(void) {
                                                         player1_viking->is_blocking = 0;
 
                                                 draw_stages(display, stage_dark_forest, stage_abandoned_factory, stage_calm_forest, game_states);
-                                                draw_player_hitboxes(player1_viking, player2_viking, viking_current_frame_idle);
+                                                draw_player_hitboxes(player1_viking, player2_viking);
                                                 draw_health_bars(player1_viking, player2_viking, display);
                                                 update_stamina(player1_viking, player2_viking);
                                                 draw_stamina_bars(player1_viking, player2_viking, display);
-                                                update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), al_get_display_height(display));
+                                                update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), display);
                                                 snprintf(wins_text_p1, MAXLEN_PLAYER_WINS, "WINS: %d", player1_viking->rounds_won);
                                                 snprintf(wins_text_p2, MAXLEN_PLAYER_WINS, "WINS: %d", player2_viking->rounds_won);
                                                 draw_rumble_header(game_states, display, rumble_display_character_name_font, character_select_header_font, wins_text_p1, wins_text_p2);
@@ -544,7 +526,7 @@ int main(void) {
 
                         al_flip_display();
                 } else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE || (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)) {
-                                break;
+                        break;
                 }
 
                 if (game_states->menu) {
@@ -669,31 +651,8 @@ int main(void) {
                                                 menu_select_sample_id
                                         );
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && !game_states->character_select_nav_p2_confirm) {
-                                        game_states->character_select_nav_p2_confirm = 1;
-
                                         al_play_sample(character_select_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
-
-                                        switch (game_states->character_select_nav_p2) {
-                                                case 0:
-                                                        game_states->rumble_fighter_p2 = 0;
-
-                                                        break;
-
-                                                case 1:
-                                                        game_states->rumble_fighter_p2 = 1;
-
-                                                        break;
-
-                                                case 2:
-                                                        game_states->rumble_fighter_p2 = 2;
-
-                                                        break;
-
-                                                case 3:
-                                                        game_states->rumble_fighter_p2 = 3;
-
-                                                        break;
-                                        }
+                                        update_fighter_selectors(game_states);
                                 }
                         }
 
@@ -825,6 +784,11 @@ int main(void) {
         
                                                 viking_current_frame_kick_p1 = 0;
                                                 viking_time_frame_kick_p1 = 0;
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE && player1_viking->on_ground) {
+                                                player1_viking->velocity_y = JUMP_STRENGTH;
+                                                player1_viking->on_ground = 0;
+                                                player1_viking->can_jump_again = 0;
+                                                player1_viking->controller->up = 1;
                                         }
 
                                         if (event.keyboard.keycode == ALLEGRO_KEY_J) {

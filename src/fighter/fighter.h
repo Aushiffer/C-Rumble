@@ -11,6 +11,8 @@
 #define PLAYER_STEPS 15.0
 #define MAX_HEALTH 100.0
 #define MAX_STAMINA 100.0
+#define GRAVITY 1.0
+#define JUMP_STRENGTH -20.0
 
 /* Lutador */
 typedef struct Fighter {
@@ -27,6 +29,7 @@ typedef struct Fighter {
         float health;
         float stamina;
         float absolute_height;
+        float velocity_y;
         unsigned char direction_facing;
         unsigned char rounds_won;
         unsigned char is_running_right;
@@ -35,6 +38,8 @@ typedef struct Fighter {
         unsigned char is_kicking;
         unsigned char is_blocking;
         unsigned char is_crouching;
+        unsigned char on_ground;
+        unsigned char can_jump_again;
 } Fighter;
 
 /* Cria um novo lutador */
@@ -56,7 +61,7 @@ void move_fighter_right(Fighter *fighter, unsigned short max_x);
 void move_fighter_left(Fighter *fighter);
 
 /* Pular */
-void move_fighter_jump(Fighter *fighter, unsigned short max_x, unsigned short max_y);
+void move_fighter_jump(Fighter *fighter, const float gravity, ALLEGRO_DISPLAY *display);
 
 /* Abaixar */
 void move_fighter_crouch(Fighter *fighter);
@@ -77,7 +82,10 @@ void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_stat
 void reset_players_x(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
 
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
-void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, unsigned short max_y);
+void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, ALLEGRO_DISPLAY *display);
+
+/* Atualiza os seletores de personagem */
+void update_fighter_selectors(GameStates *game_states);
 
 /* Destrói um lutador */
 void destroy_fighter(Fighter *fighter);

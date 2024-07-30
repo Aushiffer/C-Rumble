@@ -130,11 +130,6 @@ void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_na
                         al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "CALM FOREST");
 
                         break;
-
-                default:
-                        fprintf(stderr, "[-] main(): invalid stage\n");
-
-                        break;
         }
 }
 
@@ -172,32 +167,27 @@ void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGR
                         );
 
                         break;
-
-                default:
-                        fprintf(stderr, "[-] main(): invalid stage\n");
-
-                        break;
         }
 }
 
-void draw_player_hitboxes(Fighter *player1, Fighter *player2, unsigned int current_frame_idle) {
+void draw_player_hitboxes(Fighter *player1, Fighter *player2) {
         al_draw_rectangle(
-                player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2) + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
+                player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2),
                 player1->hitbox_upper->hitbox_x + player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y + player1->hitbox_upper->hitbox_height / 2),
                 COLOR_LIGHT_RED, 2.0
         );
         al_draw_rectangle(
-                player1->hitbox_lower->hitbox_x - player1->hitbox_lower->hitbox_width / 2, (player1->hitbox_lower->hitbox_y - player1->hitbox_lower->hitbox_height / 2) + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
+                player1->hitbox_lower->hitbox_x - player1->hitbox_lower->hitbox_width / 2, (player1->hitbox_lower->hitbox_y - player1->hitbox_lower->hitbox_height / 2),
                 player1->hitbox_lower->hitbox_x + player1->hitbox_lower->hitbox_width / 2, (player1->hitbox_lower->hitbox_y + player1->hitbox_lower->hitbox_height / 2),
                 al_map_rgb(0, 0, 255), 2.0
         );
         al_draw_rectangle(
-               player2->hitbox_upper->hitbox_x -player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y - player2->hitbox_upper->hitbox_height / 2 + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
+               player2->hitbox_upper->hitbox_x -player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y - player2->hitbox_upper->hitbox_height / 2,
                player2->hitbox_upper->hitbox_x +player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y + player2->hitbox_upper->hitbox_height / 2,
                 COLOR_LIGHT_RED, 2.0
         );
         al_draw_rectangle(
-               player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2) + ((float)al_get_bitmap_height(player2->idle_spriteset[current_frame_idle])) / 2,
+               player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2),
                player2->hitbox_lower->hitbox_x + player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y + player2->hitbox_lower->hitbox_height / 2),
                 al_map_rgb(0, 0, 255), 2.0
         );
@@ -470,6 +460,28 @@ void draw_rumble_header(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEG
         al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 148, ALLEGRO_ALIGN_RIGHT, wins_text_p2);
         al_draw_text(character_select_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 - 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
         al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
+}
+
+void draw_rumble_end(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *header_font, ALLEGRO_FONT *prompt_input_font, Fighter *player1, Fighter *player2) {
+        al_clear_to_color(COLOR_WHITE);
+        al_draw_text(header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
+        al_draw_text(header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
+
+        if ((player1->rounds_won == 2 && player2->rounds_won == 1) || (player1->rounds_won == 2 && player2->rounds_won == 0)) {
+                al_draw_text(header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "P1 WINS!");
+                al_draw_text(header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "P1 WINS!");
+        } else if ((player2->rounds_won == 2 && player1->rounds_won == 1) || (player2->rounds_won == 2 && player1->rounds_won == 0)) {
+                al_draw_text(header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "P2 WINS!");
+                al_draw_text(header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "P2 WINS!");
+        } else {
+                al_draw_text(header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
+                al_draw_text(header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
+        }
+
+        al_draw_text(prompt_input_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 4, (float)al_get_display_height(display) - 128, ALLEGRO_ALIGN_CENTRE, "PRESS ENTER");
+        al_draw_text(prompt_input_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) - 128, ALLEGRO_ALIGN_CENTRE, "PRESS ENTER");
+
+        game_states->rumble = 0;
 }
 
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
