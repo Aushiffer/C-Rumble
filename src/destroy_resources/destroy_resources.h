@@ -1,11 +1,12 @@
 #ifndef __DESTROY_RESOURCES__
 #define __DESTROY_RESOURCES__
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_audio.h>
 
-#define ARRAY_SIZE 100000
+#define ARRAY_MAX_SIZE 100000
 
 typedef struct BitmapGarbageArray {
         ALLEGRO_BITMAP **array;

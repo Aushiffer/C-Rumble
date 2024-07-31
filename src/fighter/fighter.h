@@ -8,6 +8,7 @@
 #include "../controller/controller.h"
 #include "../game_states/game_states.h"
 
+/* Macros do Viking */
 #define NUM_VIKING_IDLE_FRAMES 8
 #define NUM_VIKING_RUNNING_FRAMES 8
 #define NUM_VIKING_KICK_FRAMES 7
@@ -70,7 +71,7 @@ void move_fighter_right(Fighter *fighter, unsigned short max_x);
 void move_fighter_left(Fighter *fighter);
 
 /* Pular */
-void move_fighter_jump(Fighter *fighter, const float gravity, ALLEGRO_DISPLAY *display);
+void move_fighter_jump(Fighter *fighter, const float gravity);
 
 /* Abaixar */
 void move_fighter_crouch(Fighter *fighter);
@@ -91,7 +92,7 @@ void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_stat
 void reset_players_x(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
 
 /* Atualiza as posições dos jogadores. Implemente sempre dentro do evento de timer */
-void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, ALLEGRO_DISPLAY *display);
+void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x);
 
 /* Atualiza os seletores de personagem */
 void update_fighter_selectors(GameStates *game_states);

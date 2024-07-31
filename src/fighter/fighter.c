@@ -90,7 +90,7 @@ void move_fighter_crouch(Fighter *fighter) {
         fighter->hitbox_upper->hitbox_y = fighter->hitbox_lower->hitbox_y;
 }
 
-void move_fighter_jump(Fighter *fighter, const float gravity, ALLEGRO_DISPLAY *display) {
+void move_fighter_jump(Fighter *fighter, const float gravity) {
         fighter->velocity_y += gravity;
         fighter->hitbox_upper->hitbox_y += fighter->velocity_y;
 
@@ -136,7 +136,7 @@ void reset_players_x(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *displa
         player2->hitbox_lower->hitbox_x = (float)al_get_display_width(display) - 94.5;
 }
 
-void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x, ALLEGRO_DISPLAY *display) {
+void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x) {
         if (!(player1->controller->left && player1->controller->right) && !player1->is_crouching) {
                 if (player1->controller->right && !player1->is_blocking) {
                         move_fighter_right(player1, max_x);
@@ -154,7 +154,7 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
         }
 
         if (!player1->on_ground)
-                move_fighter_jump(player1, GRAVITY, display);
+                move_fighter_jump(player1, GRAVITY);
         
         if (!(player2->controller->left && player2->controller->right) && !player2->is_crouching) {
                 if (player2->controller->right) {
@@ -173,7 +173,7 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
         }
 
         if (!player2->on_ground)
-                move_fighter_jump(player2, GRAVITY, display);
+                move_fighter_jump(player2, GRAVITY);
 }
 
 void update_fighter_selectors(GameStates *game_states) {

@@ -20,7 +20,8 @@ enum AllegroFlags {
 
 enum MiscFlags {
         INVALID_GAME_STATES_ERROR = 14,
-        INVALID_FIGHTER_ERROR
+        INVALID_FIGHTER_ERROR,
+        INVALID_GARBAGE_ARRAY
 };
 
 #endif // __MAIN_FUNC_FLAGS__

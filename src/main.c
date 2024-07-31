@@ -47,7 +47,18 @@ int main(void) {
         al_hide_mouse_cursor(display);
 
         BitmapGarbageArray *bitmap_garbage_array = create_bitmap_garbage_array();
+
+        if (!bitmap_garbage_array) {
+                fprintf(stderr, "[-] main(): failed to create the bitmap garbage array\n");
+                exit(INVALID_GARBAGE_ARRAY);
+        }
+
         SampleGarbageArray *sample_garbage_array = create_sample_garbage_array();
+
+        if (!sample_garbage_array) {
+                fprintf(stderr, "[-] main(): failed to create the sample garbage array\n");
+                exit(INVALID_GARBAGE_ARRAY);
+        }
 
         ALLEGRO_TIMER *timer = al_create_timer(1.0 / FRAMES_PER_SECOND);
         ALLEGRO_BITMAP *window_icon = al_load_bitmap("imgs/icons/window_icon.png");
@@ -194,6 +205,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, menu_sample);
+
         ALLEGRO_SAMPLE_ID menu_select_sample_id;
         ALLEGRO_SAMPLE *menu_select_sample = al_load_sample("sfx/menu_select_option.ogg");
 
@@ -201,6 +214,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load menu_select_sample.ogg\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, menu_select_sample);
 
         ALLEGRO_SAMPLE_ID menu_confirm_sample_id;
         ALLEGRO_SAMPLE *menu_confirm_sample = al_load_sample("sfx/menu_confirm_option.ogg");
@@ -210,6 +225,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, menu_confirm_sample);
+
         ALLEGRO_SAMPLE_ID character_select_sample_id;
         ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 13 - Without Me.ogg");
 
@@ -217,6 +234,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load character select screen music\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, character_select_sample);
 
         ALLEGRO_SAMPLE_ID character_select_welcome_sample_id;
         ALLEGRO_SAMPLE *character_select_welcome_sample = al_load_sample("sfx/choose_your_character.ogg");
@@ -226,6 +245,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, character_select_welcome_sample);
+
         ALLEGRO_SAMPLE_ID cancel_sound_sample_id;
         ALLEGRO_SAMPLE *cancel_sound_sample = al_load_sample("sfx/cancel.ogg");
 
@@ -233,6 +254,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load cancel.ogg\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, cancel_sound_sample);
 
         ALLEGRO_SAMPLE_ID character_confirm_sample_id;
         ALLEGRO_SAMPLE *character_select_confirm_sample = al_load_sample("sfx/character_confirm.ogg");
@@ -242,6 +265,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, character_select_confirm_sample);
+
         ALLEGRO_SAMPLE_ID stage_select_sample_id;
         ALLEGRO_SAMPLE *stage_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 15 - Fear.ogg");
 
@@ -249,6 +274,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load stage select music\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, stage_select_sample);
 
         ALLEGRO_SAMPLE_ID pause_sound_effect_id;
         ALLEGRO_SAMPLE *pause_sound_effect = al_load_sample("sfx/pause.ogg");
@@ -258,6 +285,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, pause_sound_effect);
+
         ALLEGRO_SAMPLE_ID dark_forest_sample_id;
         ALLEGRO_SAMPLE *dark_forest_sample = al_load_sample("music/dark_forest_soundtrack.ogg");
 
@@ -265,6 +294,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load -> dark forest soundtrack\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, dark_forest_sample);
 
         ALLEGRO_SAMPLE_ID abandoned_factory_sample_id;
         ALLEGRO_SAMPLE *abandoned_factory_sample = al_load_sample("music/abandoned_factory_soundtrack.ogg");
@@ -274,6 +305,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, abandoned_factory_sample);
+
         ALLEGRO_SAMPLE_ID calm_forest_sample_id;
         ALLEGRO_SAMPLE *calm_forest_sample = al_load_sample("music/calm_forest_soundtrack.ogg");
 
@@ -282,6 +315,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, calm_forest_sample);
+
         ALLEGRO_SAMPLE_ID rumble_end_sample_id;
         ALLEGRO_SAMPLE *rumble_end_sample = al_load_sample("music/Final Fantasy VII - Victory Fanfare [HD].ogg");
 
@@ -289,6 +324,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load rumble end sample\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, rumble_end_sample);
         
         ALLEGRO_EVENT event;
 
@@ -475,7 +512,7 @@ int main(void) {
                                                 draw_health_bars(player1_viking, player2_viking, display);
                                                 update_stamina(player1_viking, player2_viking);
                                                 draw_stamina_bars(player1_viking, player2_viking, display);
-                                                update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), display);
+                                                update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display));
                                                 snprintf(wins_text_p1, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player1_viking->rounds_won);
                                                 snprintf(wins_text_p2, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player2_viking->rounds_won);
                                                 draw_rumble_header(game_states, display, rumble_display_character_name_font, character_select_header_font, wins_text_p1, wins_text_p2);
@@ -792,7 +829,7 @@ int main(void) {
         
                                                 if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 206.0 
                                                 && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking ||player2_viking->is_blocking))
-                                                        player2_viking->health -= 8.0;
+                                                        player2_viking->health -= 7.5;
         
                                                 viking_current_frame_kick_p1 = 0;
                                                 viking_time_frame_kick_p1 = 0;
@@ -818,7 +855,7 @@ int main(void) {
         
                                                 if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 206.0 
                                                 && !(player2_viking->is_running_right || player2_viking->is_running_left || player2_viking->is_blocking || player1_viking->is_blocking))
-                                                        player1_viking->health -= 8.0;
+                                                        player1_viking->health -= 7.5;
         
                                                 viking_current_frame_kick_p2 = 0;
                                                 viking_time_frame_kick_p2 = 0;
@@ -912,6 +949,7 @@ int main(void) {
         printf("\n[+] main(): exiting game...\n");
         destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
         destroy_bitmap_garbage_array(bitmap_garbage_array);
+        destroy_sample_garbage_array(sample_garbage_array);
         destroy_fighter(player1_viking, game_states);
         destroy_game_states(game_states);
         al_destroy_display(display);
