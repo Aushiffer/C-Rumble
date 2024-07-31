@@ -33,7 +33,7 @@ Fighter *create_fighter(
         fighter->running_spriteset = running_spriteset;
         fighter->crouch_spriteset = crouch_spriteset;
 
-        fighter->hitbox_upper = create_hitbox(width, height, x, y + (float)al_get_bitmap_width(idle_spriteset[0]) / 2 + 32, max_x, max_y);
+        fighter->hitbox_upper = create_hitbox(width, height, x, y, max_x, max_y);
 
         if (!fighter->hitbox_upper)
                 return NULL;
@@ -56,7 +56,6 @@ Fighter *create_fighter(
         fighter->is_blocking = 0;
         fighter->is_crouching = 0;
         fighter->on_ground = 1;
-        fighter->can_jump_again = 0;
 
         return fighter;
 }

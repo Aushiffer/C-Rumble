@@ -787,7 +787,6 @@ int main(void) {
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE && player1_viking->on_ground) {
                                                 player1_viking->velocity_y = JUMP_STRENGTH;
                                                 player1_viking->on_ground = 0;
-                                                player1_viking->can_jump_again = 0;
                                                 player1_viking->controller->up = 1;
                                         }
 
