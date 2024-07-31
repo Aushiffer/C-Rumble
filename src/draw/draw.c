@@ -2,6 +2,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/bitmap.h>
+#include <allegro5/bitmap_draw.h>
 #include <allegro5/display.h>
 
 void draw_menu(ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
@@ -129,15 +130,10 @@ void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_na
                         al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "CALM FOREST");
 
                         break;
-
-                default:
-                        fprintf(stderr, "[-] main(): invalid stage\n");
-
-                        break;
         }
 }
 
-void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states) {
+void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states) {
         switch (game_states->stage_select_nav) {
                 case 0:
                         al_draw_scaled_bitmap(
@@ -171,34 +167,29 @@ void draw_stage(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO
                         );
 
                         break;
-
-                default:
-                        fprintf(stderr, "[-] main(): invalid stage\n");
-
-                        break;
         }
 }
 
-void draw_player_hitboxes(Fighter *player1, Fighter *player2, unsigned int current_frame_idle) {
+void draw_player_hitboxes(Fighter *player1, Fighter *player2) {
         al_draw_rectangle(
-                player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2) + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
-                player1->hitbox_upper->hitbox_x + player1->hitbox_upper->hitbox_width / 2, (player1->hitbox_upper->hitbox_y + player1->hitbox_upper->hitbox_height / 2),
+                player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2,
+                player1->hitbox_upper->hitbox_x + player1->hitbox_upper->hitbox_width / 2, player1->hitbox_upper->hitbox_y + player1->hitbox_upper->hitbox_height / 2,
                 COLOR_LIGHT_RED, 2.0
         );
         al_draw_rectangle(
-                player1->hitbox_lower->hitbox_x - player1->hitbox_lower->hitbox_width / 2, (player1->hitbox_lower->hitbox_y - player1->hitbox_lower->hitbox_height / 2) + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
-                player1->hitbox_lower->hitbox_x + player1->hitbox_lower->hitbox_width / 2, (player1->hitbox_lower->hitbox_y + player1->hitbox_lower->hitbox_height / 2),
+                player1->hitbox_lower->hitbox_x - player1->hitbox_lower->hitbox_width / 2, player1->hitbox_lower->hitbox_y - player1->hitbox_lower->hitbox_height / 2,
+                player1->hitbox_lower->hitbox_x + player1->hitbox_lower->hitbox_width / 2, player1->hitbox_lower->hitbox_y + player1->hitbox_lower->hitbox_height / 2,
                 al_map_rgb(0, 0, 255), 2.0
         );
         al_draw_rectangle(
-               player2->hitbox_upper->hitbox_x -player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y - player2->hitbox_upper->hitbox_height / 2 + ((float)al_get_bitmap_height(player1->idle_spriteset[current_frame_idle])) / 2,
-               player2->hitbox_upper->hitbox_x +player2->hitbox_upper->hitbox_width / 2,player2->hitbox_upper->hitbox_y + player2->hitbox_upper->hitbox_height / 2,
-                COLOR_LIGHT_RED, 2.0
+               player2->hitbox_upper->hitbox_x - player2->hitbox_upper->hitbox_width / 2, player2->hitbox_upper->hitbox_y - player2->hitbox_upper->hitbox_height / 2,
+               player2->hitbox_upper->hitbox_x + player2->hitbox_upper->hitbox_width / 2, player2->hitbox_upper->hitbox_y + player2->hitbox_upper->hitbox_height / 2,
+               COLOR_LIGHT_RED, 2.0
         );
         al_draw_rectangle(
-               player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2) + ((float)al_get_bitmap_height(player2->idle_spriteset[current_frame_idle])) / 2,
-               player2->hitbox_lower->hitbox_x + player2->hitbox_lower->hitbox_width / 2, (player2->hitbox_lower->hitbox_y + player2->hitbox_lower->hitbox_height / 2),
-                al_map_rgb(0, 0, 255), 2.0
+               player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2,
+               player2->hitbox_lower->hitbox_x + player2->hitbox_lower->hitbox_width / 2, player2->hitbox_lower->hitbox_y + player2->hitbox_lower->hitbox_height / 2,
+               al_map_rgb(0, 0, 255), 2.0
         );
 }
 
@@ -217,10 +208,16 @@ void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_
                         player->is_punching = 0;
         }
 
-        al_draw_bitmap(
-                player->hi_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_punch_spriteset[(*current_frame)]) / 2 + 64,
-                player->hitbox_upper->hitbox_y, 0
-        );
+        if (player->direction_facing == 0)
+                al_draw_bitmap(
+                        player->hi_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_punch_spriteset[(*current_frame)]) / 2 + 64,
+                        player->hitbox_upper->hitbox_y, 0
+                );
+        else
+                al_draw_bitmap(
+                        player->hi_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_punch_spriteset[(*current_frame)]) / 2 - 64,
+                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                );
 }
 
 void draw_lo_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
@@ -238,10 +235,16 @@ void draw_lo_punch_animation(Fighter *player, float frame_duration, float *time_
                         player->is_punching = 0;
         }
 
-        al_draw_bitmap(
-                player->lo_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->lo_punch_spriteset[(*current_frame)]) / 2,
-                player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->lo_punch_spriteset[(*current_frame)]) / 8 - 32, 0
-        );
+        if (player->direction_facing == 0)
+                al_draw_bitmap(
+                        player->lo_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->lo_punch_spriteset[(*current_frame)]) / 2,
+                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->lo_punch_spriteset[(*current_frame)]) / 2 - 12, 0
+                );
+        else
+                al_draw_bitmap(
+                        player->lo_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->lo_punch_spriteset[(*current_frame)]) / 2,
+                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->lo_punch_spriteset[(*current_frame)]) / 2 - 12, ALLEGRO_FLIP_HORIZONTAL
+                );
 }
 
 void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
@@ -259,15 +262,25 @@ void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_f
                         player->is_kicking = 0;
         }
 
-        if ((*current_frame) == 3 || (*current_frame) == 4 || (*current_frame) == 5) {
+        if (((*current_frame) == 3 || (*current_frame) == 4 || (*current_frame) == 5) && player->direction_facing == 0) {
                 al_draw_bitmap(
                         player->kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->kick_spriteset[(*current_frame)]) / 2,
                         player->hitbox_upper->hitbox_y + 128, 0
                 );
-        } else {
+        } else if (player->direction_facing == 0) {
                 al_draw_bitmap(
                         player->kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->kick_spriteset[(*current_frame)]) / 2,
                         player->hitbox_upper->hitbox_y, 0
+                );
+        } else if (((*current_frame) == 3 || (*current_frame) == 4 || (*current_frame) == 5) && player->direction_facing == 1) {
+                al_draw_bitmap(
+                        player->kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->kick_spriteset[(*current_frame)]) / 2,
+                        player->hitbox_upper->hitbox_y + 128, ALLEGRO_FLIP_HORIZONTAL
+                );
+        } else if (player->direction_facing == 1) {
+                al_draw_bitmap(
+                        player->kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->kick_spriteset[(*current_frame)]) / 2,
+                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                 );
         }
 }
@@ -315,8 +328,6 @@ void draw_idle_animation(Fighter *player, unsigned int current_frame) {
                         player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                 );
         }
-
-        player->hitbox_upper->hitbox_y = player->absolute_height;
 }
 
 void draw_blocking_animation(Fighter *player) {
@@ -332,50 +343,78 @@ void draw_blocking_animation(Fighter *player) {
                 );
 }
 
-void draw_crouching_animation(Fighter *player) {
+void draw_lo_blocking_animation(Fighter *player) {
         if (player->direction_facing == 0)
                 al_draw_bitmap(
-                        player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
-                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 8 - 32, 0
+                        player->lo_punch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->lo_punch_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 0
                 );
         else
                 al_draw_bitmap(
-                        player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
-                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 8 - 32, ALLEGRO_FLIP_HORIZONTAL
+                        player->lo_punch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->lo_punch_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, ALLEGRO_FLIP_HORIZONTAL
+                );
+}
+
+void draw_crouching_animation(Fighter *player) {
+        if (!player->is_blocking) {
+                if (player->direction_facing == 0)
+                        al_draw_bitmap(
+                                player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
+                                player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 0
+                        );
+                else
+                        al_draw_bitmap(
+                                player->crouch_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, 
+                                player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->crouch_spriteset[0]) / 2, ALLEGRO_FLIP_HORIZONTAL
+                        );
+        }
+}
+
+void draw_jumping_animation(Fighter *player) {
+        if (player->direction_facing == 0)
+                al_draw_bitmap(
+                        player->jump_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->jump_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y, 0
+                );
+        else
+                al_draw_bitmap(
+                        player->jump_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->jump_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                 );
 }
 
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
         const float health_bar_width = 512.0;
 
-        al_draw_filled_rectangle(32, 32, health_bar_width, 64, COLOR_LIGHT_RED);
-        al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 32, (float)al_get_display_width(display) - health_bar_width, 64, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle(16, 32, health_bar_width, 64, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle((float)al_get_display_width(display) - 16, 32, (float)al_get_display_width(display) - health_bar_width, 64, COLOR_LIGHT_RED);
 
         if (player1->health > 0)
-                al_draw_filled_rectangle(32, 32, health_bar_width * (player1->health / MAX_HEALTH), 64, COLOR_YELLOW);
+                al_draw_filled_rectangle(16, 32, health_bar_width * (player1->health / MAX_HEALTH), 64, COLOR_YELLOW);
 
         if (player2->health > 0) {
                 float player2_health_bar_width = health_bar_width * (player2->health / MAX_HEALTH);
-                float player2_health_bar_start_x = (float)al_get_display_width(display) - 32 - player2_health_bar_width;
+                float player2_health_bar_start_x = (float)al_get_display_width(display) - 16 - player2_health_bar_width;
                 
-                al_draw_filled_rectangle(player2_health_bar_start_x + 32, 32, player2_health_bar_start_x + player2_health_bar_width, 64, COLOR_YELLOW);
+                al_draw_filled_rectangle(player2_health_bar_start_x + 16, 32, player2_health_bar_start_x + player2_health_bar_width, 64, COLOR_YELLOW);
         }
 }
 
 void draw_stamina_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
         const float stamina_bar_width = 512.0;
 
-        al_draw_filled_rectangle(32, 76, stamina_bar_width, 96, COLOR_LIGHT_RED);
-        al_draw_filled_rectangle((float)al_get_display_width(display) - 32, 76, (float)al_get_display_width(display) - stamina_bar_width, 96, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle(16, 76, stamina_bar_width, 96, COLOR_LIGHT_RED);
+        al_draw_filled_rectangle((float)al_get_display_width(display) - 16, 76, (float)al_get_display_width(display) - stamina_bar_width, 96, COLOR_LIGHT_RED);
 
         if (player1->stamina > 0)
-                al_draw_filled_rectangle(32, 76, stamina_bar_width * (player1->stamina / MAX_STAMINA), 96, COLOR_LIGHT_GREEN);
+                al_draw_filled_rectangle(16, 76, stamina_bar_width * (player1->stamina / MAX_STAMINA), 96, COLOR_LIGHT_GREEN);
 
         if (player2->stamina > 0) {
                 float player2_stamina_bar_width = stamina_bar_width * (player2->stamina / MAX_STAMINA);
-                float player2_stamina_bar_start_x = (float)al_get_display_width(display) - 32 - player2_stamina_bar_width;
+                float player2_stamina_bar_start_x = (float)al_get_display_width(display) - 16 - player2_stamina_bar_width;
                 
-                al_draw_filled_rectangle(player2_stamina_bar_start_x + 32, 76, player2_stamina_bar_start_x + player2_stamina_bar_width, 96, COLOR_LIGHT_GREEN);
+                al_draw_filled_rectangle(player2_stamina_bar_start_x + 16, 76, player2_stamina_bar_start_x + player2_stamina_bar_width, 96, COLOR_LIGHT_GREEN);
         }
 }
 
@@ -432,6 +471,28 @@ void draw_rumble_header(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEG
         al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 148, ALLEGRO_ALIGN_RIGHT, wins_text_p2);
         al_draw_text(character_select_header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 - 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
         al_draw_text(character_select_header_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 + 4, 32, ALLEGRO_ALIGN_CENTRE, "VS.");
+}
+
+void draw_rumble_end(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *header_font, ALLEGRO_FONT *prompt_input_font, Fighter *player1, Fighter *player2) {
+        al_clear_to_color(COLOR_WHITE);
+        al_draw_text(header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
+        al_draw_text(header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 128, ALLEGRO_ALIGN_CENTRE, "GAME OVER!");
+
+        if ((player1->rounds_won == 2 && player2->rounds_won == 1) || (player1->rounds_won == 2 && player2->rounds_won == 0)) {
+                al_draw_text(header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "P1 WINS!");
+                al_draw_text(header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "P1 WINS!");
+        } else if ((player2->rounds_won == 2 && player1->rounds_won == 1) || (player2->rounds_won == 2 && player1->rounds_won == 0)) {
+                al_draw_text(header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "P2 WINS!");
+                al_draw_text(header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "P2 WINS!");
+        } else {
+                al_draw_text(header_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 8, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
+                al_draw_text(header_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, 356, ALLEGRO_ALIGN_CENTRE, "DRAW!");
+        }
+
+        al_draw_text(prompt_input_font, COLOR_BLACK, (float)al_get_display_width(display) / 2 + 4, (float)al_get_display_height(display) - 128, ALLEGRO_ALIGN_CENTRE, "PRESS ENTER");
+        al_draw_text(prompt_input_font, COLOR_ORANGE, (float)al_get_display_width(display) / 2, (float)al_get_display_height(display) - 128, ALLEGRO_ALIGN_CENTRE, "PRESS ENTER");
+
+        game_states->rumble = 0;
 }
 
 void draw_pause(ALLEGRO_FONT *pause_header_font, ALLEGRO_FONT *pause_options_font, ALLEGRO_DISPLAY *display, GameStates *game_states) {
