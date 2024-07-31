@@ -60,6 +60,13 @@ int main(void) {
                 exit(INVALID_GARBAGE_ARRAY);
         }
 
+        FontGarbageArray *font_garbage_array = create_font_garbage_array();
+
+        if (!font_garbage_array) {
+                fprintf(stderr, "[-] main(): failed to create the font garbage array\n");
+                exit(INVALID_GARBAGE_ARRAY);
+        }
+
         ALLEGRO_TIMER *timer = al_create_timer(1.0 / FRAMES_PER_SECOND);
         ALLEGRO_BITMAP *window_icon = al_load_bitmap("imgs/icons/window_icon.png");
 
@@ -157,12 +164,16 @@ int main(void) {
                 exit(AL_LOAD_FONT_ERROR);
         }
 
+        insert_font_array(font_garbage_array, menu_header_font);
+
         ALLEGRO_FONT *menu_options_font = al_load_font("fonts/osaka-re.ttf", 64, 0);
 
         if (!menu_options_font) {
                 fprintf(stderr, "[-] main(): failed to load menu_options_font\n");
                 exit(AL_LOAD_FONT_ERROR);
         }
+
+        insert_font_array(font_garbage_array, menu_options_font);
 
         ALLEGRO_FONT *character_select_header_font = al_load_font("fonts/Osake.ttf", 64, 0);
 
@@ -171,12 +182,16 @@ int main(void) {
                 exit(AL_LOAD_FONT_ERROR);
         }
 
+        insert_font_array(font_garbage_array, character_select_header_font);
+
         ALLEGRO_FONT *character_select_display_name_font = al_load_font("fonts/OsakaBrightDemoRegular.ttf", 32, 0);
 
         if (!character_select_display_name_font) {
                 fprintf(stderr, "[-] main(): failed to load character_select_display_name_font\n");
                 exit(AL_LOAD_FONT_ERROR);
         }
+
+        insert_font_array(font_garbage_array, character_select_display_name_font);
 
         ALLEGRO_FONT *stage_display_name_font = al_load_font("fonts/osaka-re.ttf", 32, 0);
 
@@ -185,12 +200,16 @@ int main(void) {
                 exit(AL_LOAD_FONT_ERROR);
         }
 
+        insert_font_array(font_garbage_array, stage_display_name_font);
+
         ALLEGRO_FONT *rumble_display_character_name_font = al_load_font("fonts/Osake.ttf", 32, 0);
 
         if (!rumble_display_character_name_font) {
                 fprintf(stderr, "[-] main(): failed to load rumble display character name font\n");
                 exit(AL_LOAD_FONT_ERROR);
         }
+
+        insert_font_array(font_garbage_array, rumble_display_character_name_font);
 
         if (!al_install_audio() || !al_init_acodec_addon() || !al_reserve_samples(10)) {
                 fprintf(stderr, "[-] main(): failed to set audio\n");
@@ -947,10 +966,10 @@ int main(void) {
         }
 
         printf("\n[+] main(): exiting game...\n");
-        destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
+        destroy_font_garbage_array(font_garbage_array);
         destroy_bitmap_garbage_array(bitmap_garbage_array);
         destroy_sample_garbage_array(sample_garbage_array);
-        destroy_fighter(player1_viking, game_states);
+        destroy_fighter_sprites(player1_viking);
         destroy_game_states(game_states);
         al_destroy_display(display);
         al_destroy_timer(timer);

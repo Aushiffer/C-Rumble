@@ -98,6 +98,6 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
 void update_fighter_selectors(GameStates *game_states);
 
 /* Destrói um lutador */
-void destroy_fighter(Fighter *fighter, GameStates *game_states);
+void destroy_fighter_sprites(Fighter *fighter);
 
 #endif // __FIGHTER__

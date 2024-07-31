@@ -8,15 +8,23 @@
 
 #define ARRAY_MAX_SIZE 100000
 
+/* Vetor para descarte futuro de bitmaps do jogo */
 typedef struct BitmapGarbageArray {
         ALLEGRO_BITMAP **array;
         unsigned int array_size;
 } BitmapGarbageArray;
 
+/* Vetor para descarte futuro de amostras de áudio do jogo */
 typedef struct SampleGarbageArray {
         ALLEGRO_SAMPLE **array;
         unsigned int array_size;
 } SampleGarbageArray;
+
+/* Vetor para descarte futuro de fontes do jogo */
+typedef struct FontGarbageArray {
+        ALLEGRO_FONT **array;
+        unsigned int array_size;
+} FontGarbageArray;
 
 /* Cria um vetor de descarte de bitmaps */
 BitmapGarbageArray *create_bitmap_garbage_array(void);
@@ -36,30 +44,14 @@ void insert_sample_array(SampleGarbageArray *sample_garbage_array, ALLEGRO_SAMPL
 /* Descarta um vetor de descarte de amostras de áudio */
 void destroy_sample_garbage_array(SampleGarbageArray *sample_garbage_array);
 
-/* Destrói todas as amostras de áudio do jogo */
-void destroy_samples(
-        ALLEGRO_SAMPLE *menu_sample, ALLEGRO_SAMPLE *menu_confirm_sample, 
-        ALLEGRO_SAMPLE *menu_select_sample, ALLEGRO_SAMPLE *cancel_sound_sample,
-        ALLEGRO_SAMPLE *character_select_welcome_sample, ALLEGRO_SAMPLE *character_select_sample,
-        ALLEGRO_SAMPLE *character_select_confirm_sample, ALLEGRO_SAMPLE *pause_sound_effect,
-        ALLEGRO_SAMPLE *dark_forest_sample, ALLEGRO_SAMPLE *abandoned_factory_sample,
-        ALLEGRO_SAMPLE *calm_forest_sample, ALLEGRO_SAMPLE *rumble_end_sample
-);
+/* Cria um vetor de descarte de fontes */
+FontGarbageArray *create_font_garbage_array(void);
 
-/* Destrói todas as fontes usadas no jogo */
-void destroy_fonts(
-        ALLEGRO_FONT *menu_header_font, ALLEGRO_FONT *menu_options_font, 
-        ALLEGRO_FONT *character_select_header_font, ALLEGRO_FONT *character_select_display_name_font
-);
+/* Insere uma fonte no vetor de descartes de fontes */
+void insert_font_array(FontGarbageArray *font_garbage_array, ALLEGRO_FONT *font);
 
-/* Destrói todos os bitmaps usados no jogo */
-void destroy_bitmaps(
-        ALLEGRO_BITMAP *window_icon, ALLEGRO_BITMAP *viking_icon,
-        ALLEGRO_BITMAP *knight_icon, ALLEGRO_BITMAP *spearwoman_icon,
-        ALLEGRO_BITMAP *fire_warrior_icon, ALLEGRO_BITMAP *stage_select_arrow_icon, 
-        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory,
-        ALLEGRO_BITMAP *stage_calm_forest
-);
+/* Descarta um vetor de descarte de fontes */
+void destroy_font_garbage_array(FontGarbageArray *font_garbage_array);
 
 /* Destrói um set de sprites de um personagem */
 void destroy_spriteset(ALLEGRO_BITMAP **spriteset, unsigned int num_frames);

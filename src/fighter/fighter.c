@@ -202,45 +202,18 @@ void update_fighter_selectors(GameStates *game_states) {
         }
 }
 
-void destroy_fighter(Fighter *fighter, GameStates *game_states) {
+void destroy_fighter_sprites(Fighter *fighter) {
         if (fighter) {
                 destroy_hitbox(fighter->hitbox_upper);
                 destroy_hitbox(fighter->hitbox_lower);
                 destroy_controller(fighter->controller);
-                
-                switch (fighter->direction_facing) {
-                        case 0:
-                                switch (game_states->rumble_fighter_p1) {
-                                        case 0:
-                                                destroy_spriteset(fighter->idle_spriteset, NUM_VIKING_IDLE_FRAMES);
-                                                destroy_spriteset(fighter->running_spriteset, NUM_VIKING_RUNNING_FRAMES);
-                                                destroy_spriteset(fighter->crouch_spriteset, NUM_VIKING_CROUCH_FRAMES);
-                                                destroy_spriteset(fighter->hi_punch_spriteset, NUM_VIKING_HI_PUNCH_FRAMES);
-                                                destroy_spriteset(fighter->lo_punch_spriteset, NUM_VIKING_LO_PUNCH_FRAMES);
-                                                destroy_spriteset(fighter->hi_block_spriteset, NUM_VIKING_BLOCK_FRAMES);
-                                                destroy_spriteset(fighter->kick_spriteset, NUM_VIKING_KICK_FRAMES);
-
-                                                break;
-                                }
-
-                                break;
-
-                        case 1:
-                                switch (game_states->rumble_fighter_p2) {
-                                        case 0:
-                                                destroy_spriteset(fighter->idle_spriteset, NUM_VIKING_IDLE_FRAMES);
-                                                destroy_spriteset(fighter->running_spriteset, NUM_VIKING_RUNNING_FRAMES);
-                                                destroy_spriteset(fighter->crouch_spriteset, NUM_VIKING_CROUCH_FRAMES);
-                                                destroy_spriteset(fighter->hi_punch_spriteset, NUM_VIKING_HI_PUNCH_FRAMES);
-                                                destroy_spriteset(fighter->lo_punch_spriteset, NUM_VIKING_LO_PUNCH_FRAMES);
-                                                destroy_spriteset(fighter->hi_block_spriteset, NUM_VIKING_BLOCK_FRAMES);
-                                                destroy_spriteset(fighter->kick_spriteset, NUM_VIKING_KICK_FRAMES);
-
-                                                break;
-                                }
-
-                                break;
-                }
+                destroy_spriteset(fighter->idle_spriteset, NUM_VIKING_IDLE_FRAMES);
+                destroy_spriteset(fighter->running_spriteset, NUM_VIKING_RUNNING_FRAMES);
+                destroy_spriteset(fighter->crouch_spriteset, NUM_VIKING_CROUCH_FRAMES);
+                destroy_spriteset(fighter->hi_punch_spriteset, NUM_VIKING_HI_PUNCH_FRAMES);
+                destroy_spriteset(fighter->lo_punch_spriteset, NUM_VIKING_LO_PUNCH_FRAMES);
+                destroy_spriteset(fighter->hi_block_spriteset, NUM_VIKING_BLOCK_FRAMES);
+                destroy_spriteset(fighter->kick_spriteset, NUM_VIKING_KICK_FRAMES);
 
                 free(fighter);
         }
