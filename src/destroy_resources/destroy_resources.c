@@ -1,5 +1,61 @@
 #include "destroy_resources.h"
 
+BitmapGarbageArray *create_bitmap_garbage_array(void) {
+        BitmapGarbageArray *garbage_array = (BitmapGarbageArray *)malloc(sizeof(BitmapGarbageArray));
+
+        if (!garbage_array)
+                return NULL;
+        
+        garbage_array->array = (ALLEGRO_BITMAP **)malloc(ARRAY_SIZE * sizeof(ALLEGRO_BITMAP *));
+
+        if (!garbage_array->array)
+                return NULL;
+
+        garbage_array->array_size = 0;
+
+        return garbage_array;
+}
+
+void insert_bitmap_array(BitmapGarbageArray *bitmap_garbage_array, ALLEGRO_BITMAP *bitmap) {
+        (bitmap_garbage_array->array_size)++;
+        bitmap_garbage_array->array[bitmap_garbage_array->array_size - 1] = bitmap;
+}
+
+void destroy_bitmap_garbage_array(BitmapGarbageArray *bitmap_garbage_array) {
+        for (unsigned int i = 0; i < bitmap_garbage_array->array_size; i++)
+                al_destroy_bitmap(bitmap_garbage_array->array[i]);
+
+        free(bitmap_garbage_array);
+}
+
+SampleGarbageArray *create_sample_garbage_array(void) {
+        SampleGarbageArray *garbage_array = (SampleGarbageArray *)malloc(sizeof(SampleGarbageArray));
+
+        if (!garbage_array)
+                return NULL;
+        
+        garbage_array->array = (ALLEGRO_SAMPLE **)malloc(ARRAY_SIZE * sizeof(ALLEGRO_SAMPLE *));
+
+        if (!garbage_array->array)
+                return NULL;
+
+        garbage_array->array_size = 0;
+
+        return garbage_array;
+}
+
+void insert_sample_array(SampleGarbageArray *sample_garbage_array, ALLEGRO_SAMPLE *sample) {
+        (sample_garbage_array->array_size)++;
+        sample_garbage_array->array[sample_garbage_array->array_size - 1] = sample;
+}
+
+void destroy_sample_garbage_array(SampleGarbageArray *sample_garbage_array) {
+        for (unsigned int i = 0; i < sample_garbage_array->array_size; i++)
+                al_destroy_sample(sample_garbage_array->array[i]);
+
+        free(sample_garbage_array);
+}
+
 void destroy_samples(
         ALLEGRO_SAMPLE *menu_sample, ALLEGRO_SAMPLE *menu_confirm_sample, 
         ALLEGRO_SAMPLE *menu_select_sample, ALLEGRO_SAMPLE *cancel_sound_sample, 

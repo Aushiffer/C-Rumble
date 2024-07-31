@@ -42,7 +42,7 @@ void draw_stage_select(
 /* Renderiza o cenário selecionado pelo jogador */
 void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states);
 
-/* Renderiza as hitboxes dos jogadores */
+/* Renderiza as hitboxes dos jogadores (debugging) */
 void draw_player_hitboxes(Fighter *player1, Fighter *player2);
 
 /* Anima o soco do lutador na tela */

@@ -19,7 +19,6 @@
 #include "selector/selector.h"
 #include "destroy_resources/destroy_resources.h"
 
-/* As macros de frames valem PARA O VIKING APENAS, definir um valor para cada sprite de CADA personagem */
 #define WIN_WIDTH 1366
 #define WIN_HEIGHT 768
 #define NUM_MENU_OPTIONS 2
@@ -47,6 +46,9 @@ int main(void) {
 
         al_hide_mouse_cursor(display);
 
+        BitmapGarbageArray *bitmap_garbage_array = create_bitmap_garbage_array();
+        SampleGarbageArray *sample_garbage_array = create_sample_garbage_array();
+
         ALLEGRO_TIMER *timer = al_create_timer(1.0 / FRAMES_PER_SECOND);
         ALLEGRO_BITMAP *window_icon = al_load_bitmap("imgs/icons/window_icon.png");
 
@@ -55,6 +57,7 @@ int main(void) {
                 exit(AL_LOAD_ICON_ERROR);
         }
 
+        insert_bitmap_array(bitmap_garbage_array, window_icon);
         al_set_display_icon(display, window_icon);
 
         ALLEGRO_BITMAP *viking_icon = al_load_bitmap("imgs/icons/viking_icon.png");
@@ -64,12 +67,16 @@ int main(void) {
                 exit(AL_LOAD_ICON_ERROR);
         }
 
+        insert_bitmap_array(bitmap_garbage_array, viking_icon);
+
         ALLEGRO_BITMAP *knight_icon = al_load_bitmap("imgs/icons/knight_icon.png");
 
         if (!knight_icon) {
                 fprintf(stderr, "[-] main(): failed to load knight_icon.png\n");
                 exit(AL_LOAD_ICON_ERROR);
         }
+
+        insert_bitmap_array(bitmap_garbage_array, knight_icon);
 
         ALLEGRO_BITMAP *spearwoman_icon = al_load_bitmap("imgs/icons/spearwoman_icon.png");
 
@@ -78,6 +85,8 @@ int main(void) {
                 exit(AL_LOAD_ICON_ERROR);
         }
 
+        insert_bitmap_array(bitmap_garbage_array, spearwoman_icon);
+
         ALLEGRO_BITMAP *fire_warrior_icon = al_load_bitmap("imgs/icons/fire_warrior_icon.png");
 
         if (!fire_warrior_icon) {
@@ -85,12 +94,16 @@ int main(void) {
                 exit(AL_LOAD_ICON_ERROR);
         }
 
+        insert_bitmap_array(bitmap_garbage_array, fire_warrior_icon);
+
         ALLEGRO_BITMAP *stage_select_arrow_icon = al_load_bitmap("imgs/icons/stage_select_arrow_icon.png");
 
         if (!stage_select_arrow_icon) {
                 fprintf(stderr, "[-] main(): failed to load stage_select_arrow_icon.png\n");
                 exit(AL_LOAD_ICON_ERROR);
         }
+
+        insert_bitmap_array(bitmap_garbage_array, stage_select_arrow_icon);
         
         ALLEGRO_BITMAP *stage_dark_forest = al_load_bitmap("imgs/stages/stage_dark_forest.png");
 
@@ -99,6 +112,8 @@ int main(void) {
                 exit(AL_LOAD_STAGE_ERROR);
         }
 
+        insert_bitmap_array(bitmap_garbage_array, stage_dark_forest);
+
         ALLEGRO_BITMAP *stage_abandoned_factory = al_load_bitmap("imgs/stages/stage_abandoned_factory.png");
 
         if (!stage_abandoned_factory) {
@@ -106,12 +121,16 @@ int main(void) {
                 exit(AL_LOAD_STAGE_ERROR);
         }
 
+        insert_bitmap_array(bitmap_garbage_array, stage_abandoned_factory);
+
         ALLEGRO_BITMAP *stage_calm_forest = al_load_bitmap("imgs/stages/stage_calm_forest.png");
 
         if (!stage_calm_forest) {
                 fprintf(stderr, "[-] main(): failed to load stage -> calm forest\n");
                 exit(AL_LOAD_STAGE_ERROR);
         }
+
+        insert_bitmap_array(bitmap_garbage_array, stage_calm_forest);
 
         ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
 
@@ -453,7 +472,6 @@ int main(void) {
                                                         player1_viking->is_blocking = 0;
 
                                                 draw_stages(display, stage_dark_forest, stage_abandoned_factory, stage_calm_forest, game_states);
-                                                draw_player_hitboxes(player1_viking, player2_viking);
                                                 draw_health_bars(player1_viking, player2_viking, display);
                                                 update_stamina(player1_viking, player2_viking);
                                                 draw_stamina_bars(player1_viking, player2_viking, display);
@@ -893,21 +911,7 @@ int main(void) {
 
         printf("\n[+] main(): exiting game...\n");
         destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
-        destroy_samples(
-                menu_sample, menu_confirm_sample, 
-                menu_select_sample, cancel_sound_sample, 
-                character_select_welcome_sample, character_select_sample, 
-                character_select_confirm_sample, pause_sound_effect, 
-                dark_forest_sample, abandoned_factory_sample,
-                calm_forest_sample, rumble_end_sample
-        );
-        destroy_bitmaps(
-                window_icon, viking_icon, 
-                knight_icon, spearwoman_icon, 
-                fire_warrior_icon, stage_select_arrow_icon, 
-                stage_dark_forest, stage_abandoned_factory,
-                stage_calm_forest
-        );
+        destroy_bitmap_garbage_array(bitmap_garbage_array);
         destroy_fighter(player1_viking, game_states);
         destroy_game_states(game_states);
         al_destroy_display(display);
