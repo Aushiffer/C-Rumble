@@ -563,20 +563,22 @@ int main(void) {
 
                                                 switch (game_states->rumble_fighter_p2) {
                                                         case 0:
-                                                                if (player2_viking->is_crouching && player2_viking->is_blocking) {
+                                                                if (player2_viking->is_crouching && player2_viking->is_blocking && player2_viking->on_ground) {
                                                                         draw_lo_blocking_animation(player2_viking);
-                                                                } else if (player2_viking->is_punching && player2_viking->is_crouching) {
+                                                                } else if (player2_viking->is_punching && player2_viking->is_crouching && player2_viking->on_ground) {
                                                                         draw_lo_punch_animation(player2_viking, FRAME_DURATION_LO_PUNCH, &viking_time_frame_lo_punch_p2, &viking_current_frame_lo_punch_p2, NUM_VIKING_LO_PUNCH_FRAMES);
-                                                                } else if (player2_viking->is_punching && viking_current_frame_lo_punch_p2 == 0) {
+                                                                } else if (player2_viking->is_punching && viking_current_frame_lo_punch_p2 == 0 && player2_viking->on_ground) {
                                                                         draw_hi_punch_animation(player2_viking, FRAME_DURATION_HI_PUNCH, &viking_time_frame_hi_punch_p2, &viking_current_frame_hi_punch_p2, NUM_VIKING_HI_PUNCH_FRAMES);
-                                                                } else if (player2_viking->is_kicking) {
+                                                                } else if (player2_viking->is_kicking && player2_viking->on_ground) {
                                                                         draw_hi_kick_animation(player2_viking, FRAME_DURATION_KICK, &viking_time_frame_kick_p2, &viking_current_frame_kick_p2, NUM_VIKING_KICK_FRAMES);
-                                                                } else if (player2_viking->is_running_right || player2_viking->is_running_left) {
+                                                                } else if ((player2_viking->is_running_right || player2_viking->is_running_left) &&  player2_viking->on_ground) {
                                                                         draw_running_animation(player2_viking, FRAME_DURATION_RUNNING, &viking_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_VIKING_RUNNING_FRAMES);
-                                                                } else if (player2_viking->is_crouching && !player2_viking->is_blocking) {
+                                                                } else if (player2_viking->is_crouching && !player2_viking->is_blocking && player2_viking->on_ground) {
                                                                         draw_crouching_animation(player2_viking);
-                                                                } else if (player2_viking->is_blocking) {
+                                                                } else if (player2_viking->is_blocking && player2_viking->on_ground) {
                                                                         draw_blocking_animation(player2_viking);
+                                                                } else if (!player2_viking->on_ground) {
+                                                                        draw_jumping_animation(player2_viking);
                                                                 } else {
                                                                         draw_idle_animation(player2_viking, viking_current_frame_idle);
                                                                 }
@@ -852,10 +854,9 @@ int main(void) {
         
                                                 viking_current_frame_kick_p1 = 0;
                                                 viking_time_frame_kick_p1 = 0;
-                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE && player1_viking->on_ground) {
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_W && player1_viking->on_ground) {
                                                 player1_viking->velocity_y = JUMP_STRENGTH;
                                                 player1_viking->on_ground = 0;
-                                                player1_viking->controller->up = 1;
                                         }
 
                                         if (event.keyboard.keycode == ALLEGRO_KEY_K) {
@@ -878,10 +879,9 @@ int main(void) {
         
                                                 viking_current_frame_kick_p2 = 0;
                                                 viking_time_frame_kick_p2 = 0;
-                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_SLASH && player2_viking->on_ground) {
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_UP && player2_viking->on_ground) {
                                                 player2_viking->velocity_y = JUMP_STRENGTH;
                                                 player2_viking->on_ground = 0;
-                                                player2_viking->controller->up = 1;
                                         }
                                 }
                         }
