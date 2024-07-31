@@ -371,6 +371,19 @@ void draw_crouching_animation(Fighter *player) {
         }
 }
 
+void draw_jumping_animation(Fighter *player) {
+        if (player->direction_facing == 0)
+                al_draw_bitmap(
+                        player->jump_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->jump_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y, 0
+                );
+        else
+                al_draw_bitmap(
+                        player->jump_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->jump_spriteset[0]) / 2, 
+                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                );
+}
+
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display) {
         const float health_bar_width = 512.0;
 

@@ -8,6 +8,15 @@
 #include "../controller/controller.h"
 #include "../game_states/game_states.h"
 
+#define NUM_VIKING_IDLE_FRAMES 8
+#define NUM_VIKING_RUNNING_FRAMES 8
+#define NUM_VIKING_KICK_FRAMES 7
+#define NUM_VIKING_HI_PUNCH_FRAMES 4
+#define NUM_VIKING_LO_PUNCH_FRAMES 5
+#define NUM_VIKING_CROUCH_FRAMES 1
+#define NUM_VIKING_BLOCK_FRAMES 1
+#define NUM_VIKING_JUMP_FRAMES 1
+
 #define PLAYER_STEPS 15.0
 #define MAX_HEALTH 100.0
 #define MAX_STAMINA 100.0
@@ -26,6 +35,7 @@ typedef struct Fighter {
         ALLEGRO_BITMAP **hi_block_spriteset;
         ALLEGRO_BITMAP **running_spriteset;
         ALLEGRO_BITMAP **crouch_spriteset;
+        ALLEGRO_BITMAP **jump_spriteset;
         float health;
         float stamina;
         float absolute_height;
@@ -49,8 +59,8 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
         ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
         ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
-        ALLEGRO_BITMAP **crouch_spriteset, unsigned char direction_facing, 
-        float absolute_height
+        ALLEGRO_BITMAP **crouch_spriteset, ALLEGRO_BITMAP **jump_spriteset, 
+        unsigned char direction_facing, float absolute_height
 );
 
 /* Mover à direita */
@@ -87,6 +97,6 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
 void update_fighter_selectors(GameStates *game_states);
 
 /* Destrói um lutador */
-void destroy_fighter(Fighter *fighter);
+void destroy_fighter(Fighter *fighter, GameStates *game_states);
 
 #endif // __FIGHTER__

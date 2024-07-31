@@ -5,7 +5,8 @@ void destroy_samples(
         ALLEGRO_SAMPLE *menu_select_sample, ALLEGRO_SAMPLE *cancel_sound_sample, 
         ALLEGRO_SAMPLE *character_select_welcome_sample, ALLEGRO_SAMPLE *character_select_sample, 
         ALLEGRO_SAMPLE *character_select_confirm_sample, ALLEGRO_SAMPLE *pause_sound_effect,
-        ALLEGRO_SAMPLE *dark_forest_sample, ALLEGRO_SAMPLE *abandoned_factory_sample
+        ALLEGRO_SAMPLE *dark_forest_sample, ALLEGRO_SAMPLE *abandoned_factory_sample,
+        ALLEGRO_SAMPLE *calm_forest_sample, ALLEGRO_SAMPLE *rumble_end_sample
 ) {
         al_destroy_sample(menu_sample);
         al_destroy_sample(menu_confirm_sample);
@@ -17,6 +18,8 @@ void destroy_samples(
         al_destroy_sample(pause_sound_effect);
         al_destroy_sample(dark_forest_sample);
         al_destroy_sample(abandoned_factory_sample);
+        al_destroy_sample(calm_forest_sample);
+        al_destroy_sample(rumble_end_sample);
 }
 
 void destroy_fonts(
@@ -33,7 +36,8 @@ void destroy_bitmaps(
         ALLEGRO_BITMAP *window_icon, ALLEGRO_BITMAP *viking_icon, 
         ALLEGRO_BITMAP *knight_icon, ALLEGRO_BITMAP *spearwoman_icon, 
         ALLEGRO_BITMAP *fire_warrior_icon, ALLEGRO_BITMAP *stage_select_arrow_icon, 
-        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory
+        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory,
+        ALLEGRO_BITMAP *stage_calm_forest
 ) {
         al_destroy_bitmap(window_icon);
         al_destroy_bitmap(viking_icon);
@@ -43,6 +47,7 @@ void destroy_bitmaps(
         al_destroy_bitmap(stage_select_arrow_icon);
         al_destroy_bitmap(stage_dark_forest);
         al_destroy_bitmap(stage_abandoned_factory);
+        al_destroy_bitmap(stage_calm_forest);
 }
 
 void destroy_spriteset(ALLEGRO_BITMAP **spriteset, unsigned int num_frames) {

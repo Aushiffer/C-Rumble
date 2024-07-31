@@ -69,6 +69,9 @@ void draw_lo_blocking_animation(Fighter *player);
 /* Anima o personagem abaixado */
 void draw_crouching_animation(Fighter *player);
 
+/* Anima o personagem pulando */
+void draw_jumping_animation(Fighter *player);
+
 /* Renderiza a barra de vida do jogador */
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
 

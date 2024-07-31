@@ -1,6 +1,7 @@
 #include "fighter.h"
 #include <allegro5/bitmap.h>
 #include <allegro5/display.h>
+#include "../destroy_resources/destroy_resources.h"
 
 Fighter *create_fighter(
         float width, float height, 
@@ -9,8 +10,8 @@ Fighter *create_fighter(
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
         ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
         ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
-        ALLEGRO_BITMAP **crouch_spriteset, unsigned char direction_facing, 
-        float absolute_height
+        ALLEGRO_BITMAP **crouch_spriteset, ALLEGRO_BITMAP **jump_spriteset, 
+        unsigned char direction_facing, float absolute_height
 ) {
         if ((x - width / 2 < 0) || (x + width / 2 > max_x) || (y - height / 2 < 0) || (y + height / 2 > max_y))
                 return NULL;
@@ -32,6 +33,7 @@ Fighter *create_fighter(
         fighter->hi_block_spriteset = hi_block_spriteset;
         fighter->running_spriteset = running_spriteset;
         fighter->crouch_spriteset = crouch_spriteset;
+        fighter->jump_spriteset = jump_spriteset;
 
         fighter->hitbox_upper = create_hitbox(width, height, x, y, max_x, max_y);
 
@@ -169,6 +171,9 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
                         move_fighter_crouch(player2);
                 }
         }
+
+        if (!player2->on_ground)
+                move_fighter_jump(player2, GRAVITY, display);
 }
 
 void update_fighter_selectors(GameStates *game_states) {
@@ -197,11 +202,46 @@ void update_fighter_selectors(GameStates *game_states) {
         }
 }
 
-void destroy_fighter(Fighter *fighter) {
+void destroy_fighter(Fighter *fighter, GameStates *game_states) {
         if (fighter) {
                 destroy_hitbox(fighter->hitbox_upper);
                 destroy_hitbox(fighter->hitbox_lower);
                 destroy_controller(fighter->controller);
+                
+                switch (fighter->direction_facing) {
+                        case 0:
+                                switch (game_states->rumble_fighter_p1) {
+                                        case 0:
+                                                destroy_spriteset(fighter->idle_spriteset, NUM_VIKING_IDLE_FRAMES);
+                                                destroy_spriteset(fighter->running_spriteset, NUM_VIKING_RUNNING_FRAMES);
+                                                destroy_spriteset(fighter->crouch_spriteset, NUM_VIKING_CROUCH_FRAMES);
+                                                destroy_spriteset(fighter->hi_punch_spriteset, NUM_VIKING_HI_PUNCH_FRAMES);
+                                                destroy_spriteset(fighter->lo_punch_spriteset, NUM_VIKING_LO_PUNCH_FRAMES);
+                                                destroy_spriteset(fighter->hi_block_spriteset, NUM_VIKING_BLOCK_FRAMES);
+                                                destroy_spriteset(fighter->kick_spriteset, NUM_VIKING_KICK_FRAMES);
+
+                                                break;
+                                }
+
+                                break;
+
+                        case 1:
+                                switch (game_states->rumble_fighter_p2) {
+                                        case 0:
+                                                destroy_spriteset(fighter->idle_spriteset, NUM_VIKING_IDLE_FRAMES);
+                                                destroy_spriteset(fighter->running_spriteset, NUM_VIKING_RUNNING_FRAMES);
+                                                destroy_spriteset(fighter->crouch_spriteset, NUM_VIKING_CROUCH_FRAMES);
+                                                destroy_spriteset(fighter->hi_punch_spriteset, NUM_VIKING_HI_PUNCH_FRAMES);
+                                                destroy_spriteset(fighter->lo_punch_spriteset, NUM_VIKING_LO_PUNCH_FRAMES);
+                                                destroy_spriteset(fighter->hi_block_spriteset, NUM_VIKING_BLOCK_FRAMES);
+                                                destroy_spriteset(fighter->kick_spriteset, NUM_VIKING_KICK_FRAMES);
+
+                                                break;
+                                }
+
+                                break;
+                }
+
                 free(fighter);
         }
 }

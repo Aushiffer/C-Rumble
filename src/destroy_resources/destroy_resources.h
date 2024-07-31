@@ -11,7 +11,8 @@ void destroy_samples(
         ALLEGRO_SAMPLE *menu_select_sample, ALLEGRO_SAMPLE *cancel_sound_sample,
         ALLEGRO_SAMPLE *character_select_welcome_sample, ALLEGRO_SAMPLE *character_select_sample,
         ALLEGRO_SAMPLE *character_select_confirm_sample, ALLEGRO_SAMPLE *pause_sound_effect,
-        ALLEGRO_SAMPLE *dark_forest_sample, ALLEGRO_SAMPLE *abandoned_factory_sample
+        ALLEGRO_SAMPLE *dark_forest_sample, ALLEGRO_SAMPLE *abandoned_factory_sample,
+        ALLEGRO_SAMPLE *calm_forest_sample, ALLEGRO_SAMPLE *rumble_end_sample
 );
 
 /* Destrói todas as fontes usadas no jogo */
@@ -25,7 +26,8 @@ void destroy_bitmaps(
         ALLEGRO_BITMAP *window_icon, ALLEGRO_BITMAP *viking_icon,
         ALLEGRO_BITMAP *knight_icon, ALLEGRO_BITMAP *spearwoman_icon,
         ALLEGRO_BITMAP *fire_warrior_icon, ALLEGRO_BITMAP *stage_select_arrow_icon, 
-        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory
+        ALLEGRO_BITMAP *stage_dark_forest, ALLEGRO_BITMAP *stage_abandoned_factory,
+        ALLEGRO_BITMAP *stage_calm_forest
 );
 
 /* Destrói um set de sprites de um personagem */
