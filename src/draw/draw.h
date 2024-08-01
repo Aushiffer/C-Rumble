@@ -40,9 +40,9 @@ void draw_stage_select(
 );
 
 /* Renderiza o cenário selecionado pelo jogador */
-void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states);
+void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, ALLEGRO_BITMAP *stage4_bitmap, GameStates *game_states);
 
-/* Renderiza as hitboxes dos jogadores */
+/* Renderiza as hitboxes dos jogadores (debugging) */
 void draw_player_hitboxes(Fighter *player1, Fighter *player2);
 
 /* Anima o soco do lutador na tela */
@@ -70,7 +70,7 @@ void draw_lo_blocking_animation(Fighter *player);
 void draw_crouching_animation(Fighter *player);
 
 /* Anima o personagem pulando */
-void draw_jumping_animation(Fighter *player);
+void draw_jumping_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
 /* Renderiza a barra de vida do jogador */
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);

@@ -19,18 +19,18 @@
 #include "selector/selector.h"
 #include "destroy_resources/destroy_resources.h"
 
-/* As macros de frames valem PARA O VIKING APENAS, definir um valor para cada sprite de CADA personagem */
 #define WIN_WIDTH 1366
 #define WIN_HEIGHT 768
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
-#define NUM_STAGES 3
+#define NUM_STAGES 4
 #define NUM_PAUSE_OPTIONS 3
 #define FRAMES_PER_SECOND 30.0
-#define FRAME_DURATION_IDLE 0.088888
+#define FRAME_DURATION_IDLE 0.055555
+#define FRAME_DURATION_JUMP 0.2
 #define FRAME_DURATION_RUNNING 0.066666
-#define FRAME_DURATION_HI_PUNCH 0.088888
-#define FRAME_DURATION_KICK 0.055555
+#define FRAME_DURATION_HI_PUNCH 0.125
+#define FRAME_DURATION_KICK 0.055555    
 #define FRAME_DURATION_LO_PUNCH 0.055555
 #define MAXLEN_SPRITE_PATH 65
 #define MAXLEN_PLAYER_WINS_STRING 17
@@ -47,6 +47,27 @@ int main(void) {
 
         al_hide_mouse_cursor(display);
 
+        BitmapGarbageArray *bitmap_garbage_array = create_bitmap_garbage_array();
+
+        if (!bitmap_garbage_array) {
+                fprintf(stderr, "[-] main(): failed to create the bitmap garbage array\n");
+                exit(INVALID_GARBAGE_ARRAY);
+        }
+
+        SampleGarbageArray *sample_garbage_array = create_sample_garbage_array();
+
+        if (!sample_garbage_array) {
+                fprintf(stderr, "[-] main(): failed to create the sample garbage array\n");
+                exit(INVALID_GARBAGE_ARRAY);
+        }
+
+        FontGarbageArray *font_garbage_array = create_font_garbage_array();
+
+        if (!font_garbage_array) {
+                fprintf(stderr, "[-] main(): failed to create the font garbage array\n");
+                exit(INVALID_GARBAGE_ARRAY);
+        }
+
         ALLEGRO_TIMER *timer = al_create_timer(1.0 / FRAMES_PER_SECOND);
         ALLEGRO_BITMAP *window_icon = al_load_bitmap("imgs/icons/window_icon.png");
 
@@ -55,63 +76,89 @@ int main(void) {
                 exit(AL_LOAD_ICON_ERROR);
         }
 
+        insert_bitmap_array(bitmap_garbage_array, window_icon);
         al_set_display_icon(display, window_icon);
 
-        ALLEGRO_BITMAP *viking_icon = al_load_bitmap("imgs/icons/viking_icon.png");
+        ALLEGRO_BITMAP *ryu_icon = al_load_bitmap("imgs/icons/ryu_icon.png");
 
-        if (!viking_icon) {
-                fprintf(stderr, "[-] main(): failed to load viking_icon.png\n");
+        if (!ryu_icon) {
+                fprintf(stderr, "[-] main(): failed to load ryu_icon.png\n");
+                exit(AL_LOAD_ICON_ERROR);       
+        }
+
+        insert_bitmap_array(bitmap_garbage_array, ryu_icon);    
+
+        ALLEGRO_BITMAP *ken_icon = al_load_bitmap("imgs/icons/ken_icon.png");
+
+        if (!ken_icon) {
+                fprintf(stderr, "[-] main(): failed to load ken_icon.png\n");
                 exit(AL_LOAD_ICON_ERROR);
         }
 
-        ALLEGRO_BITMAP *knight_icon = al_load_bitmap("imgs/icons/knight_icon.png");
+        insert_bitmap_array(bitmap_garbage_array, ken_icon);
 
-        if (!knight_icon) {
-                fprintf(stderr, "[-] main(): failed to load knight_icon.png\n");
+        ALLEGRO_BITMAP *guile_icon = al_load_bitmap("imgs/icons/guile_icon.png");
+
+        if (!guile_icon) {
+                fprintf(stderr, "[-] main(): failed to load guile_icon.png\n");
                 exit(AL_LOAD_ICON_ERROR);
         }
 
-        ALLEGRO_BITMAP *spearwoman_icon = al_load_bitmap("imgs/icons/spearwoman_icon.png");
+        insert_bitmap_array(bitmap_garbage_array, guile_icon);
 
-        if (!spearwoman_icon) {
-                fprintf(stderr, "[-] main(): failed to load spearwoman_icon.png\n");
+        ALLEGRO_BITMAP *vega_icon = al_load_bitmap("imgs/icons/vega_icon.png");
+
+        if (!vega_icon) {
+                fprintf(stderr, "[-] main(): failed to load vega_icon.png\n");
                 exit(AL_LOAD_ICON_ERROR);
         }
 
-        ALLEGRO_BITMAP *fire_warrior_icon = al_load_bitmap("imgs/icons/fire_warrior_icon.png");
-
-        if (!fire_warrior_icon) {
-                fprintf(stderr, "[-] main(): failed to load fire_warrior_icon.png\n");
-                exit(AL_LOAD_ICON_ERROR);
-        }
+        insert_bitmap_array(bitmap_garbage_array, vega_icon);
 
         ALLEGRO_BITMAP *stage_select_arrow_icon = al_load_bitmap("imgs/icons/stage_select_arrow_icon.png");
 
-        if (!stage_select_arrow_icon) {
+        if (!stage_select_arrow_icon) {                 
                 fprintf(stderr, "[-] main(): failed to load stage_select_arrow_icon.png\n");
                 exit(AL_LOAD_ICON_ERROR);
         }
+
+        insert_bitmap_array(bitmap_garbage_array, stage_select_arrow_icon);
         
-        ALLEGRO_BITMAP *stage_dark_forest = al_load_bitmap("imgs/stages/stage_dark_forest.png");
+        ALLEGRO_BITMAP *stage_ryu = al_load_bitmap("imgs/stages/stage_ryu.png");
 
-        if (!stage_dark_forest) {
-                fprintf(stderr, "[-] main(): failed to load stage -> dark forest\n");
+        if (!stage_ryu) {
+                fprintf(stderr, "[-] main(): failed to load stage -> Suzaku Castle\n");
                 exit(AL_LOAD_STAGE_ERROR);
         }
 
-        ALLEGRO_BITMAP *stage_abandoned_factory = al_load_bitmap("imgs/stages/stage_abandoned_factory.png");
+        insert_bitmap_array(bitmap_garbage_array, stage_ryu);
 
-        if (!stage_abandoned_factory) {
-                fprintf(stderr, "[-] main(): failed to load stage -> abandoned factory\n");
+        ALLEGRO_BITMAP *stage_ken = al_load_bitmap("imgs/stages/stage_ken.png");
+
+        if (!stage_ken) {
+                fprintf(stderr, "[-] main(): failed to load stage -> Battle Harbor\n");
                 exit(AL_LOAD_STAGE_ERROR);
         }
 
-        ALLEGRO_BITMAP *stage_calm_forest = al_load_bitmap("imgs/stages/stage_calm_forest.png");
+        insert_bitmap_array(bitmap_garbage_array, stage_ken);
 
-        if (!stage_calm_forest) {
-                fprintf(stderr, "[-] main(): failed to load stage -> calm forest\n");
+        ALLEGRO_BITMAP *stage_guile = al_load_bitmap("imgs/stages/stage_guile.png");
+
+        if (!stage_guile) {
+                fprintf(stderr, "[-] main(): failed to load stage -> Air Force Base\n");
                 exit(AL_LOAD_STAGE_ERROR);
         }
+
+        insert_bitmap_array(bitmap_garbage_array, stage_guile);
+
+        ALLEGRO_BITMAP *stage_vega = al_load_bitmap("imgs/stages/stage_vega.png");
+
+        if (!stage_vega) {
+                fprintf(stderr, "[-] main(): failed to load stage -> Méson De La Taberna\n");
+                exit(AL_LOAD_STAGE_ERROR);
+        }
+
+        insert_bitmap_array(bitmap_garbage_array, stage_vega);
 
         ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
 
@@ -127,12 +174,16 @@ int main(void) {
                 exit(AL_LOAD_FONT_ERROR);
         }
 
+        insert_font_array(font_garbage_array, menu_header_font);
+
         ALLEGRO_FONT *menu_options_font = al_load_font("fonts/osaka-re.ttf", 64, 0);
 
         if (!menu_options_font) {
                 fprintf(stderr, "[-] main(): failed to load menu_options_font\n");
                 exit(AL_LOAD_FONT_ERROR);
         }
+
+        insert_font_array(font_garbage_array, menu_options_font);
 
         ALLEGRO_FONT *character_select_header_font = al_load_font("fonts/Osake.ttf", 64, 0);
 
@@ -141,12 +192,16 @@ int main(void) {
                 exit(AL_LOAD_FONT_ERROR);
         }
 
+        insert_font_array(font_garbage_array, character_select_header_font);
+
         ALLEGRO_FONT *character_select_display_name_font = al_load_font("fonts/OsakaBrightDemoRegular.ttf", 32, 0);
 
         if (!character_select_display_name_font) {
                 fprintf(stderr, "[-] main(): failed to load character_select_display_name_font\n");
                 exit(AL_LOAD_FONT_ERROR);
         }
+
+        insert_font_array(font_garbage_array, character_select_display_name_font);
 
         ALLEGRO_FONT *stage_display_name_font = al_load_font("fonts/osaka-re.ttf", 32, 0);
 
@@ -155,12 +210,16 @@ int main(void) {
                 exit(AL_LOAD_FONT_ERROR);
         }
 
+        insert_font_array(font_garbage_array, stage_display_name_font);
+
         ALLEGRO_FONT *rumble_display_character_name_font = al_load_font("fonts/Osake.ttf", 32, 0);
 
         if (!rumble_display_character_name_font) {
                 fprintf(stderr, "[-] main(): failed to load rumble display character name font\n");
                 exit(AL_LOAD_FONT_ERROR);
         }
+
+        insert_font_array(font_garbage_array, rumble_display_character_name_font);
 
         if (!al_install_audio() || !al_init_acodec_addon() || !al_reserve_samples(10)) {
                 fprintf(stderr, "[-] main(): failed to set audio\n");
@@ -175,6 +234,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, menu_sample);
+
         ALLEGRO_SAMPLE_ID menu_select_sample_id;
         ALLEGRO_SAMPLE *menu_select_sample = al_load_sample("sfx/menu_select_option.ogg");
 
@@ -182,6 +243,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load menu_select_sample.ogg\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, menu_select_sample);
 
         ALLEGRO_SAMPLE_ID menu_confirm_sample_id;
         ALLEGRO_SAMPLE *menu_confirm_sample = al_load_sample("sfx/menu_confirm_option.ogg");
@@ -191,6 +254,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, menu_confirm_sample);
+
         ALLEGRO_SAMPLE_ID character_select_sample_id;
         ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 13 - Without Me.ogg");
 
@@ -198,6 +263,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load character select screen music\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, character_select_sample);
 
         ALLEGRO_SAMPLE_ID character_select_welcome_sample_id;
         ALLEGRO_SAMPLE *character_select_welcome_sample = al_load_sample("sfx/choose_your_character.ogg");
@@ -207,6 +274,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, character_select_welcome_sample);
+
         ALLEGRO_SAMPLE_ID cancel_sound_sample_id;
         ALLEGRO_SAMPLE *cancel_sound_sample = al_load_sample("sfx/cancel.ogg");
 
@@ -214,6 +283,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load cancel.ogg\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, cancel_sound_sample);
 
         ALLEGRO_SAMPLE_ID character_confirm_sample_id;
         ALLEGRO_SAMPLE *character_select_confirm_sample = al_load_sample("sfx/character_confirm.ogg");
@@ -223,6 +294,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, character_select_confirm_sample);
+
         ALLEGRO_SAMPLE_ID stage_select_sample_id;
         ALLEGRO_SAMPLE *stage_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 15 - Fear.ogg");
 
@@ -230,6 +303,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load stage select music\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, stage_select_sample);
 
         ALLEGRO_SAMPLE_ID pause_sound_effect_id;
         ALLEGRO_SAMPLE *pause_sound_effect = al_load_sample("sfx/pause.ogg");
@@ -239,6 +314,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, pause_sound_effect);
+
         ALLEGRO_SAMPLE_ID dark_forest_sample_id;
         ALLEGRO_SAMPLE *dark_forest_sample = al_load_sample("music/dark_forest_soundtrack.ogg");
 
@@ -246,6 +323,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load -> dark forest soundtrack\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, dark_forest_sample);
 
         ALLEGRO_SAMPLE_ID abandoned_factory_sample_id;
         ALLEGRO_SAMPLE *abandoned_factory_sample = al_load_sample("music/abandoned_factory_soundtrack.ogg");
@@ -255,6 +334,8 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, abandoned_factory_sample);
+
         ALLEGRO_SAMPLE_ID calm_forest_sample_id;
         ALLEGRO_SAMPLE *calm_forest_sample = al_load_sample("music/calm_forest_soundtrack.ogg");
 
@@ -263,6 +344,18 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, calm_forest_sample);
+
+        ALLEGRO_SAMPLE_ID vega_theme_sample_id;
+        ALLEGRO_SAMPLE *vega_theme_sample = al_load_sample("music/vega_theme.ogg");
+
+        if (!vega_theme_sample) {
+               fprintf(stderr, "[-] main(): failed to load -> Vega's theme\n");
+               exit(AL_LOAD_SAMPLE_ERROR); 
+        }
+
+        insert_sample_array(sample_garbage_array, vega_theme_sample);
+
         ALLEGRO_SAMPLE_ID rumble_end_sample_id;
         ALLEGRO_SAMPLE *rumble_end_sample = al_load_sample("music/Final Fantasy VII - Victory Fanfare [HD].ogg");
 
@@ -270,6 +363,8 @@ int main(void) {
                 fprintf(stderr, "[-] main(): failed to load rumble end sample\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
+
+        insert_sample_array(sample_garbage_array, rumble_end_sample);
         
         ALLEGRO_EVENT event;
 
@@ -283,23 +378,23 @@ int main(void) {
 
         if (!game_states) {
                 fprintf(stderr, "[-] main(): failed to create game states structure\n");
-                exit(INVALID_GAME_STATES_ERROR);
+                exit(INVALID_GAME_STATES_ERROR);                
         }
 
         char sprite_path_buf[MAXLEN_SPRITE_PATH]; /* String variável usada para encontrar o caminho dos sprites */
-        ALLEGRO_BITMAP **viking_idle_spriteset = load_spriteset(NUM_VIKING_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_idle/viking_idle", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_idle_spriteset = load_spriteset(NUM_VIKING_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_idle/ryu_idle", MAXLEN_SPRITE_PATH);
 
-        if (!viking_idle_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's idle sprite set\n");
+        if (!ryu_idle_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ryu's idle sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_running_spriteset = load_spriteset(NUM_VIKING_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_running/viking_running", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_running_spriteset = load_spriteset(NUM_VIKING_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_running/ryu_running", MAXLEN_SPRITE_PATH);
 
-        if (!viking_running_spriteset) {
+        if (!ryu_running_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load the viking's running sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
-        }
+        }                                               
 
         ALLEGRO_BITMAP **viking_kick_spriteset = load_spriteset(NUM_VIKING_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_kick/viking_kick", MAXLEN_SPRITE_PATH);
 
@@ -315,10 +410,10 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_hi_punch_spriteset = load_spriteset(NUM_VIKING_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_hi_punch/viking_hi_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **viking_hi_punch_spriteset = load_spriteset(NUM_VIKING_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_hi_punch/ryu_hi_punch", MAXLEN_SPRITE_PATH);
 
         if (!viking_hi_punch_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's hi punch sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Ryu's hi punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
@@ -336,24 +431,25 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_jump_spriteset = load_spriteset(NUM_VIKING_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_jump/viking_jump", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_jump_spriteset = load_spriteset(NUM_VIKING_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_jump/ryu_jumping", MAXLEN_SPRITE_PATH);
 
-        if (!viking_jump_spriteset) {
+        if (!ryu_jump_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load the viking's jump spriteset\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
         float player1_x = 94.5;
         float player2_x = al_get_display_width(display) - 94.5;
-        float viking_time_frame_idle = 0.0;
-        float viking_time_frame_hi_punch_p1 = 0.0;
-        float viking_time_frame_lo_punch_p1 = 0.0;
-        float viking_time_frame_hi_punch_p2 = 0.0;
-        float viking_time_frame_lo_punch_p2 = 0.0;
-        float viking_time_frame_kick_p1 = 0.0;
-        float viking_time_frame_kick_p2 = 0.0;
-        float viking_time_frame_block = 0.0;
-        float viking_time_frame_running = 0.0;
+        float ryu_frame_time_idle = 0.0;
+        float ryu_time_frame_hi_punch_p1 = 0.0;
+        float ryu_time_frame_lo_punch_p1 = 0.0;
+        float ryu_time_frame_hi_punch_p2 = 0.0;
+        float ryu_time_frame_lo_punch_p2 = 0.0;
+        float ryu_time_frame_kick_p1 = 0.0;
+        float ryu_time_frame_kick_p2 = 0.0;
+        float ryu_time_frame_block = 0.0;
+        float ryu_time_frame_running = 0.0;
+        float ryu_time_frame_jump = 0.0;
         unsigned int viking_current_frame_idle = 0;
         unsigned int viking_current_frame_hi_punch_p1 = 0;
         unsigned int viking_current_frame_lo_punch_p1 = 0;
@@ -362,37 +458,38 @@ int main(void) {
         unsigned int viking_current_frame_kick_p1 = 0;
         unsigned int viking_current_frame_kick_p2 = 0;
         unsigned int viking_current_frame_running = 0;
+        unsigned int ryu_current_frame_jump = 0;
         char wins_text_p1[MAXLEN_PLAYER_WINS_STRING];
         char wins_text_p2[MAXLEN_PLAYER_WINS_STRING];
 
-        Fighter *player1_viking = create_fighter(
-                189.0, 256.0, 
-                player1_x, (float)al_get_display_height(display) - 256.0, 
+        Fighter *player1_ryu = create_fighter(
+                166.0, 256.0, 
+                player1_x, (float)al_get_display_height(display) - 295.0, 
                 al_get_display_width(display), al_get_display_height(display), 
-                viking_idle_spriteset, viking_hi_punch_spriteset, 
+                ryu_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
-                viking_hi_block_spriteset, viking_running_spriteset, 
-                viking_crouch_spriteset, viking_jump_spriteset, 
-                0, (float)al_get_display_height(display) - 256.0
+                viking_hi_block_spriteset, ryu_running_spriteset, 
+                viking_crouch_spriteset, ryu_jump_spriteset, 
+                0, (float)al_get_display_height(display) - 295.0
         );
 
-        if (!player1_viking) {
+        if (!player1_ryu) {
                 fprintf(stderr, "[-] main(): failed to load player 1 (viking)\n");
                 exit(INVALID_FIGHTER_ERROR);
         }
 
-        Fighter *player2_viking = create_fighter(
-                189.0, 256.0, 
-                player2_x, (float)al_get_display_height(display) - 256.0, 
+        Fighter *player2_ryu = create_fighter(
+                166.0, 256.0, 
+                player2_x, (float)al_get_display_height(display) - 295.0, 
                 al_get_display_width(display), al_get_display_height(display), 
-                viking_idle_spriteset, viking_hi_punch_spriteset, 
+                ryu_idle_spriteset, viking_hi_punch_spriteset, 
                 viking_lo_punch_spriteset, viking_kick_spriteset, 
-                viking_hi_block_spriteset, viking_running_spriteset, 
-                viking_crouch_spriteset, viking_jump_spriteset, 
-                1, (float)al_get_display_height(display) - 256.0
+                viking_hi_block_spriteset, ryu_running_spriteset, 
+                viking_crouch_spriteset, ryu_jump_spriteset, 
+                1, (float)al_get_display_height(display) - 295.0
         );
 
-        if (!player2_viking) {
+        if (!player2_ryu) {
                 fprintf(stderr, "[-] main(): failed to load player 2 (viking)\n");
                 exit(INVALID_FIGHTER_ERROR);
         }
@@ -404,7 +501,7 @@ int main(void) {
 
                 if (event.type == ALLEGRO_EVENT_TIMER) {
                         if (game_states->rumble_end) {
-                                draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_viking, player2_viking);
+                                draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_ryu, player2_ryu);
                         } else {
                                 if (game_states->menu) {
                                         draw_menu(menu_header_font, menu_options_font, display, game_states);
@@ -412,76 +509,81 @@ int main(void) {
                                         draw_character_select(
                                                 character_select_header_font, menu_options_font, 
                                                 character_select_display_name_font, display, 
-                                                viking_icon, knight_icon,
-                                                spearwoman_icon, fire_warrior_icon, 
+                                                ryu_icon, ken_icon,
+                                                guile_icon, vega_icon, 
                                                 game_states
                                         );
-                                        reset_players_x(player1_viking, player2_viking, display);
+                                        reset_players_x(player1_ryu, player2_ryu, display);
                                 } else if (game_states->stage_select) {
                                         draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                                 } else if (game_states->rumble) {
                                         if (!game_states->rumble_pause) {
-                                                viking_time_frame_idle += 1.0 / FRAMES_PER_SECOND;
-                                                viking_time_frame_hi_punch_p1 += 1.0 / FRAMES_PER_SECOND;
-                                                viking_time_frame_lo_punch_p1 += 1.0 / FRAMES_PER_SECOND;
-                                                viking_time_frame_hi_punch_p2 += 1.0 / FRAMES_PER_SECOND;
-                                                viking_time_frame_lo_punch_p2 += 1.0 / FRAMES_PER_SECOND;
-                                                viking_time_frame_kick_p1 += 1.0 / FRAMES_PER_SECOND;
-                                                viking_time_frame_kick_p2 += 1.0 / FRAMES_PER_SECOND;
-                                                viking_time_frame_block += 1.0 / FRAMES_PER_SECOND;
-                                                viking_time_frame_running += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_frame_time_idle += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_hi_punch_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_lo_punch_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_hi_punch_p2 += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_lo_punch_p2 += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_kick_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_kick_p2 += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_block += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_running += 1.0 / FRAMES_PER_SECOND;
+                                                ryu_time_frame_jump += 1.0 / FRAMES_PER_SECOND;
 
-                                                if (viking_time_frame_idle >= FRAME_DURATION_IDLE) {
-                                                        viking_time_frame_idle = 0;
+                                                if (ryu_frame_time_idle >= FRAME_DURATION_IDLE) {
+                                                        ryu_frame_time_idle = 0;
                                                         viking_current_frame_idle = (viking_current_frame_idle + 1) % NUM_VIKING_IDLE_FRAMES;
                                                 }
 
-                                                if (player2_viking->health <= 0) {
-                                                        handle_rumble_end(player1_viking, player2_viking, game_states);
-                                                        reset_players_x(player1_viking, player2_viking, display);
+                                                if (player2_ryu->health <= 0) {
+                                                        handle_rumble_end(player1_ryu, player2_ryu, game_states);
+                                                        reset_players_x(player1_ryu, player2_ryu, display);
                                                 }
                                                 
-                                                if (player1_viking->health <= 0) {
-                                                        handle_rumble_end(player2_viking, player1_viking, game_states);
-                                                        reset_players_x(player1_viking, player2_viking, display);
+                                                if (player1_ryu->health <= 0) {
+                                                        handle_rumble_end(player2_ryu, player1_ryu, game_states);
+                                                        reset_players_x(player1_ryu, player2_ryu, display);
                                                 }
 
-                                                if (player2_viking->stamina <= 0)
-                                                        player2_viking->is_blocking = 0;
+                                                if (player2_ryu->stamina <= 0)
+                                                        player2_ryu->is_blocking = 0;
 
-                                                if (player1_viking->stamina <= 0)
-                                                        player1_viking->is_blocking = 0;
+                                                if (player1_ryu->stamina <= 0)
+                                                        player1_ryu->is_blocking = 0;
+                                                
+                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 231.0 
+                                                && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
+                                                && player1_ryu->is_punching && viking_current_frame_hi_punch_p1 == 2    )
+                                                        player2_ryu->health -= 2.0;
 
-                                                draw_stages(display, stage_dark_forest, stage_abandoned_factory, stage_calm_forest, game_states);
-                                                draw_player_hitboxes(player1_viking, player2_viking);
-                                                draw_health_bars(player1_viking, player2_viking, display);
-                                                update_stamina(player1_viking, player2_viking);
-                                                draw_stamina_bars(player1_viking, player2_viking, display);
-                                                update_fighter_pos(player1_viking, player2_viking, al_get_display_width(display), display);
-                                                snprintf(wins_text_p1, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player1_viking->rounds_won);
-                                                snprintf(wins_text_p2, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player2_viking->rounds_won);
+                                                draw_stages(display, stage_ryu, stage_ken, stage_guile, stage_vega, game_states);
+                                                draw_health_bars(player1_ryu, player2_ryu, display);
+                                                update_stamina(player1_ryu, player2_ryu);
+                                                draw_stamina_bars(player1_ryu, player2_ryu, display);
+                                                update_fighter_pos(player1_ryu, player2_ryu, al_get_display_width(display));
+                                                snprintf(wins_text_p1, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player1_ryu->rounds_won);
+                                                snprintf(wins_text_p2, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player2_ryu->rounds_won);
                                                 draw_rumble_header(game_states, display, rumble_display_character_name_font, character_select_header_font, wins_text_p1, wins_text_p2);
 
                                                 switch (game_states->rumble_fighter_p1) {
                                                         case 0:
-                                                                if (player1_viking->is_crouching && player1_viking->is_blocking && player1_viking->on_ground) {
-                                                                        draw_lo_blocking_animation(player1_viking);
-                                                                } else if (player1_viking->is_punching && player1_viking->is_crouching && player1_viking->on_ground) {
-                                                                        draw_lo_punch_animation(player1_viking, FRAME_DURATION_LO_PUNCH, &viking_time_frame_lo_punch_p1, &viking_current_frame_lo_punch_p1, NUM_VIKING_LO_PUNCH_FRAMES);
-                                                                } else if (player1_viking->is_punching && viking_current_frame_lo_punch_p1 == 0 && player1_viking->on_ground) {
-                                                                        draw_hi_punch_animation(player1_viking, FRAME_DURATION_HI_PUNCH, &viking_time_frame_hi_punch_p1, &viking_current_frame_hi_punch_p1, NUM_VIKING_HI_PUNCH_FRAMES);
-                                                                } else if (player1_viking->is_kicking && player1_viking->on_ground) {
-                                                                        draw_hi_kick_animation(player1_viking, FRAME_DURATION_KICK, &viking_time_frame_kick_p1, &viking_current_frame_kick_p1, NUM_VIKING_KICK_FRAMES);
-                                                                } else if ((player1_viking->is_running_right || player1_viking->is_running_left) &&  player1_viking->on_ground) {
-                                                                        draw_running_animation(player1_viking, FRAME_DURATION_RUNNING, &viking_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_VIKING_RUNNING_FRAMES);
-                                                                } else if (player1_viking->is_crouching && !player1_viking->is_blocking && player1_viking->on_ground) {
-                                                                        draw_crouching_animation(player1_viking);
-                                                                } else if (player1_viking->is_blocking && player1_viking->on_ground) {
-                                                                        draw_blocking_animation(player1_viking);
-                                                                } else if (!player1_viking->on_ground) {
-                                                                        draw_jumping_animation(player1_viking);
+                                                                if (player1_ryu->is_crouching && player1_ryu->is_blocking && player1_ryu->on_ground) {
+                                                                        draw_lo_blocking_animation(player1_ryu);
+                                                                } else if (player1_ryu->is_punching && player1_ryu->is_crouching && player1_ryu->on_ground) {
+                                                                        draw_lo_punch_animation(player1_ryu, FRAME_DURATION_LO_PUNCH, &ryu_time_frame_lo_punch_p1, &viking_current_frame_lo_punch_p1, NUM_VIKING_LO_PUNCH_FRAMES);
+                                                                } else if (player1_ryu->is_punching && viking_current_frame_lo_punch_p1 == 0 && player1_ryu->on_ground) {
+                                                                        draw_hi_punch_animation(player1_ryu, FRAME_DURATION_HI_PUNCH, &ryu_time_frame_hi_punch_p1, &viking_current_frame_hi_punch_p1, NUM_VIKING_HI_PUNCH_FRAMES);
+                                                                } else if (player1_ryu->is_kicking && player1_ryu->on_ground) {
+                                                                        draw_hi_kick_animation(player1_ryu, FRAME_DURATION_KICK, &ryu_time_frame_kick_p1, &viking_current_frame_kick_p1, NUM_VIKING_KICK_FRAMES);
+                                                                } else if ((player1_ryu->is_running_right || player1_ryu->is_running_left) &&  player1_ryu->on_ground) {
+                                                                        draw_running_animation(player1_ryu, FRAME_DURATION_RUNNING, &ryu_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_VIKING_RUNNING_FRAMES);
+                                                                } else if (player1_ryu->is_crouching && !player1_ryu->is_blocking && player1_ryu->on_ground) {
+                                                                        draw_crouching_animation(player1_ryu);
+                                                                } else if (player1_ryu->is_blocking && player1_ryu->on_ground) {
+                                                                        draw_blocking_animation(player1_ryu);
+                                                                } else if (!player1_ryu->on_ground) {
+                                                                        draw_jumping_animation(player1_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump, &ryu_current_frame_jump, NUM_VIKING_JUMP_FRAMES);
                                                                 } else {
-                                                                        draw_idle_animation(player1_viking, viking_current_frame_idle);
+                                                                        draw_idle_animation(player1_ryu, viking_current_frame_idle);
                                                                 }
 
                                                                 break;
@@ -489,22 +591,24 @@ int main(void) {
 
                                                 switch (game_states->rumble_fighter_p2) {
                                                         case 0:
-                                                                if (player2_viking->is_crouching && player2_viking->is_blocking) {
-                                                                        draw_lo_blocking_animation(player2_viking);
-                                                                } else if (player2_viking->is_punching && player2_viking->is_crouching) {
-                                                                        draw_lo_punch_animation(player2_viking, FRAME_DURATION_LO_PUNCH, &viking_time_frame_lo_punch_p2, &viking_current_frame_lo_punch_p2, NUM_VIKING_LO_PUNCH_FRAMES);
-                                                                } else if (player2_viking->is_punching && viking_current_frame_lo_punch_p2 == 0) {
-                                                                        draw_hi_punch_animation(player2_viking, FRAME_DURATION_HI_PUNCH, &viking_time_frame_hi_punch_p2, &viking_current_frame_hi_punch_p2, NUM_VIKING_HI_PUNCH_FRAMES);
-                                                                } else if (player2_viking->is_kicking) {
-                                                                        draw_hi_kick_animation(player2_viking, FRAME_DURATION_KICK, &viking_time_frame_kick_p2, &viking_current_frame_kick_p2, NUM_VIKING_KICK_FRAMES);
-                                                                } else if (player2_viking->is_running_right || player2_viking->is_running_left) {
-                                                                        draw_running_animation(player2_viking, FRAME_DURATION_RUNNING, &viking_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_VIKING_RUNNING_FRAMES);
-                                                                } else if (player2_viking->is_crouching && !player2_viking->is_blocking) {
-                                                                        draw_crouching_animation(player2_viking);
-                                                                } else if (player2_viking->is_blocking) {
-                                                                        draw_blocking_animation(player2_viking);
+                                                                if (player2_ryu->is_crouching && player2_ryu->is_blocking && player2_ryu->on_ground) {
+                                                                        draw_lo_blocking_animation(player2_ryu);
+                                                                } else if (player2_ryu->is_punching && player2_ryu->is_crouching && player2_ryu->on_ground) {
+                                                                        draw_lo_punch_animation(player2_ryu, FRAME_DURATION_LO_PUNCH, &ryu_time_frame_lo_punch_p2, &viking_current_frame_lo_punch_p2, NUM_VIKING_LO_PUNCH_FRAMES);
+                                                                } else if (player2_ryu->is_punching && viking_current_frame_lo_punch_p2 == 0 && player2_ryu->on_ground) {
+                                                                        draw_hi_punch_animation(player2_ryu, FRAME_DURATION_HI_PUNCH, &ryu_time_frame_hi_punch_p2, &viking_current_frame_hi_punch_p2, NUM_VIKING_HI_PUNCH_FRAMES);
+                                                                } else if (player2_ryu->is_kicking && player2_ryu->on_ground) {
+                                                                        draw_hi_kick_animation(player2_ryu, FRAME_DURATION_KICK, &ryu_time_frame_kick_p2, &viking_current_frame_kick_p2, NUM_VIKING_KICK_FRAMES);
+                                                                } else if ((player2_ryu->is_running_right || player2_ryu->is_running_left) &&  player2_ryu->on_ground) {
+                                                                        draw_running_animation(player2_ryu, FRAME_DURATION_RUNNING, &ryu_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_VIKING_RUNNING_FRAMES);
+                                                                } else if (player2_ryu->is_crouching && !player2_ryu->is_blocking && player2_ryu->on_ground) {
+                                                                        draw_crouching_animation(player2_ryu);
+                                                                } else if (player2_ryu->is_blocking && player2_ryu->on_ground) {
+                                                                        draw_blocking_animation(player2_ryu);
+                                                                } else if (!player2_ryu->on_ground) {
+                                                                        draw_jumping_animation(player2_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump, &ryu_current_frame_jump, NUM_VIKING_JUMP_FRAMES);
                                                                 } else {
-                                                                        draw_idle_animation(player2_viking, viking_current_frame_idle);
+                                                                        draw_idle_animation(player2_ryu, viking_current_frame_idle);
                                                                 }
 
                                                                 break;
@@ -578,10 +682,10 @@ int main(void) {
                         game_states->stage_select_nav = 0;
                         game_states->play_stage_select_sample = 1;
                         game_states->menu_select = 0;
-                        player1_viking->rounds_won = 0;
-                        player2_viking->rounds_won = 0;
-                        player1_viking->health = MAX_HEALTH;
-                        player2_viking->health = MAX_HEALTH;
+                        player1_ryu->rounds_won = 0;
+                        player2_ryu->rounds_won = 0;
+                        player1_ryu->health = MAX_HEALTH;
+                        player2_ryu->health = MAX_HEALTH;
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
@@ -716,6 +820,11 @@ int main(void) {
                                                 al_play_sample(calm_forest_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &calm_forest_sample_id);
 
                                                 break;
+
+                                        case 3:
+                                                al_play_sample(vega_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &vega_theme_sample_id);
+
+                                                break;
                                 }
                         }
 
@@ -753,61 +862,56 @@ int main(void) {
                                                 );
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                        handle_pause_selection(menu_confirm_sample, menu_confirm_sample_id, dark_forest_sample_id, abandoned_factory_sample_id, calm_forest_sample_id, game_states);
+                                        handle_pause_selection(menu_confirm_sample, menu_confirm_sample_id, dark_forest_sample_id, abandoned_factory_sample_id, calm_forest_sample_id, vega_theme_sample_id, game_states);
                                 }
 
                                 /* Botões on-press */
                                 if (!game_states->rumble_pause) {
                                         if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
-                                                player1_viking->is_punching = 1;
-
-                                                if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 231.0 
-                                                && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking || player2_viking->is_blocking))
-                                                        player2_viking->health -= 7.0;
-
+                                                player1_ryu->is_punching = 1;
                                                 viking_current_frame_hi_punch_p1 = 0;
-                                                viking_time_frame_hi_punch_p1 = 0;
+                                                ryu_time_frame_hi_punch_p1 = 0;
                                                 viking_current_frame_lo_punch_p1 = 0;
-                                                viking_time_frame_lo_punch_p1 = 0;      
+                                                ryu_time_frame_lo_punch_p1 = 0;      
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_X) {
-                                                player1_viking->is_kicking = 1;
+                                                player1_ryu->is_kicking = 1;
         
-                                                if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 206.0 
-                                                && !(player1_viking->is_running_right || player1_viking->is_running_left || player1_viking->is_blocking ||player2_viking->is_blocking))
-                                                        player2_viking->health -= 8.0;
+                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 206.0 
+                                                && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking ||player2_ryu->is_blocking))
+                                                        player2_ryu->health -= 7.5;
         
                                                 viking_current_frame_kick_p1 = 0;
-                                                viking_time_frame_kick_p1 = 0;
-                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_SPACE && player1_viking->on_ground) {
-                                                player1_viking->velocity_y = JUMP_STRENGTH;
-                                                player1_viking->on_ground = 0;
-                                                player1_viking->controller->up = 1;
+                                                ryu_time_frame_kick_p1 = 0;
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_W && player1_ryu->on_ground) {
+                                                player1_ryu->velocity_y = JUMP_STRENGTH;
+                                                player1_ryu->on_ground = 0;
+                                                ryu_current_frame_jump = 0;
+                                                ryu_time_frame_jump = 0.0;
                                         }
 
                                         if (event.keyboard.keycode == ALLEGRO_KEY_K) {
-                                                player2_viking->is_punching = 1;
+                                                player2_ryu->is_punching = 1;
 
-                                                if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 231.0 
-                                                && !(player2_viking->is_running_right || player2_viking->is_running_left || player2_viking->is_blocking || player1_viking->is_blocking))
-                                                        player1_viking->health -= 7.0;
+                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 231.0 
+                                                && !(player2_ryu->is_running_right || player2_ryu->is_running_left || player2_ryu->is_blocking || player1_ryu->is_blocking))
+                                                        player1_ryu->health -= 7.0;
 
                                                 viking_current_frame_hi_punch_p2 = 0;
-                                                viking_time_frame_hi_punch_p2 = 0;
+                                                ryu_time_frame_hi_punch_p2 = 0;
                                                 viking_current_frame_lo_punch_p2 = 0;
-                                                viking_time_frame_lo_punch_p2 = 0;      
+                                                ryu_time_frame_lo_punch_p2 = 0;      
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_L) {
-                                                player2_viking->is_kicking = 1;
+                                                player2_ryu->is_kicking = 1;
         
-                                                if ((player2_viking->hitbox_upper->hitbox_x - player1_viking->hitbox_upper->hitbox_x) <= 206.0 
-                                                && !(player2_viking->is_running_right || player2_viking->is_running_left || player2_viking->is_blocking || player1_viking->is_blocking))
-                                                        player1_viking->health -= 8.0;
+                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 206.0 
+                                                && !(player2_ryu->is_running_right || player2_ryu->is_running_left || player2_ryu->is_blocking || player1_ryu->is_blocking))
+                                                        player1_ryu->health -= 7.5;
         
                                                 viking_current_frame_kick_p2 = 0;
-                                                viking_time_frame_kick_p2 = 0;
-                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_SLASH && player2_viking->on_ground) {
-                                                player2_viking->velocity_y = JUMP_STRENGTH;
-                                                player2_viking->on_ground = 0;
-                                                player2_viking->controller->up = 1;
+                                                ryu_time_frame_kick_p2 = 0;
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_UP && player2_ryu->on_ground) {
+                                                player2_ryu->velocity_y = JUMP_STRENGTH;
+                                                player2_ryu->on_ground = 0;
                                         }
                                 }
                         }
@@ -818,41 +922,41 @@ int main(void) {
                                 /* Botões on-hold */
                                 if (event.type == ALLEGRO_EVENT_KEY_DOWN || event.type == ALLEGRO_EVENT_KEY_UP) {
                                         if (event.keyboard.keycode == ALLEGRO_KEY_D) {
-                                                move_controller_right(player1_viking->controller);
+                                                move_controller_right(player1_ryu->controller);
 
-                                                player1_viking->is_running_right ^= 1;
+                                                player1_ryu->is_running_right ^= 1;
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_A) {
-                                                move_controller_left(player1_viking->controller);
+                                                move_controller_left(player1_ryu->controller);
 
-                                                player1_viking->is_running_left ^= 1;
+                                                player1_ryu->is_running_left ^= 1;
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
-                                                move_controller_down(player1_viking->controller);
+                                                move_controller_down(player1_ryu->controller);
 
-                                                player1_viking->is_crouching ^= 1;
+                                                player1_ryu->is_crouching ^= 1;
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_C) {
-                                                if (player1_viking->stamina > 0) {
-                                                        move_controller_block(player1_viking->controller);
+                                                if (player1_ryu->stamina > 0) {
+                                                        move_controller_block(player1_ryu->controller);
 
-                                                        player1_viking->is_blocking ^= 1;
+                                                        player1_ryu->is_blocking ^= 1;
                                                 }
                                         }
 
                                         if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
-                                                move_controller_right(player2_viking->controller);
+                                                move_controller_right(player2_ryu->controller);
 
-                                                player2_viking->is_running_right ^= 1;
+                                                player2_ryu->is_running_right ^= 1;
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
-                                                move_controller_left(player2_viking->controller);
+                                                move_controller_left(player2_ryu->controller);
 
-                                                player2_viking->is_running_left ^= 1;
+                                                player2_ryu->is_running_left ^= 1;
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
-                                                move_controller_down(player2_viking->controller);
+                                                move_controller_down(player2_ryu->controller);
 
-                                                player2_viking->is_crouching ^= 1;
+                                                player2_ryu->is_crouching ^= 1;
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_J) {
-                                                move_controller_block(player2_viking->controller);
+                                                move_controller_block(player2_ryu->controller);
 
-                                                player2_viking->is_blocking ^= 1;
+                                                player2_ryu->is_blocking ^= 1;
                                         }
                                 }
                         }
@@ -869,7 +973,12 @@ int main(void) {
                                         break;
 
                                 case 2:
-                                                al_stop_sample(&calm_forest_sample_id);
+                                        al_stop_sample(&calm_forest_sample_id);
+
+                                        break;
+
+                                case 3:
+                                        al_stop_sample(&vega_theme_sample_id);
 
                                         break;
                         }
@@ -892,23 +1001,10 @@ int main(void) {
         }
 
         printf("\n[+] main(): exiting game...\n");
-        destroy_fonts(menu_header_font, menu_options_font, character_select_header_font, character_select_display_name_font);
-        destroy_samples(
-                menu_sample, menu_confirm_sample, 
-                menu_select_sample, cancel_sound_sample, 
-                character_select_welcome_sample, character_select_sample, 
-                character_select_confirm_sample, pause_sound_effect, 
-                dark_forest_sample, abandoned_factory_sample,
-                calm_forest_sample, rumble_end_sample
-        );
-        destroy_bitmaps(
-                window_icon, viking_icon, 
-                knight_icon, spearwoman_icon, 
-                fire_warrior_icon, stage_select_arrow_icon, 
-                stage_dark_forest, stage_abandoned_factory,
-                stage_calm_forest
-        );
-        destroy_fighter(player1_viking, game_states);
+        destroy_font_garbage_array(font_garbage_array);
+        destroy_bitmap_garbage_array(bitmap_garbage_array);
+        destroy_sample_garbage_array(sample_garbage_array);
+        destroy_fighter_sprites(player1_ryu);
         destroy_game_states(game_states);
         al_destroy_display(display);
         al_destroy_timer(timer);
