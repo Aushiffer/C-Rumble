@@ -382,59 +382,59 @@ int main(void) {
         }
 
         char sprite_path_buf[MAXLEN_SPRITE_PATH]; /* String variável usada para encontrar o caminho dos sprites */
-        ALLEGRO_BITMAP **ryu_idle_spriteset = load_spriteset(NUM_VIKING_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_idle/ryu_idle", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_idle_spriteset = load_spriteset(NUM_RYU_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_idle/ryu_idle", MAXLEN_SPRITE_PATH);
 
         if (!ryu_idle_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's idle sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_running_spriteset = load_spriteset(NUM_VIKING_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_running/ryu_running", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_running_spriteset = load_spriteset(NUM_RYU_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_running/ryu_running", MAXLEN_SPRITE_PATH);
 
         if (!ryu_running_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's running sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Ryu's running sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }                                               
 
-        ALLEGRO_BITMAP **viking_kick_spriteset = load_spriteset(NUM_VIKING_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_kick/viking_kick", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_hi_kick = load_spriteset(NUM_RYU_HI_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_hi_kick/ryu_hi_kick", MAXLEN_SPRITE_PATH);
 
-        if (!viking_kick_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's kick sprite set\n");
+        if (!ryu_hi_kick) {
+                fprintf(stderr, "[-] main(): failed to load Ryu's hi kick sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_hi_block_spriteset = load_spriteset(NUM_VIKING_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_block/viking_block", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_hi_block_spriteset = load_spriteset(NUM_RYU_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_hi_block/ryu_hi_block", MAXLEN_SPRITE_PATH);
 
-        if (!viking_hi_block_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's block spriteset\n");
+        if (!ryu_hi_block_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ryu's hi block spriteset\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_hi_punch_spriteset = load_spriteset(NUM_VIKING_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_hi_punch/ryu_hi_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **viking_hi_punch_spriteset = load_spriteset(NUM_RYU_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_hi_punch/ryu_hi_punch", MAXLEN_SPRITE_PATH);
 
         if (!viking_hi_punch_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's hi punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_lo_punch_spriteset = load_spriteset(NUM_VIKING_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_lo_punch/viking_lo_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_lo_punch_spriteset = load_spriteset(NUM_RYU_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_lo_punch/ryu_lo_punch", MAXLEN_SPRITE_PATH);
 
-        if (!viking_lo_punch_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's lo punch sprite set\n");
+        if (!ryu_lo_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ryu's lo punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_crouch_spriteset = load_spriteset(NUM_VIKING_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_crouch/viking_crouch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **viking_crouch_spriteset = load_spriteset(NUM_RYU_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_crouch/ryu_crouch", MAXLEN_SPRITE_PATH);
 
         if (!viking_crouch_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's crouch sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Ryu's crouch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_jump_spriteset = load_spriteset(NUM_VIKING_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_jump/ryu_jumping", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_jump_spriteset = load_spriteset(NUM_RYU_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_jumping/ryu_jumping", MAXLEN_SPRITE_PATH);
 
         if (!ryu_jump_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's jump spriteset\n");
+                fprintf(stderr, "[-] main(): failed to load Ryu's jump spriteset\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
@@ -467,8 +467,8 @@ int main(void) {
                 player1_x, (float)al_get_display_height(display) - 295.0, 
                 al_get_display_width(display), al_get_display_height(display), 
                 ryu_idle_spriteset, viking_hi_punch_spriteset, 
-                viking_lo_punch_spriteset, viking_kick_spriteset, 
-                viking_hi_block_spriteset, ryu_running_spriteset, 
+                ryu_lo_punch_spriteset, ryu_hi_kick, 
+                ryu_hi_block_spriteset, ryu_running_spriteset, 
                 viking_crouch_spriteset, ryu_jump_spriteset, 
                 0, (float)al_get_display_height(display) - 295.0
         );
@@ -483,8 +483,8 @@ int main(void) {
                 player2_x, (float)al_get_display_height(display) - 295.0, 
                 al_get_display_width(display), al_get_display_height(display), 
                 ryu_idle_spriteset, viking_hi_punch_spriteset, 
-                viking_lo_punch_spriteset, viking_kick_spriteset, 
-                viking_hi_block_spriteset, ryu_running_spriteset, 
+                ryu_lo_punch_spriteset, ryu_hi_kick, 
+                ryu_hi_block_spriteset, ryu_running_spriteset, 
                 viking_crouch_spriteset, ryu_jump_spriteset, 
                 1, (float)al_get_display_height(display) - 295.0
         );
@@ -531,7 +531,7 @@ int main(void) {
 
                                                 if (ryu_frame_time_idle >= FRAME_DURATION_IDLE) {
                                                         ryu_frame_time_idle = 0;
-                                                        viking_current_frame_idle = (viking_current_frame_idle + 1) % NUM_VIKING_IDLE_FRAMES;
+                                                        viking_current_frame_idle = (viking_current_frame_idle + 1) % NUM_RYU_IDLE_FRAMES;
                                                 }
 
                                                 if (player2_ryu->health <= 0) {
@@ -569,19 +569,19 @@ int main(void) {
                                                                 if (player1_ryu->is_crouching && player1_ryu->is_blocking && player1_ryu->on_ground) {
                                                                         draw_lo_blocking_animation(player1_ryu);
                                                                 } else if (player1_ryu->is_punching && player1_ryu->is_crouching && player1_ryu->on_ground) {
-                                                                        draw_lo_punch_animation(player1_ryu, FRAME_DURATION_LO_PUNCH, &ryu_time_frame_lo_punch_p1, &viking_current_frame_lo_punch_p1, NUM_VIKING_LO_PUNCH_FRAMES);
+                                                                        draw_lo_punch_animation(player1_ryu, FRAME_DURATION_LO_PUNCH, &ryu_time_frame_lo_punch_p1, &viking_current_frame_lo_punch_p1, NUM_RYU_LO_PUNCH_FRAMES);
                                                                 } else if (player1_ryu->is_punching && viking_current_frame_lo_punch_p1 == 0 && player1_ryu->on_ground) {
-                                                                        draw_hi_punch_animation(player1_ryu, FRAME_DURATION_HI_PUNCH, &ryu_time_frame_hi_punch_p1, &viking_current_frame_hi_punch_p1, NUM_VIKING_HI_PUNCH_FRAMES);
+                                                                        draw_hi_punch_animation(player1_ryu, FRAME_DURATION_HI_PUNCH, &ryu_time_frame_hi_punch_p1, &viking_current_frame_hi_punch_p1, NUM_RYU_HI_PUNCH_FRAMES);
                                                                 } else if (player1_ryu->is_kicking && player1_ryu->on_ground) {
-                                                                        draw_hi_kick_animation(player1_ryu, FRAME_DURATION_KICK, &ryu_time_frame_kick_p1, &viking_current_frame_kick_p1, NUM_VIKING_KICK_FRAMES);
+                                                                        draw_hi_kick_animation(player1_ryu, FRAME_DURATION_KICK, &ryu_time_frame_kick_p1, &viking_current_frame_kick_p1, NUM_RYU_HI_KICK_FRAMES);
                                                                 } else if ((player1_ryu->is_running_right || player1_ryu->is_running_left) &&  player1_ryu->on_ground) {
-                                                                        draw_running_animation(player1_ryu, FRAME_DURATION_RUNNING, &ryu_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_VIKING_RUNNING_FRAMES);
+                                                                        draw_running_animation(player1_ryu, FRAME_DURATION_RUNNING, &ryu_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_RYU_RUNNING_FRAMES);
                                                                 } else if (player1_ryu->is_crouching && !player1_ryu->is_blocking && player1_ryu->on_ground) {
                                                                         draw_crouching_animation(player1_ryu);
                                                                 } else if (player1_ryu->is_blocking && player1_ryu->on_ground) {
                                                                         draw_blocking_animation(player1_ryu);
                                                                 } else if (!player1_ryu->on_ground) {
-                                                                        draw_jumping_animation(player1_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump, &ryu_current_frame_jump, NUM_VIKING_JUMP_FRAMES);
+                                                                        draw_jumping_animation(player1_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump, &ryu_current_frame_jump, NUM_RYU_JUMP_FRAMES);
                                                                 } else {
                                                                         draw_idle_animation(player1_ryu, viking_current_frame_idle);
                                                                 }
@@ -594,19 +594,19 @@ int main(void) {
                                                                 if (player2_ryu->is_crouching && player2_ryu->is_blocking && player2_ryu->on_ground) {
                                                                         draw_lo_blocking_animation(player2_ryu);
                                                                 } else if (player2_ryu->is_punching && player2_ryu->is_crouching && player2_ryu->on_ground) {
-                                                                        draw_lo_punch_animation(player2_ryu, FRAME_DURATION_LO_PUNCH, &ryu_time_frame_lo_punch_p2, &viking_current_frame_lo_punch_p2, NUM_VIKING_LO_PUNCH_FRAMES);
+                                                                        draw_lo_punch_animation(player2_ryu, FRAME_DURATION_LO_PUNCH, &ryu_time_frame_lo_punch_p2, &viking_current_frame_lo_punch_p2, NUM_RYU_LO_PUNCH_FRAMES);
                                                                 } else if (player2_ryu->is_punching && viking_current_frame_lo_punch_p2 == 0 && player2_ryu->on_ground) {
-                                                                        draw_hi_punch_animation(player2_ryu, FRAME_DURATION_HI_PUNCH, &ryu_time_frame_hi_punch_p2, &viking_current_frame_hi_punch_p2, NUM_VIKING_HI_PUNCH_FRAMES);
+                                                                        draw_hi_punch_animation(player2_ryu, FRAME_DURATION_HI_PUNCH, &ryu_time_frame_hi_punch_p2, &viking_current_frame_hi_punch_p2, NUM_RYU_HI_PUNCH_FRAMES);
                                                                 } else if (player2_ryu->is_kicking && player2_ryu->on_ground) {
-                                                                        draw_hi_kick_animation(player2_ryu, FRAME_DURATION_KICK, &ryu_time_frame_kick_p2, &viking_current_frame_kick_p2, NUM_VIKING_KICK_FRAMES);
+                                                                        draw_hi_kick_animation(player2_ryu, FRAME_DURATION_KICK, &ryu_time_frame_kick_p2, &viking_current_frame_kick_p2, NUM_RYU_HI_KICK_FRAMES);
                                                                 } else if ((player2_ryu->is_running_right || player2_ryu->is_running_left) &&  player2_ryu->on_ground) {
-                                                                        draw_running_animation(player2_ryu, FRAME_DURATION_RUNNING, &ryu_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_VIKING_RUNNING_FRAMES);
+                                                                        draw_running_animation(player2_ryu, FRAME_DURATION_RUNNING, &ryu_time_frame_running, &viking_current_frame_running, &viking_current_frame_idle, NUM_RYU_RUNNING_FRAMES);
                                                                 } else if (player2_ryu->is_crouching && !player2_ryu->is_blocking && player2_ryu->on_ground) {
                                                                         draw_crouching_animation(player2_ryu);
                                                                 } else if (player2_ryu->is_blocking && player2_ryu->on_ground) {
                                                                         draw_blocking_animation(player2_ryu);
                                                                 } else if (!player2_ryu->on_ground) {
-                                                                        draw_jumping_animation(player2_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump, &ryu_current_frame_jump, NUM_VIKING_JUMP_FRAMES);
+                                                                        draw_jumping_animation(player2_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump, &ryu_current_frame_jump, NUM_RYU_JUMP_FRAMES);
                                                                 } else {
                                                                         draw_idle_animation(player2_ryu, viking_current_frame_idle);
                                                                 }

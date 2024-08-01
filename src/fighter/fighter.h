@@ -8,21 +8,22 @@
 #include "../controller/controller.h"
 #include "../game_states/game_states.h"
 
-/* Macros do Viking */
-#define NUM_VIKING_IDLE_FRAMES 5        
-#define NUM_VIKING_RUNNING_FRAMES 5
-#define NUM_VIKING_KICK_FRAMES 7
-#define NUM_VIKING_HI_PUNCH_FRAMES 3
-#define NUM_VIKING_LO_PUNCH_FRAMES 5
-#define NUM_VIKING_CROUCH_FRAMES 1
-#define NUM_VIKING_BLOCK_FRAMES 1
-#define NUM_VIKING_JUMP_FRAMES 6
+/* Macros do Ryu */
+#define NUM_RYU_IDLE_FRAMES 5        
+#define NUM_RYU_RUNNING_FRAMES 5
+#define NUM_RYU_HI_KICK_FRAMES 3
+#define NUM_RYU_LO_KICK_FRAMES 2
+#define NUM_RYU_HI_PUNCH_FRAMES 3
+#define NUM_RYU_LO_PUNCH_FRAMES 2
+#define NUM_RYU_CROUCH_FRAMES 1
+#define NUM_RYU_HI_BLOCK_FRAMES 1
+#define NUM_RYU_JUMP_FRAMES 6
 
 #define PLAYER_STEPS 15.0
 #define MAX_HEALTH 100.0
 #define MAX_STAMINA 100.0
 #define GRAVITY 1.0
-#define JUMP_STRENGTH -20.0
+#define JUMP_STRENGTH -17.5
 
 /* Lutador */
 typedef struct Fighter {
@@ -32,8 +33,12 @@ typedef struct Fighter {
         ALLEGRO_BITMAP **idle_spriteset;
         ALLEGRO_BITMAP **hi_punch_spriteset;
         ALLEGRO_BITMAP **lo_punch_spriteset;
-        ALLEGRO_BITMAP **kick_spriteset;
+        ALLEGRO_BITMAP **air_punch_spriteset;
+        ALLEGRO_BITMAP **hi_kick_spriteset;
+        ALLEGRO_BITMAP **lo_kick_spriteset;
+        ALLEGRO_BITMAP **air_kick_spriteset;
         ALLEGRO_BITMAP **hi_block_spriteset;
+        ALLEGRO_BITMAP **lo_block_spriteset;
         ALLEGRO_BITMAP **running_spriteset;
         ALLEGRO_BITMAP **crouch_spriteset;
         ALLEGRO_BITMAP **jump_spriteset;

@@ -8,7 +8,7 @@ Fighter *create_fighter(
         float x, float y, 
         float max_x, float max_y, 
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
-        ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
+        ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **hi_kick_spriteset,
         ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
         ALLEGRO_BITMAP **crouch_spriteset, ALLEGRO_BITMAP **jump_spriteset, 
         unsigned char direction_facing, float absolute_height
@@ -29,7 +29,7 @@ Fighter *create_fighter(
         fighter->idle_spriteset = idle_spriteset;
         fighter->hi_punch_spriteset = hi_punch_spriteset;
         fighter->lo_punch_spriteset = lo_punch_spriteset;
-        fighter->kick_spriteset = kick_spriteset;
+        fighter->hi_kick_spriteset = hi_kick_spriteset;
         fighter->hi_block_spriteset = hi_block_spriteset;
         fighter->running_spriteset = running_spriteset;
         fighter->crouch_spriteset = crouch_spriteset;
@@ -207,13 +207,13 @@ void destroy_fighter_sprites(Fighter *fighter) {
                 destroy_hitbox(fighter->hitbox_upper);
                 destroy_hitbox(fighter->hitbox_lower);
                 destroy_controller(fighter->controller);
-                destroy_spriteset(fighter->idle_spriteset, NUM_VIKING_IDLE_FRAMES);
-                destroy_spriteset(fighter->running_spriteset, NUM_VIKING_RUNNING_FRAMES);
-                destroy_spriteset(fighter->crouch_spriteset, NUM_VIKING_CROUCH_FRAMES);
-                destroy_spriteset(fighter->hi_punch_spriteset, NUM_VIKING_HI_PUNCH_FRAMES);
-                destroy_spriteset(fighter->lo_punch_spriteset, NUM_VIKING_LO_PUNCH_FRAMES);
-                destroy_spriteset(fighter->hi_block_spriteset, NUM_VIKING_BLOCK_FRAMES);
-                destroy_spriteset(fighter->kick_spriteset, NUM_VIKING_KICK_FRAMES);
+                destroy_spriteset(fighter->idle_spriteset, NUM_RYU_IDLE_FRAMES);
+                destroy_spriteset(fighter->running_spriteset, NUM_RYU_RUNNING_FRAMES);
+                destroy_spriteset(fighter->crouch_spriteset, NUM_RYU_CROUCH_FRAMES);
+                destroy_spriteset(fighter->hi_punch_spriteset, NUM_RYU_HI_PUNCH_FRAMES);
+                destroy_spriteset(fighter->lo_punch_spriteset, NUM_RYU_LO_PUNCH_FRAMES);
+                destroy_spriteset(fighter->hi_block_spriteset, NUM_RYU_HI_BLOCK_FRAMES);
+                destroy_spriteset(fighter->hi_kick_spriteset, NUM_RYU_HI_KICK_FRAMES);
 
                 free(fighter);
         }

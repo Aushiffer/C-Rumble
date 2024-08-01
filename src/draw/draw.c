@@ -280,22 +280,22 @@ void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_f
 
         if (((*current_frame) == 3 || (*current_frame) == 4 || (*current_frame) == 5) && player->direction_facing == 0) {
                 al_draw_bitmap(
-                        player->kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->kick_spriteset[(*current_frame)]) / 2,
+                        player->hi_kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_kick_spriteset[(*current_frame)]) / 2,
                         player->hitbox_upper->hitbox_y + 128, 0
                 );
         } else if (player->direction_facing == 0) {
                 al_draw_bitmap(
-                        player->kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->kick_spriteset[(*current_frame)]) / 2,
+                        player->hi_kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_kick_spriteset[(*current_frame)]) / 2,
                         player->hitbox_upper->hitbox_y, 0
                 );
         } else if (((*current_frame) == 3 || (*current_frame) == 4 || (*current_frame) == 5) && player->direction_facing == 1) {
                 al_draw_bitmap(
-                        player->kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->kick_spriteset[(*current_frame)]) / 2,
+                        player->hi_kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_kick_spriteset[(*current_frame)]) / 2,
                         player->hitbox_upper->hitbox_y + 128, ALLEGRO_FLIP_HORIZONTAL
                 );
         } else if (player->direction_facing == 1) {
                 al_draw_bitmap(
-                        player->kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->kick_spriteset[(*current_frame)]) / 2,
+                        player->hi_kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->hi_kick_spriteset[(*current_frame)]) / 2,
                         player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                 );
         }
