@@ -3,7 +3,8 @@
 void handle_pause_selection(
         ALLEGRO_SAMPLE *enable_pause_sample, ALLEGRO_SAMPLE_ID enable_pause_sample_id, 
         ALLEGRO_SAMPLE_ID stage1_sample_id, ALLEGRO_SAMPLE_ID stage2_sample_id, 
-        ALLEGRO_SAMPLE_ID stage3_sample_id, GameStates *game_states
+        ALLEGRO_SAMPLE_ID stage3_sample_id,  ALLEGRO_SAMPLE_ID stage4_sample_id,
+        GameStates *game_states
 ) {
         if (game_states->rumble_pause) {
                 al_play_sample(enable_pause_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &enable_pause_sample_id);
@@ -32,6 +33,11 @@ void handle_pause_selection(
 
                                 case 2:
                                         al_stop_sample(&stage3_sample_id);
+
+                                        break;
+
+                                case 3:
+                                        al_stop_sample(&stage4_sample_id);
 
                                         break;
                         } 

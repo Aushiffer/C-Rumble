@@ -37,12 +37,12 @@ void draw_character_select(
         al_draw_text(player_indicator_font, COLOR_WHITE, (float)al_get_display_width(display) - 256, 256, ALLEGRO_ALIGN_CENTRE, "2P");
                                 
         al_draw_scaled_bitmap(viking_icon, 0.0, 0.0, al_get_bitmap_width(viking_icon), al_get_bitmap_height(viking_icon), 32, 356, 95, 95, 0);                      //
-        al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), 138, 356, 95, 95, 0); // coloca os ícones (P1)
+        al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), 138, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL); // coloca os ícones (P1)
         al_draw_scaled_bitmap(spearwoman_icon, 0.0, 0.0, al_get_bitmap_width(spearwoman_icon), al_get_bitmap_height(spearwoman_icon), 248, 356, 95, 95, 0); // 
         al_draw_scaled_bitmap(fire_warrior_icon, 0.0, 0.0, al_get_bitmap_width(fire_warrior_icon), al_get_bitmap_height(fire_warrior_icon), 355, 356, 95, 95, 0); //
 
         al_draw_scaled_bitmap(viking_icon, 0.0, 0.0, al_get_bitmap_width(viking_icon), al_get_bitmap_height(viking_icon), al_get_display_width(display) - 452, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);                       //
-        al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), al_get_display_width(display) - 345, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);                       // coloca os ícones (P2)
+        al_draw_scaled_bitmap(knight_icon, 0.0, 0.0, al_get_bitmap_width(knight_icon), al_get_bitmap_height(knight_icon), al_get_display_width(display) - 345, 356, 95, 95, 0);                       // coloca os ícones (P2)
         al_draw_scaled_bitmap(spearwoman_icon, 0.0, 0.0, al_get_bitmap_width(spearwoman_icon), al_get_bitmap_height(spearwoman_icon), al_get_display_width(display) - 238, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);           //
         al_draw_scaled_bitmap(fire_warrior_icon, 0.0, 0.0, al_get_bitmap_width(fire_warrior_icon), al_get_bitmap_height(fire_warrior_icon), al_get_display_width(display) - 128, 356, 95, 95, ALLEGRO_FLIP_HORIZONTAL);     //
 
@@ -59,25 +59,25 @@ void draw_character_select(
         switch (game_states->character_select_nav_p1) {
                 case 0:
                         al_draw_rectangle(32, 356, 128, 452, COLOR_WHITE, 2.0);
-                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "VIKING");
+                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "RYU");
 
                         break;
 
                 case 1:
                         al_draw_rectangle(138, 356, 238, 452, COLOR_WHITE, 2.0);
-                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "KNIGHT");
+                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "KEN");
 
                         break;
 
                 case 2:
                         al_draw_rectangle(248, 356, 345, 452, COLOR_WHITE, 2.0);
-                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "SPEARWOMAN");
+                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "GUILE");
 
                         break;
 
                 case 3:
                         al_draw_rectangle(355, 356, 452, 452, COLOR_WHITE, 2.0);
-                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "FIRE WARRIOR");
+                        al_draw_text(character_select_display_name_font, COLOR_WHITE, 256, 512, ALLEGRO_ALIGN_CENTRE, "VEGA");
 
                         break;
         }
@@ -85,25 +85,25 @@ void draw_character_select(
         switch (game_states->character_select_nav_p2) {
                 case 0:
                         al_draw_rectangle(al_get_display_width(display) - 355, 356, al_get_display_width(display) - 452, 452, COLOR_WHITE, 2.0);
-                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "VIKING");
+                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "RYU");
 
                         break;
 
                 case 1:
                         al_draw_rectangle(al_get_display_width(display) - 248, 356, al_get_display_width(display) - 345, 452, COLOR_WHITE, 2.0);
-                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "KNIGHT");
+                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "KEN");
 
                         break;
 
                 case 2:
                         al_draw_rectangle(al_get_display_width(display) - 138, 356, al_get_display_width(display) - 238, 452, COLOR_WHITE, 2.0);
-                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "SPEARWOMAN");
+                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "GUILE");
 
                         break;
 
                 case 3:
                         al_draw_rectangle(al_get_display_width(display) - 32, 356, al_get_display_width(display) - 128, 452, COLOR_WHITE, 2.0);
-                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "FIRE WARRIOR");
+                        al_draw_text(character_select_display_name_font, COLOR_WHITE, al_get_display_width(display) - 256, 512, ALLEGRO_ALIGN_CENTRE, "VEGA");
 
                         break;
         }
@@ -117,23 +117,28 @@ void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_na
 
         switch (game_states->stage_select_nav) {
                 case 0:
-                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "DARK FOREST");
+                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "SUZAKU CASTLE");
 
                         break;
 
                 case 1:
-                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "ABANDONED FACTORY");
+                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "BATTLE HARBOR");
 
                         break;
 
                 case 2:
-                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "CALM FOREST");
+                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "AIR FORCE BASE");
+
+                        break;
+
+                case 3:
+                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "MÉSON DE LA TABERNA");
 
                         break;
         }
 }
 
-void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, GameStates *game_states) {
+void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, ALLEGRO_BITMAP *stage4_bitmap, GameStates *game_states) {
         switch (game_states->stage_select_nav) {
                 case 0:
                         al_draw_scaled_bitmap(
@@ -162,6 +167,17 @@ void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGR
                                 stage3_bitmap, 0.0, 
                                 0.0, al_get_bitmap_width(stage3_bitmap), 
                                 al_get_bitmap_height(stage3_bitmap), 0.0, 
+                                0.0, al_get_display_width(display), al_get_display_height(display), 
+                                0
+                        );
+
+                        break;
+
+                case 3:
+                        al_draw_scaled_bitmap(
+                                stage4_bitmap, 0.0, 
+                                0.0, al_get_bitmap_width(stage4_bitmap), 
+                                al_get_bitmap_height(stage4_bitmap), 0.0, 
                                 0.0, al_get_display_width(display), al_get_display_height(display), 
                                 0
                         );
@@ -371,15 +387,20 @@ void draw_crouching_animation(Fighter *player) {
         }
 }
 
-void draw_jumping_animation(Fighter *player) {
+void draw_jumping_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
+        if ((*time_frame) >= frame_duration) {
+                (*time_frame) = 0;
+                (*current_frame) = ((*current_frame) + 1) % num_frames;
+        }
+
         if (player->direction_facing == 0)
                 al_draw_bitmap(
-                        player->jump_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->jump_spriteset[0]) / 2, 
+                        player->jump_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->jump_spriteset[(*current_frame)]) / 2, 
                         player->hitbox_upper->hitbox_y, 0
                 );
         else
                 al_draw_bitmap(
-                        player->jump_spriteset[0], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->jump_spriteset[0]) / 2, 
+                        player->jump_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->jump_spriteset[(*current_frame)]) / 2, 
                         player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                 );
 }
@@ -421,46 +442,46 @@ void draw_stamina_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *disp
 void draw_rumble_header(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *rumble_display_character_name_font, ALLEGRO_FONT *character_select_header_font, char *wins_text_p1, char *wins_text_p2) {
         switch (game_states->rumble_fighter_p1) {
                 case 0:
-                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, 28, 116, ALLEGRO_ALIGN_LEFT, "VIKING");
-                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, 32, 116, ALLEGRO_ALIGN_LEFT, "VIKING");
+                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, 28, 116, ALLEGRO_ALIGN_LEFT, "RYU");
+                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, 32, 116, ALLEGRO_ALIGN_LEFT, "RYU");
 
                         break;
                 case 1:
-                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, 28, 116, ALLEGRO_ALIGN_LEFT, "KNIGHT");
-                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, 32, 116, ALLEGRO_ALIGN_LEFT, "KNIGHT");
+                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, 28, 116, ALLEGRO_ALIGN_LEFT, "KEN");
+                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, 32, 116, ALLEGRO_ALIGN_LEFT, "KEN");
 
                         break;
                 case 2:
-                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, 28, 116, ALLEGRO_ALIGN_LEFT, "SPEARWOMAN");
-                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, 32, 116, ALLEGRO_ALIGN_LEFT, "SPEARWOMAN");
+                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, 28, 116, ALLEGRO_ALIGN_LEFT, "GUILE");
+                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, 32, 116, ALLEGRO_ALIGN_LEFT, "GUILE");
 
                         break;
                 case 3:
-                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, 28, 116, ALLEGRO_ALIGN_LEFT, "FIRE WARRIOR");
-                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, 32, 116, ALLEGRO_ALIGN_LEFT, "FIRE WARRIOR");
+                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, 28, 116, ALLEGRO_ALIGN_LEFT, "VEGA");
+                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, 32, 116, ALLEGRO_ALIGN_LEFT, "VEGA");
 
                         break;
         }
 
         switch (game_states->rumble_fighter_p2) {
                 case 0:
-                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 116, ALLEGRO_ALIGN_RIGHT, "VIKING");
-                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 116, ALLEGRO_ALIGN_RIGHT, "VIKING");
+                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 116, ALLEGRO_ALIGN_RIGHT, "RYU");
+                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 116, ALLEGRO_ALIGN_RIGHT, "RYU");
 
                         break;
                 case 1:
-                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 116, ALLEGRO_ALIGN_RIGHT, "KNIGHT");
-                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 116, ALLEGRO_ALIGN_RIGHT, "KNIGHT");
+                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 116, ALLEGRO_ALIGN_RIGHT, "KEN");
+                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 116, ALLEGRO_ALIGN_RIGHT, "KEN");
 
                         break;
                 case 2:
-                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 116, ALLEGRO_ALIGN_RIGHT, "SPEARWOMAN");
-                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 116, ALLEGRO_ALIGN_RIGHT, "SPEARWOMAN");
+                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 116, ALLEGRO_ALIGN_RIGHT, "GUILE");
+                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 116, ALLEGRO_ALIGN_RIGHT, "GUILE");
 
                         break;
                 case 3:
-                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 116, ALLEGRO_ALIGN_RIGHT, "FIRE WARRIOR");
-                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 116, ALLEGRO_ALIGN_RIGHT, "FIRE WARRIOR");
+                        al_draw_text(rumble_display_character_name_font, COLOR_BLACK, (float)al_get_display_width(display) - 28, 116, ALLEGRO_ALIGN_RIGHT, "VEGA");
+                        al_draw_text(rumble_display_character_name_font, COLOR_WHITE, (float)al_get_display_width(display) - 32, 116, ALLEGRO_ALIGN_RIGHT, "VEGA");
 
                         break;
         }
