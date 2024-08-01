@@ -19,8 +19,8 @@
 #include "selector/selector.h"
 #include "destroy_resources/destroy_resources.h"
 
-#define WIN_WIDTH 1366
-#define WIN_HEIGHT 768
+#define WIN_WIDTH 1280
+#define WIN_HEIGHT 720
 #define NUM_MENU_OPTIONS 2
 #define NUM_CHARACTERS 4
 #define NUM_STAGES 4
@@ -316,41 +316,41 @@ int main(void) {
 
         insert_sample_array(sample_garbage_array, pause_sound_effect);
 
-        ALLEGRO_SAMPLE_ID dark_forest_sample_id;
-        ALLEGRO_SAMPLE *dark_forest_sample = al_load_sample("music/dark_forest_soundtrack.ogg");
+        ALLEGRO_SAMPLE_ID ryu_theme_sample_id;
+        ALLEGRO_SAMPLE *ryu_theme_sample = al_load_sample("music/ryu_theme.ogg");
 
-        if (!dark_forest_sample) {
-                fprintf(stderr, "[-] main(): failed to load -> dark forest soundtrack\n");
+        if (!ryu_theme_sample) {
+                fprintf(stderr, "[-] main(): failed to load Ryu's\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
-        insert_sample_array(sample_garbage_array, dark_forest_sample);
+        insert_sample_array(sample_garbage_array, ryu_theme_sample);
 
-        ALLEGRO_SAMPLE_ID abandoned_factory_sample_id;
-        ALLEGRO_SAMPLE *abandoned_factory_sample = al_load_sample("music/abandoned_factory_soundtrack.ogg");
+        ALLEGRO_SAMPLE_ID ken_theme_sample_id;
+        ALLEGRO_SAMPLE *ken_theme_sample = al_load_sample("music/ken_theme.ogg");
 
-        if (!abandoned_factory_sample) {
-                fprintf(stderr, "[-] main(): failed to load -> abandoned factory soundtrack\n");
+        if (!ken_theme_sample) {
+                fprintf(stderr, "[-] main(): failed to load Ken's theme\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
-        insert_sample_array(sample_garbage_array, abandoned_factory_sample);
+        insert_sample_array(sample_garbage_array, ken_theme_sample);
 
-        ALLEGRO_SAMPLE_ID calm_forest_sample_id;
-        ALLEGRO_SAMPLE *calm_forest_sample = al_load_sample("music/calm_forest_soundtrack.ogg");
+        ALLEGRO_SAMPLE_ID guile_theme_sample_id;
+        ALLEGRO_SAMPLE *guile_theme_sample = al_load_sample("music/guile_theme.ogg");
 
-        if (!calm_forest_sample) {
-                fprintf(stderr, "[-] main(): failed to load -> calm forest soundtrack\n");
+        if (!guile_theme_sample) {
+                fprintf(stderr, "[-] main(): failed to load Guile's theme\n");
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
-        insert_sample_array(sample_garbage_array, calm_forest_sample);
+        insert_sample_array(sample_garbage_array, guile_theme_sample);
 
         ALLEGRO_SAMPLE_ID vega_theme_sample_id;
         ALLEGRO_SAMPLE *vega_theme_sample = al_load_sample("music/vega_theme.ogg");
 
         if (!vega_theme_sample) {
-               fprintf(stderr, "[-] main(): failed to load -> Vega's theme\n");
+               fprintf(stderr, "[-] main(): failed to load Vega's theme\n");
                exit(AL_LOAD_SAMPLE_ERROR); 
         }
 
@@ -550,9 +550,9 @@ int main(void) {
                                                 if (player1_ryu->stamina <= 0)
                                                         player1_ryu->is_blocking = 0;
                                                 
-                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 231.0 
+                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 253.0 
                                                 && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
-                                                && player1_ryu->is_punching && viking_current_frame_hi_punch_p1 == 2    )
+                                                && player1_ryu->is_punching && viking_current_frame_hi_punch_p1 == 2)
                                                         player2_ryu->health -= 2.0;
 
                                                 draw_stages(display, stage_ryu, stage_ken, stage_guile, stage_vega, game_states);
@@ -807,17 +807,17 @@ int main(void) {
                         if (game_states->play_rumble_sample) {
                                 switch (game_states->stage_select_nav) {
                                         case 0:
-                                                al_play_sample(dark_forest_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &dark_forest_sample_id);
+                                                al_play_sample(ryu_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ryu_theme_sample_id);
 
                                                 break;
 
                                         case 1:
-                                                al_play_sample(abandoned_factory_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &abandoned_factory_sample_id);
+                                                al_play_sample(ken_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ken_theme_sample_id);
 
                                                 break;
 
                                         case 2:
-                                                al_play_sample(calm_forest_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &calm_forest_sample_id);
+                                                al_play_sample(guile_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &guile_theme_sample_id);
 
                                                 break;
 
@@ -862,7 +862,7 @@ int main(void) {
                                                 );
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                        handle_pause_selection(menu_confirm_sample, menu_confirm_sample_id, dark_forest_sample_id, abandoned_factory_sample_id, calm_forest_sample_id, vega_theme_sample_id, game_states);
+                                        handle_pause_selection(menu_confirm_sample, menu_confirm_sample_id, ryu_theme_sample_id, ken_theme_sample_id, guile_theme_sample_id, vega_theme_sample_id, game_states);
                                 }
 
                                 /* Botões on-press */
@@ -963,17 +963,17 @@ int main(void) {
                 } else if (game_states->rumble_end) {
                         switch (game_states->stage_select_nav) {
                                 case 0:
-                                        al_stop_sample(&dark_forest_sample_id);
+                                        al_stop_sample(&ryu_theme_sample_id);
 
                                         break;
                                 
                                 case 1:
-                                        al_stop_sample(&abandoned_factory_sample_id);
+                                        al_stop_sample(&ken_theme_sample_id);
 
                                         break;
 
                                 case 2:
-                                        al_stop_sample(&calm_forest_sample_id);
+                                        al_stop_sample(&guile_theme_sample_id);
 
                                         break;
 
