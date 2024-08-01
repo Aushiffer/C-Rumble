@@ -29,7 +29,7 @@
 #define FRAME_DURATION_IDLE 0.055555
 #define FRAME_DURATION_JUMP 0.2
 #define FRAME_DURATION_RUNNING 0.066666
-#define FRAME_DURATION_HI_PUNCH 0.088888
+#define FRAME_DURATION_HI_PUNCH 0.125
 #define FRAME_DURATION_KICK 0.055555    
 #define FRAME_DURATION_LO_PUNCH 0.055555
 #define MAXLEN_SPRITE_PATH 65
@@ -344,15 +344,17 @@ int main(void) {
                 exit(AL_LOAD_SAMPLE_ERROR);
         }
 
+        insert_sample_array(sample_garbage_array, calm_forest_sample);
+
         ALLEGRO_SAMPLE_ID vega_theme_sample_id;
         ALLEGRO_SAMPLE *vega_theme_sample = al_load_sample("music/vega_theme.ogg");
 
         if (!vega_theme_sample) {
                fprintf(stderr, "[-] main(): failed to load -> Vega's theme\n");
-                exit(AL_LOAD_SAMPLE_ERROR); 
+               exit(AL_LOAD_SAMPLE_ERROR); 
         }
 
-        insert_sample_array(sample_garbage_array, calm_forest_sample);
+        insert_sample_array(sample_garbage_array, vega_theme_sample);
 
         ALLEGRO_SAMPLE_ID rumble_end_sample_id;
         ALLEGRO_SAMPLE *rumble_end_sample = al_load_sample("music/Final Fantasy VII - Victory Fanfare [HD].ogg");
@@ -383,7 +385,7 @@ int main(void) {
         ALLEGRO_BITMAP **ryu_idle_spriteset = load_spriteset(NUM_VIKING_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_idle/ryu_idle", MAXLEN_SPRITE_PATH);
 
         if (!ryu_idle_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's idle sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Ryu's idle sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
@@ -408,10 +410,10 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **viking_hi_punch_spriteset = load_spriteset(NUM_VIKING_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_hi_punch/viking_hi_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **viking_hi_punch_spriteset = load_spriteset(NUM_VIKING_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/viking_hi_punch/ryu_hi_punch", MAXLEN_SPRITE_PATH);
 
         if (!viking_hi_punch_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load the viking's hi punch sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Ryu's hi punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
@@ -547,6 +549,11 @@ int main(void) {
 
                                                 if (player1_ryu->stamina <= 0)
                                                         player1_ryu->is_blocking = 0;
+                                                
+                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 231.0 
+                                                && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
+                                                && player1_ryu->is_punching && viking_current_frame_hi_punch_p1 == 2    )
+                                                        player2_ryu->health -= 2.0;
 
                                                 draw_stages(display, stage_ryu, stage_ken, stage_guile, stage_vega, game_states);
                                                 draw_health_bars(player1_ryu, player2_ryu, display);
@@ -862,11 +869,6 @@ int main(void) {
                                 if (!game_states->rumble_pause) {
                                         if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
                                                 player1_ryu->is_punching = 1;
-
-                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 231.0 
-                                                && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking))
-                                                        player2_ryu->health -= 7.0;
-
                                                 viking_current_frame_hi_punch_p1 = 0;
                                                 ryu_time_frame_hi_punch_p1 = 0;
                                                 viking_current_frame_lo_punch_p1 = 0;

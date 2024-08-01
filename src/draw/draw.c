@@ -132,7 +132,7 @@ void draw_stage_select(ALLEGRO_FONT *header_font, ALLEGRO_FONT *stage_display_na
                         break;
 
                 case 3:
-                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "MÉSON DE LA TABERNA");
+                        al_draw_text(stage_display_name_font, COLOR_WHITE, (float)al_get_display_width(display) / 2 - 8, (float)al_get_display_height(display) / 2 + 4, ALLEGRO_ALIGN_CENTRE, "MESÓN DE LA TABERNA");
 
                         break;
         }
