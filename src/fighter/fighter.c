@@ -4,16 +4,17 @@
 #include "../destroy_resources/destroy_resources.h"
 
 Fighter *create_fighter(
-        float width, float height, 
-        float x, float y, 
+        float fighter_width, float fighter_height, 
+        float fighter_x, float fighter_y, 
         float max_x, float max_y, 
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
         ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **hi_kick_spriteset,
-        ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
+        ALLEGRO_BITMAP **lo_kick_spriteset, ALLEGRO_BITMAP **hi_block_spriteset, 
+        ALLEGRO_BITMAP **lo_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
         ALLEGRO_BITMAP **crouch_spriteset, ALLEGRO_BITMAP **jump_spriteset, 
         unsigned char direction_facing, float absolute_height
 ) {
-        if ((x - width / 2 < 0) || (x + width / 2 > max_x) || (y - height / 2 < 0) || (y + height / 2 > max_y))
+        if ((fighter_x - fighter_width / 2 < 0) || (fighter_x + fighter_width / 2 > max_x) || (fighter_y - fighter_height / 2 < 0) || (fighter_y + fighter_height / 2 > max_y))
                 return NULL;
 
         Fighter *fighter = (Fighter *)malloc(sizeof(Fighter));
@@ -30,17 +31,19 @@ Fighter *create_fighter(
         fighter->hi_punch_spriteset = hi_punch_spriteset;
         fighter->lo_punch_spriteset = lo_punch_spriteset;
         fighter->hi_kick_spriteset = hi_kick_spriteset;
+        fighter->lo_kick_spriteset = lo_kick_spriteset;
         fighter->hi_block_spriteset = hi_block_spriteset;
+        fighter->lo_block_spriteset = lo_block_spriteset;
         fighter->running_spriteset = running_spriteset;
         fighter->crouch_spriteset = crouch_spriteset;
         fighter->jump_spriteset = jump_spriteset;
 
-        fighter->hitbox_upper = create_hitbox(width, height, x, y, max_x, max_y);
+        fighter->hitbox_upper = create_hitbox(fighter_width, fighter_height, fighter_x, fighter_y, max_x, max_y);
 
         if (!fighter->hitbox_upper)
                 return NULL;
 
-        fighter->hitbox_lower = create_hitbox(width, height, x, y + (float)al_get_bitmap_width(idle_spriteset[0]) / 2 + 32, max_x, max_y);
+        fighter->hitbox_lower = create_hitbox(fighter_width, fighter_height, fighter_x, fighter_y + (float)al_get_bitmap_width(idle_spriteset[0]) / 2 + 32, max_x, max_y);
 
         if (!fighter->hitbox_lower)
                 return NULL;
@@ -102,14 +105,14 @@ void move_fighter_jump(Fighter *fighter, const float gravity) {
 }
 
 void update_stamina(Fighter *player1, Fighter *player2) {
-        if ((player1->is_kicking || player1->is_punching) && ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 251.0) && player2->is_blocking) 
-                player2->stamina -= 0.5;
+        if ((player1->is_kicking || player1->is_punching) && ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 251.0) && player2->is_blocking && player2->stamina > 0) 
+                player2->stamina -= 0.75;
 
         if (!player2->is_blocking && player2->stamina < MAX_STAMINA)
                 player2->stamina += 0.25;
 
-        if ((player2->is_kicking || player2->is_punching) && ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 251.0) && player1->is_blocking) 
-                player1->stamina -= 0.5;
+        if ((player2->is_kicking || player2->is_punching) && ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 252.0) && player1->is_blocking && player1->stamina > 0) 
+                player1->stamina -= 0.75;
 
         if (!player1->is_blocking && player1->stamina < MAX_STAMINA)
                 player1->stamina += 0.25;
@@ -212,7 +215,8 @@ void destroy_fighter_sprites(Fighter *fighter) {
                 destroy_spriteset(fighter->crouch_spriteset, NUM_RYU_CROUCH_FRAMES);
                 destroy_spriteset(fighter->hi_punch_spriteset, NUM_RYU_HI_PUNCH_FRAMES);
                 destroy_spriteset(fighter->lo_punch_spriteset, NUM_RYU_LO_PUNCH_FRAMES);
-                destroy_spriteset(fighter->hi_block_spriteset, NUM_RYU_HI_BLOCK_FRAMES);
+                destroy_spriteset(fighter->hi_block_spriteset, NUM_RYU_BLOCK_FRAMES);
+                destroy_spriteset(fighter->lo_block_spriteset, NUM_RYU_BLOCK_FRAMES);
                 destroy_spriteset(fighter->hi_kick_spriteset, NUM_RYU_HI_KICK_FRAMES);
 
                 free(fighter);
