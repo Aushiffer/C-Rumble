@@ -8,11 +8,12 @@ Fighter *create_fighter(
         float fighter_x, float fighter_y, 
         float max_x, float max_y, 
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
-        ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **hi_kick_spriteset,
-        ALLEGRO_BITMAP **lo_kick_spriteset, ALLEGRO_BITMAP **hi_block_spriteset, 
-        ALLEGRO_BITMAP **lo_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
-        ALLEGRO_BITMAP **crouch_spriteset, ALLEGRO_BITMAP **jump_spriteset, 
-        unsigned char direction_facing, float absolute_height
+        ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **air_punch_spriteset,
+        ALLEGRO_BITMAP **hi_kick_spriteset, ALLEGRO_BITMAP **lo_kick_spriteset, 
+        ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **lo_block_spriteset, 
+        ALLEGRO_BITMAP **running_spriteset, ALLEGRO_BITMAP **crouch_spriteset, 
+        ALLEGRO_BITMAP **jump_spriteset, unsigned char direction_facing, 
+        float absolute_height
 ) {
         if ((fighter_x - fighter_width / 2 < 0) || (fighter_x + fighter_width / 2 > max_x) || (fighter_y - fighter_height / 2 < 0) || (fighter_y + fighter_height / 2 > max_y))
                 return NULL;
@@ -30,6 +31,7 @@ Fighter *create_fighter(
         fighter->idle_spriteset = idle_spriteset;
         fighter->hi_punch_spriteset = hi_punch_spriteset;
         fighter->lo_punch_spriteset = lo_punch_spriteset;
+        fighter->air_punch_spriteset = air_punch_spriteset;
         fighter->hi_kick_spriteset = hi_kick_spriteset;
         fighter->lo_kick_spriteset = lo_kick_spriteset;
         fighter->hi_block_spriteset = hi_block_spriteset;
@@ -116,6 +118,47 @@ void update_stamina(Fighter *player1, Fighter *player2) {
 
         if (!player1->is_blocking && player1->stamina < MAX_STAMINA)
                 player1->stamina += 0.25;
+}
+
+void compute_hit(
+        Fighter *player1, Fighter *player2, 
+        unsigned int current_frame_hi_kick_p1, unsigned int current_frame_lo_kick_p1, 
+        unsigned int current_frame_air_kick_p1, unsigned int current_frame_hi_punch_p1, 
+        unsigned int current_frame_lo_punch_p1, unsigned int current_frame_air_punch_p1,
+        unsigned int current_frame_hi_kick_p2, unsigned int current_frame_lo_kick_p2, 
+        unsigned int current_frame_air_kick_p2, unsigned int current_frame_hi_punch_p2, 
+        unsigned int current_frame_lo_punch_p2, unsigned int current_frame_air_punch_p2,
+        unsigned int hit_frame_hi_kick_p1, unsigned int hit_frame_lo_kick_p1,
+        unsigned int hit_frame_air_kick_p1, unsigned int hit_frame_hi_punch_p1,
+        unsigned int hit_frame_lo_punch_p1, unsigned int hit_frame_air_punch_p1,
+        unsigned int hit_frame_hi_kick_p2, unsigned int hit_frame_lo_kick_p2,
+        unsigned int hit_frame_air_kick_p2, unsigned int hit_frame_hi_punch_p2,
+        unsigned int hit_frame_lo_punch_p2, unsigned int hit_frame_air_punch_p2
+) {
+        if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 253.0 
+        && !(player1->is_running_right || player1->is_running_left || player1->is_blocking || player2->is_blocking)
+        && player1->is_punching && current_frame_hi_punch_p1 == hit_frame_hi_punch_p1)
+                player2->health -= 2.0;
+
+        if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 253.0 
+        && !(player1->is_running_right || player1->is_running_left || player1->is_blocking || player2->is_blocking)
+        && player1->is_punching && current_frame_lo_punch_p1 == hit_frame_lo_punch_p1 && player1->is_crouching)
+                player2->health -= 2.0;
+
+        if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 256.0 && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y <= 128.0)
+        && !(player1->is_blocking || player2->is_blocking)
+        && player1->is_punching && current_frame_air_punch_p1 == hit_frame_air_punch_p1 && !player1->on_ground)
+                player2->health -= 2.0;
+
+        if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
+        && !(player1->is_running_right || player1->is_running_left || player1->is_blocking || player2->is_blocking)
+        && player1->is_kicking && current_frame_hi_kick_p1 == hit_frame_hi_kick_p1)
+                player2->health -= 2.75;
+
+        if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
+        && !(player1->is_running_right || player1->is_running_left || player1->is_blocking || player2->is_blocking)
+        && player1->is_kicking && current_frame_lo_kick_p1 == hit_frame_lo_kick_p1 && player1->is_crouching)
+                player2->health -= 2.75;
 }
 
 void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_states) {
@@ -218,6 +261,7 @@ void destroy_fighter_sprites(Fighter *fighter) {
                 destroy_spriteset(fighter->hi_block_spriteset, NUM_RYU_BLOCK_FRAMES);
                 destroy_spriteset(fighter->lo_block_spriteset, NUM_RYU_BLOCK_FRAMES);
                 destroy_spriteset(fighter->hi_kick_spriteset, NUM_RYU_HI_KICK_FRAMES);
+                destroy_spriteset(fighter->air_punch_spriteset, NUM_RYU_AIR_PUNCH_FRAMES);
 
                 free(fighter);
         }

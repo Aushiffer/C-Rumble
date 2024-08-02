@@ -42,20 +42,23 @@ void draw_stage_select(
 /* Renderiza o cenário selecionado pelo jogador */
 void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGRO_BITMAP *stage2_bitmap, ALLEGRO_BITMAP *stage3_bitmap, ALLEGRO_BITMAP *stage4_bitmap, GameStates *game_states);
 
-/* Renderiza as hitboxes dos jogadores (debugging) */
-void draw_player_hitboxes(Fighter *player1, Fighter *player2);
-
 /* Anima o soco do lutador na tela */
 void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
 /* Anima o personagem dando um soco baixo */
 void draw_lo_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
+/* Anima o personagem dando um soco aéreo */
+void draw_air_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
+
 /* Anima o chute do lutador na tela */
 void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
 /* Anima o chute agachado do lutador na tela */
 void draw_lo_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
+
+/* Anima o personagem dando um chute aéreo */
+void draw_air_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
 /* Anima o personagem correndo TODO: implementar mudança de sentido posteriormente, quando os jogadores puderem mudar de lado na tela (pulando) */
 void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int *current_frame_idle, unsigned int num_frames);

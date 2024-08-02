@@ -186,29 +186,6 @@ void draw_stages(ALLEGRO_DISPLAY *display, ALLEGRO_BITMAP *stage1_bitmap, ALLEGR
         }
 }
 
-void draw_player_hitboxes(Fighter *player1, Fighter *player2) {
-        al_draw_rectangle(
-                player1->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_width / 2, player1->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_height / 2,
-                player1->hitbox_upper->hitbox_x + player1->hitbox_upper->hitbox_width / 2, player1->hitbox_upper->hitbox_y + player1->hitbox_upper->hitbox_height / 2,
-                COLOR_LIGHT_RED, 2.0
-        );
-        al_draw_rectangle(
-                player1->hitbox_lower->hitbox_x - player1->hitbox_lower->hitbox_width / 2, player1->hitbox_lower->hitbox_y - player1->hitbox_lower->hitbox_height / 2,
-                player1->hitbox_lower->hitbox_x + player1->hitbox_lower->hitbox_width / 2, player1->hitbox_lower->hitbox_y + player1->hitbox_lower->hitbox_height / 2,
-                al_map_rgb(0, 0, 255), 2.0
-        );
-        al_draw_rectangle(
-               player2->hitbox_upper->hitbox_x - player2->hitbox_upper->hitbox_width / 2, player2->hitbox_upper->hitbox_y - player2->hitbox_upper->hitbox_height / 2,
-               player2->hitbox_upper->hitbox_x + player2->hitbox_upper->hitbox_width / 2, player2->hitbox_upper->hitbox_y + player2->hitbox_upper->hitbox_height / 2,
-               COLOR_LIGHT_RED, 2.0
-        );
-        al_draw_rectangle(
-               player2->hitbox_lower->hitbox_x - player2->hitbox_lower->hitbox_width / 2, player2->hitbox_lower->hitbox_y - player2->hitbox_lower->hitbox_height / 2,
-               player2->hitbox_lower->hitbox_x + player2->hitbox_lower->hitbox_width / 2, player2->hitbox_lower->hitbox_y + player2->hitbox_lower->hitbox_height / 2,
-               al_map_rgb(0, 0, 255), 2.0
-        );
-}
-
 void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
         if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_kicking || player->is_crouching) {
                 player->is_punching = 0;
@@ -237,7 +214,7 @@ void draw_hi_punch_animation(Fighter *player, float frame_duration, float *time_
 }
 
 void draw_lo_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
-        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_kicking || !player->is_crouching) {
+        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_kicking) {
                 player->is_punching = 0;
 
                 return;
@@ -261,6 +238,34 @@ void draw_lo_punch_animation(Fighter *player, float frame_duration, float *time_
                         player->lo_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->lo_punch_spriteset[(*current_frame)]) / 2,
                         player->hitbox_upper->hitbox_y + (float)al_get_bitmap_width(player->lo_punch_spriteset[(*current_frame)]) / 2 - 12, ALLEGRO_FLIP_HORIZONTAL
                 );
+}
+
+void draw_air_punch_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
+        if (player->is_blocking || player->is_kicking || player->on_ground) {
+                player->is_punching = 0;
+
+                return;
+        }
+
+        if ((*time_frame) >= frame_duration) {
+                (*time_frame) = 0;
+                (*current_frame) = ((*current_frame) + 1) % num_frames;
+
+                if ((*current_frame) == 0)
+                        player->is_punching = 0;
+        }
+
+        if (player->direction_facing == 0) {
+                al_draw_bitmap(
+                        player->air_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->air_punch_spriteset[(*current_frame)]) / 2,
+                        player->hitbox_upper->hitbox_y, 0
+                );
+        } else if (player->direction_facing == 1) {
+                al_draw_bitmap(
+                        player->air_punch_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->air_punch_spriteset[(*current_frame)]) / 2,
+                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                );
+        }        
 }
 
 void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
@@ -292,7 +297,7 @@ void draw_hi_kick_animation(Fighter *player, float frame_duration, float *time_f
 }
 
 void draw_lo_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
-        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_punching || !player->is_crouching) {
+        if (player->is_running_left || player->is_running_right || player->is_blocking || player->is_punching) {
                 player->is_kicking = 0;
 
                 return;

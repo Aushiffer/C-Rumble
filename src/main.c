@@ -30,8 +30,11 @@
 #define FRAME_DURATION_JUMP 0.20
 #define FRAME_DURATION_RUNNING 0.066666
 #define FRAME_DURATION_HI_PUNCH 0.125
-#define FRAME_DURATION_KICK 0.165    
 #define FRAME_DURATION_LO_PUNCH 0.125
+#define FRAME_DURATION_AIR_PUNCH 0.150
+#define FRAME_DURATION_HI_KICK 0.165
+#define FRAME_DURATION_LO_KICK 0.165
+#define FRAME_DURATION_AIR_KICK 0.145
 #define MAXLEN_SPRITE_PATH 65
 #define MAXLEN_PLAYER_WINS_STRING 17
 
@@ -227,7 +230,7 @@ int main(void) {
         }
 
         ALLEGRO_SAMPLE_ID menu_sample_id;
-        ALLEGRO_SAMPLE *menu_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 02 - The Eternal Fight.ogg");
+        ALLEGRO_SAMPLE *menu_sample = al_load_sample("music/Street Fighter II Turbo Snes Music - Opening Theme.ogg");
 
         if (!menu_sample) {
                 fprintf(stderr, "[-] main(): failed to load menu music\n");
@@ -257,7 +260,7 @@ int main(void) {
         insert_sample_array(sample_garbage_array, menu_confirm_sample);
 
         ALLEGRO_SAMPLE_ID character_select_sample_id;
-        ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 13 - Without Me.ogg");
+        ALLEGRO_SAMPLE *character_select_sample = al_load_sample("music/Street Fighter II SNES-Player Select.ogg");
 
         if (!character_select_sample) {
                 fprintf(stderr, "[-] main(): failed to load character select screen music\n");
@@ -295,16 +298,6 @@ int main(void) {
         }
 
         insert_sample_array(sample_garbage_array, character_select_confirm_sample);
-
-        ALLEGRO_SAMPLE_ID stage_select_sample_id;
-        ALLEGRO_SAMPLE *stage_select_sample = al_load_sample("music/DavidKBD - See You in Hell Pack - 15 - Fear.ogg");
-
-        if (!stage_select_sample) {
-                fprintf(stderr, "[-] main(): failed to load stage select music\n");
-                exit(AL_LOAD_SAMPLE_ERROR);
-        }
-
-        insert_sample_array(sample_garbage_array, stage_select_sample);
 
         ALLEGRO_SAMPLE_ID pause_sound_effect_id;
         ALLEGRO_SAMPLE *pause_sound_effect = al_load_sample("sfx/pause.ogg");
@@ -382,70 +375,77 @@ int main(void) {
         }
 
         char sprite_path_buf[MAXLEN_SPRITE_PATH]; /* String variável usada para encontrar o caminho dos sprites */
-        ALLEGRO_BITMAP **ryu_idle_spriteset = load_spriteset(NUM_RYU_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_idle/ryu_idle", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_idle_spriteset = load_spriteset(NUM_RYU_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_idle/ryu_idle", MAXLEN_SPRITE_PATH);
 
         if (!ryu_idle_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's idle sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_running_spriteset = load_spriteset(NUM_RYU_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_running/ryu_running", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_running_spriteset = load_spriteset(NUM_RYU_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_running/ryu_running", MAXLEN_SPRITE_PATH);
 
         if (!ryu_running_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's running sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }                                               
 
-        ALLEGRO_BITMAP **ryu_hi_kick_spriteset = load_spriteset(NUM_RYU_HI_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_hi_kick/ryu_hi_kick", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_hi_kick_spriteset = load_spriteset(NUM_RYU_HI_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_hi_kick/ryu_hi_kick", MAXLEN_SPRITE_PATH);
 
         if (!ryu_hi_kick_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's hi kick sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
         
-        ALLEGRO_BITMAP **ryu_lo_kick_spriteset = load_spriteset(NUM_RYU_LO_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_lo_kick/ryu_lo_kick", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_lo_kick_spriteset = load_spriteset(NUM_RYU_LO_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_lo_kick/ryu_lo_kick", MAXLEN_SPRITE_PATH);
 
         if (!ryu_lo_kick_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's lo kick sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_hi_block_spriteset = load_spriteset(NUM_RYU_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_hi_block/ryu_hi_block", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_hi_block_spriteset = load_spriteset(NUM_RYU_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_hi_block/ryu_hi_block", MAXLEN_SPRITE_PATH);
 
         if (!ryu_hi_block_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's hi block spriteset\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_lo_block_spriteset = load_spriteset(NUM_RYU_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_lo_block/ryu_lo_block", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_lo_block_spriteset = load_spriteset(NUM_RYU_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_lo_block/ryu_lo_block", MAXLEN_SPRITE_PATH);
 
         if (!ryu_lo_block_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's lo block spriteset\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_hi_punch_spriteset = load_spriteset(NUM_RYU_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_hi_punch/ryu_hi_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_hi_punch_spriteset = load_spriteset(NUM_RYU_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_hi_punch/ryu_hi_punch", MAXLEN_SPRITE_PATH);
 
         if (!ryu_hi_punch_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's hi punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_lo_punch_spriteset = load_spriteset(NUM_RYU_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_lo_punch/ryu_lo_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_lo_punch_spriteset = load_spriteset(NUM_RYU_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_lo_punch/ryu_lo_punch", MAXLEN_SPRITE_PATH);
 
         if (!ryu_lo_punch_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's lo punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_crouch_spriteset = load_spriteset(NUM_RYU_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_crouch/ryu_crouch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_air_punch_spriteset = load_spriteset(NUM_RYU_AIR_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_air_punch/ryu_air_punch", MAXLEN_SPRITE_PATH);
+
+        if (!ryu_air_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ryu's air punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **ryu_crouch_spriteset = load_spriteset(NUM_RYU_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_crouch/ryu_crouch", MAXLEN_SPRITE_PATH);
 
         if (!ryu_crouch_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's crouch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **ryu_jump_spriteset = load_spriteset(NUM_RYU_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Viking/ryu_jumping/ryu_jumping", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **ryu_jump_spriteset = load_spriteset(NUM_RYU_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_jumping/ryu_jumping", MAXLEN_SPRITE_PATH);
 
         if (!ryu_jump_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's jump spriteset\n");
@@ -457,26 +457,29 @@ int main(void) {
         float ryu_time_frame_idle = 0.0;
         float ryu_time_frame_hi_punch_p1 = 0.0;
         float ryu_time_frame_lo_punch_p1 = 0.0;
+        float ryu_time_frame_air_punch_p1 = 0.0;
         float ryu_time_frame_hi_punch_p2 = 0.0;
         float ryu_time_frame_lo_punch_p2 = 0.0;
+        float ryu_time_frame_air_punch_p2 = 0.0;
         float ryu_time_frame_hi_kick_p1 = 0.0;
         float ryu_time_frame_hi_kick_p2 = 0.0;
         float ryu_time_frame_lo_kick_p1 = 0.0;
         float ryu_time_frame_lo_kick_p2 = 0.0;
-        float ryu_time_frame_block = 0.0;
         float ryu_time_frame_running = 0.0;
-        float ryu_time_frame_jump = 0.0;
+        float ryu_time_frame_jump_p1 = 0.0;
         unsigned int ryu_current_frame_idle = 0;
         unsigned int ryu_current_frame_hi_punch_p1 = 0;
         unsigned int ryu_current_frame_lo_punch_p1 = 0;
+        unsigned int ryu_current_frame_air_punch_p1 = 0;
         unsigned int ryu_current_frame_hi_punch_p2 = 0;
         unsigned int ryu_current_frame_lo_punch_p2 = 0;
+        unsigned int ryu_current_frame_air_punch_p2 = 0;
         unsigned int ryu_current_frame_hi_kick_p1 = 0;
-        unsigned int ryu_current_frame_hi_kick_p2 = 0;
         unsigned int ryu_current_frame_lo_kick_p1 = 0;
+        unsigned int ryu_current_frame_hi_kick_p2 = 0;
         unsigned int ryu_current_frame_lo_kick_p2 = 0;
         unsigned int ryu_current_frame_running = 0;
-        unsigned int ryu_current_frame_jump = 0;
+        unsigned int ryu_current_frame_jump_p1 = 0;
         char wins_text_p1[MAXLEN_PLAYER_WINS_STRING];
         char wins_text_p2[MAXLEN_PLAYER_WINS_STRING];
 
@@ -485,15 +488,16 @@ int main(void) {
                 player1_x, (float)al_get_display_height(display) - 295.0, 
                 al_get_display_width(display), al_get_display_height(display), 
                 ryu_idle_spriteset, ryu_hi_punch_spriteset, 
-                ryu_lo_punch_spriteset, ryu_hi_kick_spriteset, 
-                ryu_lo_kick_spriteset, ryu_hi_block_spriteset, 
-                ryu_lo_block_spriteset, ryu_running_spriteset, 
-                ryu_crouch_spriteset, ryu_jump_spriteset, 
-                0, (float)al_get_display_height(display) - 295.0
+                ryu_lo_punch_spriteset, ryu_air_punch_spriteset,
+                ryu_hi_kick_spriteset, ryu_lo_kick_spriteset, 
+                ryu_hi_block_spriteset, ryu_lo_block_spriteset, 
+                ryu_running_spriteset, ryu_crouch_spriteset, 
+                ryu_jump_spriteset, 0, 
+                (float)al_get_display_height(display) - 295.0
         );
 
         if (!player1_ryu) {
-                fprintf(stderr, "[-] main(): failed to load player 1 (viking)\n");
+                fprintf(stderr, "[-] main(): failed to load player 1 (Ryu)\n");
                 exit(INVALID_FIGHTER_ERROR);
         }
 
@@ -502,15 +506,16 @@ int main(void) {
                 player2_x, (float)al_get_display_height(display) - 295.0, 
                 al_get_display_width(display), al_get_display_height(display), 
                 ryu_idle_spriteset, ryu_hi_punch_spriteset, 
-                ryu_lo_punch_spriteset, ryu_hi_kick_spriteset, 
-                ryu_lo_kick_spriteset, ryu_hi_block_spriteset, 
-                ryu_lo_block_spriteset, ryu_running_spriteset, 
-                ryu_crouch_spriteset, ryu_jump_spriteset, 
-                1, (float)al_get_display_height(display) - 295.0
+                ryu_lo_punch_spriteset, ryu_air_punch_spriteset,
+                ryu_hi_kick_spriteset, ryu_lo_kick_spriteset, 
+                ryu_hi_block_spriteset, ryu_lo_block_spriteset, 
+                ryu_running_spriteset, ryu_crouch_spriteset, 
+                ryu_jump_spriteset, 1, 
+                (float)al_get_display_height(display) - 295.0
         );
 
         if (!player2_ryu) {
-                fprintf(stderr, "[-] main(): failed to load player 2 (viking)\n");
+                fprintf(stderr, "[-] main(): failed to load player 2 (Ryu)\n");
                 exit(INVALID_FIGHTER_ERROR);
         }
 
@@ -538,22 +543,24 @@ int main(void) {
                                         draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                                 } else if (game_states->rumble) {
                                         if (!game_states->rumble_pause) {
-                                                ryu_time_frame_idle += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_hi_punch_p1 += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_lo_punch_p1 += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_hi_punch_p2 += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_lo_punch_p2 += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_hi_kick_p1 += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_hi_kick_p2 += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_lo_kick_p1 += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_lo_kick_p2 += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_block += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_running += 1.0 / FRAMES_PER_SECOND;
-                                                ryu_time_frame_jump += 1.0 / FRAMES_PER_SECOND;
+                                                if (game_states->rumble_fighter_p1 == 0 || game_states->rumble_fighter_p2 == 0) {
+                                                        ryu_time_frame_idle += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_hi_punch_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_lo_punch_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_air_punch_p1 += 1.0 /FRAMES_PER_SECOND;
+                                                        ryu_time_frame_hi_punch_p2 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_lo_punch_p2 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_hi_kick_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_hi_kick_p2 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_lo_kick_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_lo_kick_p2 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_running += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_jump_p1 += 1.0 / FRAMES_PER_SECOND;
 
-                                                if (ryu_time_frame_idle >= FRAME_DURATION_IDLE) {
-                                                        ryu_time_frame_idle = 0;
-                                                        ryu_current_frame_idle = (ryu_current_frame_idle + 1) % NUM_RYU_IDLE_FRAMES;
+                                                        if (ryu_time_frame_idle >= FRAME_DURATION_IDLE) {
+                                                                ryu_time_frame_idle = 0;
+                                                                ryu_current_frame_idle = (ryu_current_frame_idle + 1) % NUM_RYU_IDLE_FRAMES;
+                                                        }
                                                 }
 
                                                 if (player2_ryu->health <= 0) {
@@ -579,7 +586,12 @@ int main(void) {
 
                                                 if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 253.0 
                                                 && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
-                                                && player1_ryu->is_punching && ryu_current_frame_lo_punch_p1 == 1 && player1_ryu->is_crouching)
+                                                && player1_ryu->is_punching && ryu_current_frame_lo_punch_p1 == 1 && player1_ryu->is_crouching && player2_ryu->on_ground)
+                                                        player2_ryu->health -= 2.0;
+
+                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 256.0 && (player2_ryu->hitbox_upper->hitbox_y - player1_ryu->hitbox_upper->hitbox_y <= 128.0)
+                                                && !(player1_ryu->is_blocking || player2_ryu->is_blocking)
+                                                && player1_ryu->is_punching && ryu_current_frame_air_punch_p1 == 2 && !player1_ryu->on_ground)
                                                         player2_ryu->health -= 2.0;
 
                                                 if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 213.0 
@@ -589,7 +601,7 @@ int main(void) {
 
                                                 if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 213.0 
                                                 && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
-                                                && player1_ryu->is_kicking && ryu_current_frame_lo_kick_p1 == 1 && player1_ryu->is_crouching)
+                                                && player1_ryu->is_kicking && ryu_current_frame_lo_kick_p1 == 1 && player1_ryu->is_crouching && player2_ryu->on_ground)
                                                         player2_ryu->health -= 2.75;
                                                 
 
@@ -607,21 +619,23 @@ int main(void) {
                                                                 if (player1_ryu->is_crouching && player1_ryu->is_blocking && player1_ryu->on_ground) {
                                                                         draw_lo_blocking_animation(player1_ryu);
                                                                 } else if (player1_ryu->is_kicking && player1_ryu->is_crouching && player1_ryu->on_ground && ryu_current_frame_hi_kick_p1 == 0) {
-                                                                        draw_lo_kick_animation(player1_ryu, FRAME_DURATION_KICK, &ryu_time_frame_hi_kick_p1, &ryu_current_frame_lo_kick_p1, NUM_RYU_LO_KICK_FRAMES);
-                                                                } else if (player1_ryu->is_punching && player1_ryu->is_crouching && player1_ryu->on_ground && ryu_current_frame_hi_punch_p1 == 0 && player1_ryu->on_ground) {
+                                                                        draw_lo_kick_animation(player1_ryu, FRAME_DURATION_LO_KICK, &ryu_time_frame_hi_kick_p1, &ryu_current_frame_lo_kick_p1, NUM_RYU_LO_KICK_FRAMES);
+                                                                } else if (player1_ryu->is_punching && !player1_ryu->on_ground) {
+                                                                        draw_air_punch_animation(player1_ryu, FRAME_DURATION_AIR_PUNCH, &ryu_time_frame_air_punch_p1, &ryu_current_frame_air_punch_p1, NUM_RYU_AIR_PUNCH_FRAMES);
+                                                                } else if (player1_ryu->is_punching && player1_ryu->is_crouching && player1_ryu->on_ground && ryu_current_frame_hi_punch_p1 == 0 && player1_ryu->on_ground && ryu_current_frame_air_punch_p1 == 0) {
                                                                         draw_lo_punch_animation(player1_ryu, FRAME_DURATION_LO_PUNCH, &ryu_time_frame_lo_punch_p1, &ryu_current_frame_lo_punch_p1, NUM_RYU_LO_PUNCH_FRAMES);
-                                                                } else if (player1_ryu->is_punching && ryu_current_frame_lo_punch_p1 == 0 && player1_ryu->on_ground) {
+                                                                } else if (player1_ryu->is_punching && ryu_current_frame_lo_punch_p1 == 0 && player1_ryu->on_ground && ryu_current_frame_air_punch_p1 == 0) {
                                                                         draw_hi_punch_animation(player1_ryu, FRAME_DURATION_HI_PUNCH, &ryu_time_frame_hi_punch_p1, &ryu_current_frame_hi_punch_p1, NUM_RYU_HI_PUNCH_FRAMES);
                                                                 } else if (player1_ryu->is_kicking && player1_ryu->on_ground) {
-                                                                        draw_hi_kick_animation(player1_ryu, FRAME_DURATION_KICK, &ryu_time_frame_hi_kick_p1, &ryu_current_frame_hi_kick_p1, NUM_RYU_HI_KICK_FRAMES);
-                                                                } else if ((player1_ryu->is_running_right || player1_ryu->is_running_left) &&  player1_ryu->on_ground) {
+                                                                        draw_hi_kick_animation(player1_ryu, FRAME_DURATION_HI_KICK, &ryu_time_frame_hi_kick_p1, &ryu_current_frame_hi_kick_p1, NUM_RYU_HI_KICK_FRAMES);
+                                                                } else if ((player1_ryu->is_running_right || player1_ryu->is_running_left) && player1_ryu->on_ground) {
                                                                         draw_running_animation(player1_ryu, FRAME_DURATION_RUNNING, &ryu_time_frame_running, &ryu_current_frame_running, &ryu_current_frame_idle, NUM_RYU_RUNNING_FRAMES);
                                                                 } else if (player1_ryu->is_crouching && !player1_ryu->is_blocking && player1_ryu->on_ground) {
                                                                         draw_crouching_animation(player1_ryu);
                                                                 } else if (player1_ryu->is_blocking && player1_ryu->on_ground) {
                                                                         draw_blocking_animation(player1_ryu);
-                                                                } else if (!player1_ryu->on_ground) {
-                                                                        draw_jumping_animation(player1_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump, &ryu_current_frame_jump, NUM_RYU_JUMP_FRAMES);
+                                                                } else if (!player1_ryu->on_ground && !(player1_ryu->is_punching || player1_ryu->is_kicking)) {
+                                                                        draw_jumping_animation(player1_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump_p1, &ryu_current_frame_jump_p1, NUM_RYU_JUMP_FRAMES);
                                                                 } else {
                                                                         draw_idle_animation(player1_ryu, ryu_current_frame_idle);
                                                                 }
@@ -638,7 +652,7 @@ int main(void) {
                                                                 } else if (player2_ryu->is_punching && ryu_current_frame_lo_punch_p2 == 0 && player2_ryu->on_ground) {
                                                                         draw_hi_punch_animation(player2_ryu, FRAME_DURATION_HI_PUNCH, &ryu_time_frame_hi_punch_p2, &ryu_current_frame_hi_punch_p2, NUM_RYU_HI_PUNCH_FRAMES);
                                                                 } else if (player2_ryu->is_kicking && player2_ryu->on_ground) {
-                                                                        draw_hi_kick_animation(player2_ryu, FRAME_DURATION_KICK, &ryu_time_frame_hi_kick_p2, &ryu_current_frame_hi_kick_p2, NUM_RYU_HI_KICK_FRAMES);
+                                                                        draw_hi_kick_animation(player2_ryu, FRAME_DURATION_HI_KICK, &ryu_time_frame_hi_kick_p2, &ryu_current_frame_hi_kick_p2, NUM_RYU_HI_KICK_FRAMES);
                                                                 } else if ((player2_ryu->is_running_right || player2_ryu->is_running_left) &&  player2_ryu->on_ground) {
                                                                         draw_running_animation(player2_ryu, FRAME_DURATION_RUNNING, &ryu_time_frame_running, &ryu_current_frame_running, &ryu_current_frame_idle, NUM_RYU_RUNNING_FRAMES);
                                                                 } else if (player2_ryu->is_crouching && !player2_ryu->is_blocking && player2_ryu->on_ground) {
@@ -646,7 +660,7 @@ int main(void) {
                                                                 } else if (player2_ryu->is_blocking && player2_ryu->on_ground) {
                                                                         draw_blocking_animation(player2_ryu);
                                                                 } else if (!player2_ryu->on_ground) {
-                                                                        draw_jumping_animation(player2_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump, &ryu_current_frame_jump, NUM_RYU_JUMP_FRAMES);
+                                                                        draw_jumping_animation(player2_ryu, FRAME_DURATION_JUMP, &ryu_time_frame_jump_p1, &ryu_current_frame_jump_p1, NUM_RYU_JUMP_FRAMES);
                                                                 } else {
                                                                         draw_idle_animation(player2_ryu, ryu_current_frame_idle);
                                                                 }
@@ -667,7 +681,7 @@ int main(void) {
 
                 if (game_states->menu) {
                         if (game_states->play_menu_sample)
-                                al_play_sample(menu_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
+                                al_play_sample(menu_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
                         
                         game_states->play_menu_sample = 0;
                         game_states->play_character_select_welcome_sample = 1;
@@ -694,26 +708,26 @@ int main(void) {
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                                         if (game_states->menu_select == 0) {
                                                 al_stop_sample(&menu_sample_id);
-                                                al_play_sample(menu_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                                al_play_sample(menu_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
                                                 game_states->menu = 0;
                                                 game_states->menu_select = 0;
                                                 game_states->character_select = 1;
                                         } else {
-                                                al_play_sample(menu_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                                al_play_sample(menu_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
                                                 break;
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
-                                        al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_play_sample(cancel_sound_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
 
                                         break;
                                 }
                         }
                 } else if (game_states->character_select) {
                         if (game_states->play_character_select_welcome_sample && game_states->play_character_select_sample) {
-                                al_play_sample(character_select_welcome_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
-                                al_play_sample(character_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
+                                al_play_sample(character_select_welcome_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
+                                al_play_sample(character_select_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
 
                         game_states->play_character_select_welcome_sample = 0;
@@ -732,7 +746,7 @@ int main(void) {
                                         game_states->menu = 1;
                                         game_states->character_select = 0;
 
-                                        al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_play_sample(cancel_sound_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_stop_sample(&character_select_sample_id);
                                 }
                                 
@@ -751,7 +765,7 @@ int main(void) {
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER && !game_states->character_select_nav_p1_confirm) {
                                         game_states->character_select_nav_p1_confirm = 1;
 
-                                        al_play_sample(character_select_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
+                                        al_play_sample(character_select_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
 
                                         switch (game_states->character_select_nav_p1) {
                                                 case 0:
@@ -789,7 +803,7 @@ int main(void) {
                                                 menu_select_sample_id
                                         );
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && !game_states->character_select_nav_p2_confirm) {
-                                        al_play_sample(character_select_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
+                                        al_play_sample(character_select_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
                                         update_fighter_selectors(game_states);
                                 }
                         }
@@ -802,7 +816,7 @@ int main(void) {
                         }
                 } else if (game_states->stage_select) {
                         if (game_states->play_stage_select_sample)
-                                al_play_sample(stage_select_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &stage_select_sample_id);
+                                al_play_sample(character_select_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         
                         game_states->play_stage_select_sample = 0;
                         game_states->character_select_nav_p1 = 0;
@@ -820,8 +834,8 @@ int main(void) {
                                         game_states->stage_select = 0;
                                         game_states->character_select = 1;
 
-                                        al_play_sample(cancel_sound_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
-                                        al_stop_sample(&stage_select_sample_id);
+                                        al_play_sample(cancel_sound_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_stop_sample(&character_select_sample_id);
                                 }
                                 
                                 if (event.keyboard.keycode == ALLEGRO_KEY_D || event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
@@ -840,29 +854,29 @@ int main(void) {
                                         game_states->rumble = 1;
                                         game_states->stage_select = 0;
 
-                                        al_stop_sample(&stage_select_sample_id);
+                                        al_stop_sample(&character_select_sample_id);
                                 }
                         }
                 } else if (game_states->rumble) {
                         if (game_states->play_rumble_sample) {
                                 switch (game_states->stage_select_nav) {
                                         case 0:
-                                                al_play_sample(ryu_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ryu_theme_sample_id);
+                                                al_play_sample(ryu_theme_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ryu_theme_sample_id);
 
                                                 break;
 
                                         case 1:
-                                                al_play_sample(ken_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ken_theme_sample_id);
+                                                al_play_sample(ken_theme_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ken_theme_sample_id);
 
                                                 break;
 
                                         case 2:
-                                                al_play_sample(guile_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &guile_theme_sample_id);
+                                                al_play_sample(guile_theme_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &guile_theme_sample_id);
 
                                                 break;
 
                                         case 3:
-                                                al_play_sample(vega_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &vega_theme_sample_id);
+                                                al_play_sample(vega_theme_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &vega_theme_sample_id);
 
                                                 break;
                                 }
@@ -882,7 +896,7 @@ int main(void) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
                                         game_states->rumble_pause ^= 1;
                                         
-                                        al_play_sample(pause_sound_effect, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &pause_sound_effect_id);
+                                        al_play_sample(pause_sound_effect, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &pause_sound_effect_id);
                                 }
 
                                 if (event.keyboard.keycode == ALLEGRO_KEY_S) {
@@ -912,7 +926,9 @@ int main(void) {
                                                 ryu_current_frame_hi_punch_p1 = 0;
                                                 ryu_time_frame_hi_punch_p1 = 0;
                                                 ryu_current_frame_lo_punch_p1 = 0;
-                                                ryu_time_frame_lo_punch_p1 = 0;      
+                                                ryu_time_frame_lo_punch_p1 = 0;    
+                                                ryu_current_frame_air_punch_p1 = 0;
+                                                ryu_time_frame_air_punch_p1 = 0;  
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_X) {
                                                 player1_ryu->is_kicking = 1;
                                                 ryu_current_frame_hi_kick_p1 = 0;
@@ -922,8 +938,8 @@ int main(void) {
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_W && player1_ryu->on_ground) {
                                                 player1_ryu->velocity_y = JUMP_STRENGTH;
                                                 player1_ryu->on_ground = 0;
-                                                ryu_current_frame_jump = 0;
-                                                ryu_time_frame_jump = 0.0;
+                                                ryu_current_frame_jump_p1 = 0;
+                                                ryu_time_frame_jump_p1 = 0.0;
                                         }
 
                                         if (event.keyboard.keycode == ALLEGRO_KEY_K) {
@@ -1009,13 +1025,13 @@ int main(void) {
                         }
 
                         if (game_states->play_rumble_end_sample)
-                                al_play_sample(rumble_end_sample, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &rumble_end_sample_id);
+                                al_play_sample(rumble_end_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &rumble_end_sample_id);
 
                         game_states->play_menu_sample = 1;
                         game_states->play_rumble_end_sample = 0;
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                al_play_sample(menu_confirm_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                al_play_sample(menu_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
                                 al_stop_sample(&rumble_end_sample_id);
 
                                 game_states->rumble_end = 0;

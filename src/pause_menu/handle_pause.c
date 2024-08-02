@@ -7,7 +7,7 @@ void handle_pause_selection(
         GameStates *game_states
 ) {
         if (game_states->rumble_pause) {
-                al_play_sample(enable_pause_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &enable_pause_sample_id);
+                al_play_sample(enable_pause_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &enable_pause_sample_id);
 
                 if (game_states->rumble_pause_select == 0) {
                         game_states->rumble_pause = 0;
