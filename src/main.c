@@ -547,7 +547,7 @@ int main(void) {
                                                         ryu_time_frame_idle += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_hi_punch_p1 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_lo_punch_p1 += 1.0 / FRAMES_PER_SECOND;
-                                                        ryu_time_frame_air_punch_p1 += 1.0 /FRAMES_PER_SECOND;
+                                                        ryu_time_frame_air_punch_p1 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_hi_punch_p2 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_lo_punch_p2 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_hi_kick_p1 += 1.0 / FRAMES_PER_SECOND;
@@ -736,10 +736,24 @@ int main(void) {
                         game_states->stage_select_nav = 0;
                         game_states->play_stage_select_sample = 1;
                         game_states->menu_select = 0;
-                        player1_ryu->rounds_won = 0;
-                        player2_ryu->rounds_won = 0;
-                        player1_ryu->health = MAX_HEALTH;
-                        player2_ryu->health = MAX_HEALTH;
+
+                        switch (game_states->rumble_fighter_p1) {
+                                case 0:
+                                        player1_ryu->rounds_won = 0;
+                                        player1_ryu->health = MAX_HEALTH;
+                                        player1_ryu->stamina = MAX_STAMINA;
+
+                                        break;
+                        }
+
+                        switch (game_states->rumble_fighter_p2) {
+                                case 0:
+                                        player2_ryu->rounds_won = 0;
+                                        player2_ryu->health = MAX_HEALTH;
+                                        player2_ryu->stamina = MAX_STAMINA;
+
+                                        break;
+                        }
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
@@ -763,31 +777,9 @@ int main(void) {
                                                 menu_select_sample_id
                                         );
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER && !game_states->character_select_nav_p1_confirm) {
+                                        al_play_sample(character_select_confirm_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
+                                        
                                         game_states->character_select_nav_p1_confirm = 1;
-
-                                        al_play_sample(character_select_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
-
-                                        switch (game_states->character_select_nav_p1) {
-                                                case 0:
-                                                        game_states->rumble_fighter_p1 = 0;
-
-                                                        break;
-
-                                                case 1:
-                                                        game_states->rumble_fighter_p1 = 1;
-
-                                                        break;
-
-                                                case 2:
-                                                        game_states->rumble_fighter_p1 = 2;
-
-                                                        break;
-
-                                                case 3:
-                                                        game_states->rumble_fighter_p1 = 3;
-
-                                                        break;
-                                        }
                                 }
 
                                 if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT && !game_states->character_select_nav_p2_confirm) {
@@ -803,9 +795,12 @@ int main(void) {
                                                 menu_select_sample_id
                                         );
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && !game_states->character_select_nav_p2_confirm) {
-                                        al_play_sample(character_select_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
-                                        update_fighter_selectors(game_states);
+                                        al_play_sample(character_select_confirm_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
+                                        
+                                        game_states->character_select_nav_p2_confirm = 1;
                                 }
+
+                                update_fighter_selectors(game_states);
                         }
 
                         if (game_states->character_select_nav_p1_confirm && game_states->character_select_nav_p2_confirm) {
@@ -916,7 +911,13 @@ int main(void) {
                                                 );
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                        handle_pause_selection(menu_confirm_sample, menu_confirm_sample_id, ryu_theme_sample_id, ken_theme_sample_id, guile_theme_sample_id, vega_theme_sample_id, game_states);
+                                        handle_pause_selection(
+                                                menu_confirm_sample, menu_confirm_sample_id, 
+                                                ryu_theme_sample_id, ken_theme_sample_id, 
+                                                guile_theme_sample_id, vega_theme_sample_id, 
+                                                player1_ryu, player2_ryu,
+                                                game_states
+                                        );
                                 }
 
                                 /* Botões on-press */
@@ -935,6 +936,8 @@ int main(void) {
                                                 ryu_time_frame_hi_kick_p1 = 0;
                                                 ryu_current_frame_lo_kick_p1 = 0;
                                                 ryu_time_frame_lo_kick_p1 = 0;
+                                                ryu_current_frame_air_punch_p2 = 0;
+                                                ryu_time_frame_air_punch_p2 = 0; 
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_W && player1_ryu->on_ground) {
                                                 player1_ryu->velocity_y = JUMP_STRENGTH;
                                                 player1_ryu->on_ground = 0;

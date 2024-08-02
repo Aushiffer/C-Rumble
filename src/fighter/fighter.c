@@ -91,10 +91,6 @@ void move_fighter_left(Fighter *fighter) {
                 fighter->hitbox_lower->hitbox_x = fighter->hitbox_lower->hitbox_x + PLAYER_STEPS;
 }
 
-void move_fighter_crouch(Fighter *fighter) {
-        fighter->hitbox_upper->hitbox_y = fighter->hitbox_lower->hitbox_y;
-}
-
 void move_fighter_jump(Fighter *fighter, const float gravity) {
         fighter->velocity_y += gravity;
         fighter->hitbox_upper->hitbox_y += fighter->velocity_y;
@@ -167,6 +163,8 @@ void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_stat
         if ((player1->rounds_won == 2 && player2->rounds_won == 1) || (player1->rounds_won == 2 && player2->rounds_won == 0)) {
                 game_states->rumble_end = 1;
                 game_states->play_rumble_end_sample = 1;
+                player1->is_crouching = 0;
+                player2->is_crouching = 0;
         }
 
         player2->health = MAX_HEALTH;
@@ -194,8 +192,6 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
 
                         if (calc_collision(player1->hitbox_upper, player2->hitbox_upper))
                                 move_fighter_right(player1, max_x);
-                } else if (player1->controller->down) {
-                        move_fighter_crouch(player1);
                 }
         }
 
@@ -213,8 +209,6 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
 
                         if (calc_collision(player1->hitbox_upper, player2->hitbox_upper) || calc_collision(player1->hitbox_lower, player2->hitbox_lower))
                                 move_fighter_right(player2, max_x);
-                } else if (player2->controller->down) {
-                        move_fighter_crouch(player2);
                 }
         }
 
@@ -223,7 +217,27 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
 }
 
 void update_fighter_selectors(GameStates *game_states) {
-        game_states->character_select_nav_p2_confirm = 1;
+        switch (game_states->character_select_nav_p1) {
+                case 0:
+                        game_states->rumble_fighter_p1 = 0;
+
+                        break;
+
+                case 1:
+                        game_states->rumble_fighter_p1 = 1;
+
+                        break;
+
+                case 2:
+                        game_states->rumble_fighter_p1 = 2;
+
+                        break;
+
+                case 3:
+                        game_states->rumble_fighter_p1 = 3;
+
+                        break;
+        }
 
         switch (game_states->character_select_nav_p2) {
                 case 0:

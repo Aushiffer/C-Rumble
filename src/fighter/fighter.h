@@ -82,9 +82,6 @@ void move_fighter_left(Fighter *fighter);
 /* Pular */
 void move_fighter_jump(Fighter *fighter, const float gravity);
 
-/* Abaixar */
-void move_fighter_crouch(Fighter *fighter);
-
 /* Soco */
 void move_fighter_punch(Fighter *fighter);
 
