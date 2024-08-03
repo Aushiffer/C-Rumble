@@ -942,7 +942,7 @@ int main(void) {
                                 /* Botões on-press */
                                 if (!game_states->rumble_pause) {
                                         /* P1 */
-                                        if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
+                                        if (event.keyboard.keycode == ALLEGRO_KEY_C) {
                                                 switch (game_states->rumble_fighter_p1) {
                                                         case 0:
                                                                 player1_ryu->is_punching = 1;
@@ -955,7 +955,7 @@ int main(void) {
 
                                                                 break;
                                                 }  
-                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_X) {
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_V) {
                                                 switch (game_states->rumble_fighter_p1) {
                                                         case 0:
                                                                 player1_ryu->is_kicking = 1;
@@ -1036,7 +1036,7 @@ int main(void) {
                                                 player1_ryu->is_running_left ^= 1;
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
                                                 player1_ryu->is_crouching ^= 1;
-                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_C) {
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_B) {
                                                 player1_ryu->is_blocking ^= 1;
                                         }
 
