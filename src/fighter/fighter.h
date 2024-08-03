@@ -4,19 +4,23 @@
 #include <stdlib.h>
 #include <allegro5/bitmap.h>
 #include <allegro5/display.h>
+#include <allegro5/allegro_audio.h>
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
 #include "../game_states/game_states.h"
 
-/* Macros do Viking */
-#define NUM_VIKING_IDLE_FRAMES 5        
-#define NUM_VIKING_RUNNING_FRAMES 5
-#define NUM_VIKING_KICK_FRAMES 7
-#define NUM_VIKING_HI_PUNCH_FRAMES 3
-#define NUM_VIKING_LO_PUNCH_FRAMES 5
-#define NUM_VIKING_CROUCH_FRAMES 1
-#define NUM_VIKING_BLOCK_FRAMES 1
-#define NUM_VIKING_JUMP_FRAMES 6
+/* Macros do Ryu */
+#define NUM_RYU_IDLE_FRAMES 5        
+#define NUM_RYU_RUNNING_FRAMES 5
+#define NUM_RYU_HI_KICK_FRAMES 3
+#define NUM_RYU_LO_KICK_FRAMES 2
+#define NUM_RYU_AIR_KICK_FRAMES 3
+#define NUM_RYU_HI_PUNCH_FRAMES 3
+#define NUM_RYU_LO_PUNCH_FRAMES 2
+#define NUM_RYU_AIR_PUNCH_FRAMES 3
+#define NUM_RYU_CROUCH_FRAMES 1
+#define NUM_RYU_BLOCK_FRAMES 1
+#define NUM_RYU_JUMP_FRAMES 6
 
 #define PLAYER_STEPS 15.0
 #define MAX_HEALTH 100.0
@@ -32,13 +36,16 @@ typedef struct Fighter {
         ALLEGRO_BITMAP **idle_spriteset;
         ALLEGRO_BITMAP **hi_punch_spriteset;
         ALLEGRO_BITMAP **lo_punch_spriteset;
-        ALLEGRO_BITMAP **kick_spriteset;
+        ALLEGRO_BITMAP **air_punch_spriteset;
+        ALLEGRO_BITMAP **hi_kick_spriteset;
+        ALLEGRO_BITMAP **lo_kick_spriteset;
+        ALLEGRO_BITMAP **air_kick_spriteset;
         ALLEGRO_BITMAP **hi_block_spriteset;
+        ALLEGRO_BITMAP **lo_block_spriteset;
         ALLEGRO_BITMAP **running_spriteset;
         ALLEGRO_BITMAP **crouch_spriteset;
         ALLEGRO_BITMAP **jump_spriteset;
         float health;
-        float stamina;
         float absolute_height;
         float velocity_y;
         unsigned char direction_facing;
@@ -58,8 +65,10 @@ Fighter *create_fighter(
         float fighter_x, float fighter_y, 
         float max_x, float max_y, 
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
-        ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **kick_spriteset,
-        ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
+        ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **air_punch_spriteset,
+        ALLEGRO_BITMAP **hi_kick_spriteset, ALLEGRO_BITMAP **lo_kick_spriteset,
+        ALLEGRO_BITMAP **air_kick_spriteset, ALLEGRO_BITMAP **hi_block_spriteset, 
+        ALLEGRO_BITMAP **lo_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
         ALLEGRO_BITMAP **crouch_spriteset, ALLEGRO_BITMAP **jump_spriteset, 
         unsigned char direction_facing, float absolute_height
 );
@@ -73,17 +82,29 @@ void move_fighter_left(Fighter *fighter);
 /* Pular */
 void move_fighter_jump(Fighter *fighter, const float gravity);
 
-/* Abaixar */
-void move_fighter_crouch(Fighter *fighter);
-
 /* Soco */
 void move_fighter_punch(Fighter *fighter);
 
 /* Chute */
 void move_fighter_kick(Fighter *fighter);
 
-/* Atualiza a stamina os jogadores */
-void update_stamina(Fighter *player1, Fighter *player2);
+/* Faz jogadores receberem dano caso um hit puder ser considerado */
+void compute_hit(
+        Fighter *player1, Fighter *player2, 
+        unsigned int current_frame_hi_kick_p1, unsigned int current_frame_lo_kick_p1, 
+        unsigned int current_frame_air_kick_p1, unsigned int current_frame_hi_punch_p1, 
+        unsigned int current_frame_lo_punch_p1, unsigned int current_frame_air_punch_p1,
+        unsigned int hit_frame_hi_kick_p1, unsigned int hit_frame_lo_kick_p1,
+        unsigned int hit_frame_air_kick_p1, unsigned int hit_frame_hi_punch_p1,
+        unsigned int hit_frame_lo_punch_p1, unsigned int hit_frame_air_punch_p1,
+        unsigned int current_frame_hi_kick_p2, unsigned int current_frame_lo_kick_p2, 
+        unsigned int current_frame_air_kick_p2, unsigned int current_frame_hi_punch_p2, 
+        unsigned int current_frame_lo_punch_p2, unsigned int current_frame_air_punch_p2,
+        unsigned int hit_frame_hi_kick_p2, unsigned int hit_frame_lo_kick_p2,
+        unsigned int hit_frame_air_kick_p2, unsigned int hit_frame_hi_punch_p2,
+        unsigned int hit_frame_lo_punch_p2, unsigned int hit_frame_air_punch_p2,
+        ALLEGRO_SAMPLE *hit_sfx, ALLEGRO_SAMPLE_ID hit_sfx_id
+);
 
 /* Implementa lógica para um dos jogadores vencer */
 void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_states);

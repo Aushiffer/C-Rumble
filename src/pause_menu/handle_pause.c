@@ -4,10 +4,11 @@ void handle_pause_selection(
         ALLEGRO_SAMPLE *enable_pause_sample, ALLEGRO_SAMPLE_ID enable_pause_sample_id, 
         ALLEGRO_SAMPLE_ID stage1_sample_id, ALLEGRO_SAMPLE_ID stage2_sample_id, 
         ALLEGRO_SAMPLE_ID stage3_sample_id,  ALLEGRO_SAMPLE_ID stage4_sample_id,
+        Fighter *player1, Fighter *player2,
         GameStates *game_states
 ) {
         if (game_states->rumble_pause) {
-                al_play_sample(enable_pause_sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &enable_pause_sample_id);
+                al_play_sample(enable_pause_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &enable_pause_sample_id);
 
                 if (game_states->rumble_pause_select == 0) {
                         game_states->rumble_pause = 0;
@@ -40,7 +41,10 @@ void handle_pause_selection(
                                         al_stop_sample(&stage4_sample_id);
 
                                         break;
-                        } 
+                        }
+
+                        player1->is_crouching = 0;
+                        player2->is_crouching = 0;
                 }
         }
 }

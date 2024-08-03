@@ -2,7 +2,7 @@
 
 ## Controles
 - Player 1 -> Z: soco, X: chute, C: bloqueia, W: cima, A: esquerda, S: baixo, D: direita
-- Player 2 -> L: soco, K: chute, J: bloqueia, UP: cima, LEFT: esquerda, DOWN: baixo, RIGHT: direita
+- Player 2 -> K: soco, L: chute, J: bloqueia, UP: cima, LEFT: esquerda, DOWN: baixo, RIGHT: direita
 
 ## Seleção nos menus
 - Player 1 -> WASD: movimenta o seletor, ENTER: seleciona
