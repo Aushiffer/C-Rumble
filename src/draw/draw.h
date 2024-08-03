@@ -60,11 +60,11 @@ void draw_lo_kick_animation(Fighter *player, float frame_duration, float *time_f
 /* Anima o personagem dando um chute aéreo */
 void draw_air_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
-/* Anima o personagem correndo TODO: implementar mudança de sentido posteriormente, quando os jogadores puderem mudar de lado na tela (pulando) */
-void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int *current_frame_idle, unsigned int num_frames);
+/* Anima o personagem correndo */
+void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, float frame_duration_idle, float *time_frame_idle, unsigned int *current_frame_idle, unsigned int num_frames, unsigned int num_frames_idle);
 
-/* Anima o personagem em repouso, cálculo de frame atual e de duração de frame é feito externamente */
-void draw_idle_animation(Fighter *player, unsigned int current_frame);
+/* Anima o personagem em repouso */
+void draw_idle_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames);
 
 /* Anima o personagem bloqueando */
 void draw_blocking_animation(Fighter *player);

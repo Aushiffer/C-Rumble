@@ -352,10 +352,15 @@ void draw_air_kick_animation(Fighter *player, float frame_duration, float *time_
         }  
 }
 
-void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int *current_frame_idle, unsigned int num_frames) {
+void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, float frame_duration_idle, float *time_frame_idle, unsigned int *current_frame_idle, unsigned int num_frames, unsigned int num_frame_idle) {
         if ((*time_frame) >= frame_duration) {
                 (*time_frame) = 0;
                 (*current_frame) = ((*current_frame) + 1) % num_frames;
+        }
+
+        if ((*time_frame_idle) >= frame_duration_idle) {
+                (*time_frame_idle) = 0;
+                (*current_frame_idle) = ((*current_frame_idle) + 1) % num_frame_idle;
         }
 
         if (player->is_running_left) {
@@ -388,15 +393,20 @@ void draw_running_animation(Fighter *player, float frame_duration, float *time_f
         }
 }
 
-void draw_idle_animation(Fighter *player, unsigned int current_frame) {
+void draw_idle_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
+        if ((*time_frame) >= frame_duration) {
+                (*time_frame) = 0;
+                (*current_frame) = ((*current_frame) + 1) % num_frames;
+        }
+        
         if (player->direction_facing == 0) {
                 al_draw_bitmap(
-                        player->idle_spriteset[current_frame], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[current_frame]) / 2, 
+                        player->idle_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[(*current_frame)]) / 2, 
                         player->hitbox_upper->hitbox_y, 0
                 );
         } else {
                 al_draw_bitmap(
-                        player->idle_spriteset[current_frame], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[current_frame]) / 2, 
+                        player->idle_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->idle_spriteset[(*current_frame)]) / 2, 
                         player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
                 );
         }
