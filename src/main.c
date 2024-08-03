@@ -730,25 +730,25 @@ int main(void) {
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                                         if (game_states->menu_select == 0) {
                                                 al_stop_sample(&menu_sample_id);
-                                                al_play_sample(menu_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                                al_play_sample(menu_confirm_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
                                                 game_states->menu = 0;
                                                 game_states->menu_select = 0;
                                                 game_states->character_select = 1;
                                         } else {
-                                                al_play_sample(menu_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                                al_play_sample(menu_confirm_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
                                                 break;
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
-                                        al_play_sample(cancel_sound_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_play_sample(cancel_sound_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
 
                                         break;
                                 }
                         }
                 } else if (game_states->character_select) {
                         if (game_states->play_character_select_welcome_sample && game_states->play_character_select_sample) {
-                                al_play_sample(character_select_welcome_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
+                                al_play_sample(character_select_welcome_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
                                 al_play_sample(character_select_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
 
@@ -782,7 +782,7 @@ int main(void) {
                                         game_states->menu = 1;
                                         game_states->character_select = 0;
 
-                                        al_play_sample(cancel_sound_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_play_sample(cancel_sound_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_stop_sample(&character_select_sample_id);
                                 }
                                 
@@ -851,7 +851,7 @@ int main(void) {
                                         game_states->stage_select = 0;
                                         game_states->character_select = 1;
 
-                                        al_play_sample(cancel_sound_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_play_sample(cancel_sound_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_stop_sample(&character_select_sample_id);
                                 }
                                 
@@ -1096,7 +1096,7 @@ int main(void) {
                         game_states->play_rumble_end_sample = 0;
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                al_play_sample(menu_confirm_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                al_play_sample(menu_confirm_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
                                 al_stop_sample(&rumble_end_sample_id);
 
                                 game_states->rumble_end = 0;
