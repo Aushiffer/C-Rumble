@@ -46,7 +46,6 @@ typedef struct Fighter {
         ALLEGRO_BITMAP **crouch_spriteset;
         ALLEGRO_BITMAP **jump_spriteset;
         float health;
-        float stamina;
         float absolute_height;
         float velocity_y;
         unsigned char direction_facing;
@@ -88,9 +87,6 @@ void move_fighter_punch(Fighter *fighter);
 
 /* Chute */
 void move_fighter_kick(Fighter *fighter);
-
-/* Atualiza a stamina os jogadores */
-void update_stamina(Fighter *player1, Fighter *player2);
 
 /* Faz jogadores receberem dano caso um hit puder ser considerado */
 void compute_hit(

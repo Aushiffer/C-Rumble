@@ -81,9 +81,6 @@ void draw_jumping_animation(Fighter *player, float frame_duration, float *time_f
 /* Renderiza a barra de vida do jogador */
 void draw_health_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
 
-/* Renderiza as barras de stamina */
-void draw_stamina_bars(Fighter *player1, Fighter *player2, ALLEGRO_DISPLAY *display);
-
 /* Renderiza nomes dos personagens embaixo das barras de vida */
 void draw_rumble_header(GameStates *game_states, ALLEGRO_DISPLAY *display, ALLEGRO_FONT *rumble_display_character_name_font, ALLEGRO_FONT *character_select_header_font, char *wins_text_p1, char *wins_text_p2);
 
