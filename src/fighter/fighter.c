@@ -180,41 +180,50 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 253.0 
-        && !(player2->is_running_right || player2->is_running_left || player1->is_blocking || player2->is_blocking)
-        && player2->is_punching && current_frame_hi_punch_p2 == hit_frame_hi_punch_p2) {
+        && !player2->is_running_right && !player2->is_running_left 
+        && !player2->is_blocking && !player1->is_blocking 
+        && !player1->is_crouching && player2->is_punching 
+        && current_frame_hi_punch_p2 == hit_frame_hi_punch_p2) {
                 al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.0;
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 200.0 
-        && !(player2->is_running_right || player2->is_running_left || player1->is_blocking || player2->is_blocking)
-        && player2->is_punching && current_frame_lo_punch_p2 == hit_frame_lo_punch_p2 && player2->is_crouching && player1->on_ground) {
+        && !player2->is_running_right && !player2->is_running_left 
+        && !player2->is_blocking && !(player1->is_blocking && player1->is_crouching)
+        && player2->is_punching && current_frame_lo_punch_p2 == hit_frame_lo_punch_p2 
+        && player2->is_crouching && player1->on_ground) {
                 al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
 
                 player1->health -= 2.0;
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y >= -100.0)
-        && !(player1->is_blocking || player2->is_blocking)
-        && player2->is_punching && current_frame_air_punch_p2 == hit_frame_air_punch_p2 && !player2->on_ground) {
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) >= -100.0
+        && !player2->is_blocking && !player1->is_blocking
+        && player2->is_punching && current_frame_air_punch_p2 == hit_frame_air_punch_p2 
+        && !player2->on_ground) {
                 al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.0;
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && !(player1->is_running_right || player1->is_running_left || player1->is_blocking || player2->is_blocking)
-        && player2->is_kicking && current_frame_hi_kick_p2 == hit_frame_hi_kick_p2) {
+        && !player2->is_running_right && !player2->is_running_left 
+        && !player2->is_blocking && !player1->is_blocking
+        && player2->is_kicking && current_frame_hi_kick_p2 == hit_frame_hi_kick_p2
+        && !player1->is_crouching) {
                 al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.75;
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && !(player1->is_running_right || player1->is_running_left || player1->is_blocking || player2->is_blocking)
-        && player2->is_kicking && current_frame_lo_kick_p2 == hit_frame_lo_kick_p2 && player2->is_crouching && player1->on_ground) {
+        && !player2->is_running_right && !player2->is_running_left 
+        && !player2->is_blocking && !(player1->is_blocking && player1->is_crouching)
+        && player2->is_kicking && current_frame_lo_kick_p2 == hit_frame_lo_kick_p2 
+        && player2->is_crouching && player1->on_ground) {
                 al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.75;
@@ -222,8 +231,9 @@ void compute_hit(
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
         && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y >= -100.0)
-        && !(player1->is_blocking || player2->is_blocking)
-        && player2->is_kicking && current_frame_air_kick_p2 == hit_frame_air_kick_p2 && !player2->on_ground) {
+        && !player2->is_blocking && !player1->is_blocking
+        && player2->is_kicking && current_frame_air_kick_p2 == hit_frame_air_kick_p2 
+        && !player2->on_ground) {
                 al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.75;

@@ -593,32 +593,34 @@ int main(void) {
 
                                                 }
 
-                                                if (player2_ryu->health <= 0) {
-                                                        handle_rumble_end(player1_ryu, player2_ryu, game_states);
-                                                        reset_players_x(player1_ryu, player2_ryu, display);
-                                                }
-                                                
-                                                if (player1_ryu->health <= 0) {
-                                                        handle_rumble_end(player2_ryu, player1_ryu, game_states);
-                                                        reset_players_x(player1_ryu, player2_ryu, display);
-                                                }
+                                                if (game_states->rumble_fighter_p1 == 0 && game_states->rumble_fighter_p2 == 0) {
+                                                        if (player1_ryu->health <= 0) {
+                                                                handle_rumble_end(player2_ryu, player1_ryu, game_states);
+                                                                reset_players_x(player1_ryu, player2_ryu, display);
+                                                        }
+                                                        
+                                                        if (player2_ryu->health <= 0) {
+                                                                handle_rumble_end(player1_ryu, player2_ryu, game_states);
+                                                                reset_players_x(player1_ryu, player2_ryu, display);
+                                                        }
 
-                                                compute_hit(
-                                                        player1_ryu, player2_ryu, 
-                                                        ryu_current_frame_hi_kick_p1, ryu_current_frame_lo_kick_p1, 
-                                                        ryu_current_frame_air_kick_p1, ryu_current_frame_hi_punch_p1, 
-                                                        ryu_current_frame_lo_punch_p1, ryu_current_frame_air_punch_p1, 
-                                                        2, 1, 
-                                                        2, 2, 
-                                                        1, 2,
-                                                        ryu_current_frame_hi_kick_p2, ryu_current_frame_lo_kick_p2,
-                                                        ryu_current_frame_air_kick_p2, ryu_current_frame_hi_punch_p2,
-                                                        ryu_current_frame_lo_punch_p2, ryu_current_frame_air_punch_p2,
-                                                        2, 1,
-                                                        2, 2,
-                                                        1, 2,
-                                                        hit_sound_effect_sample, hit_sound_effect_sample_id
-                                                );
+                                                        compute_hit(
+                                                                player1_ryu, player2_ryu, 
+                                                                ryu_current_frame_hi_kick_p1, ryu_current_frame_lo_kick_p1, 
+                                                                ryu_current_frame_air_kick_p1, ryu_current_frame_hi_punch_p1, 
+                                                                ryu_current_frame_lo_punch_p1, ryu_current_frame_air_punch_p1, 
+                                                                2, 1, 
+                                                                2, 2, 
+                                                                1, 2,
+                                                                ryu_current_frame_hi_kick_p2, ryu_current_frame_lo_kick_p2,
+                                                                ryu_current_frame_air_kick_p2, ryu_current_frame_hi_punch_p2,
+                                                                ryu_current_frame_lo_punch_p2, ryu_current_frame_air_punch_p2,
+                                                                2, 1,
+                                                                2, 2,
+                                                                1, 2,
+                                                                hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                        );
+                                                }
 
                                                 draw_stages(display, stage_ryu, stage_ken, stage_guile, stage_vega, game_states);
                                                 draw_health_bars(player1_ryu, player2_ryu, display);
