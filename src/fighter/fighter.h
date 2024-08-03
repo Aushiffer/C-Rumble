@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <allegro5/bitmap.h>
 #include <allegro5/display.h>
+#include <allegro5/allegro_audio.h>
 #include "../hitbox/hitbox.h"
 #include "../controller/controller.h"
 #include "../game_states/game_states.h"
@@ -13,7 +14,7 @@
 #define NUM_RYU_RUNNING_FRAMES 5
 #define NUM_RYU_HI_KICK_FRAMES 3
 #define NUM_RYU_LO_KICK_FRAMES 2
-#define NUM_RYU_AIR_KICK_FRAMES 2
+#define NUM_RYU_AIR_KICK_FRAMES 3
 #define NUM_RYU_HI_PUNCH_FRAMES 3
 #define NUM_RYU_LO_PUNCH_FRAMES 2
 #define NUM_RYU_AIR_PUNCH_FRAMES 3
@@ -66,11 +67,11 @@ Fighter *create_fighter(
         float max_x, float max_y, 
         ALLEGRO_BITMAP **idle_spriteset, ALLEGRO_BITMAP **hi_punch_spriteset, 
         ALLEGRO_BITMAP **lo_punch_spriteset, ALLEGRO_BITMAP **air_punch_spriteset,
-        ALLEGRO_BITMAP **hi_kick_spriteset, ALLEGRO_BITMAP **lo_kick_spriteset, 
-        ALLEGRO_BITMAP **hi_block_spriteset, ALLEGRO_BITMAP **lo_block_spriteset, 
-        ALLEGRO_BITMAP **running_spriteset, ALLEGRO_BITMAP **crouch_spriteset, 
-        ALLEGRO_BITMAP **jump_spriteset, unsigned char direction_facing, 
-        float absolute_height
+        ALLEGRO_BITMAP **hi_kick_spriteset, ALLEGRO_BITMAP **lo_kick_spriteset,
+        ALLEGRO_BITMAP **air_kick_spriteset, ALLEGRO_BITMAP **hi_block_spriteset, 
+        ALLEGRO_BITMAP **lo_block_spriteset, ALLEGRO_BITMAP **running_spriteset, 
+        ALLEGRO_BITMAP **crouch_spriteset, ALLEGRO_BITMAP **jump_spriteset, 
+        unsigned char direction_facing, float absolute_height
 );
 
 /* Mover à direita */
@@ -97,15 +98,16 @@ void compute_hit(
         unsigned int current_frame_hi_kick_p1, unsigned int current_frame_lo_kick_p1, 
         unsigned int current_frame_air_kick_p1, unsigned int current_frame_hi_punch_p1, 
         unsigned int current_frame_lo_punch_p1, unsigned int current_frame_air_punch_p1,
-        unsigned int current_frame_hi_kick_p2, unsigned int current_frame_lo_kick_p2, 
-        unsigned int current_frame_air_kick_p2, unsigned int current_frame_hi_punch_p2, 
-        unsigned int current_frame_lo_punch_p2, unsigned int current_frame_air_punch_p2,
         unsigned int hit_frame_hi_kick_p1, unsigned int hit_frame_lo_kick_p1,
         unsigned int hit_frame_air_kick_p1, unsigned int hit_frame_hi_punch_p1,
         unsigned int hit_frame_lo_punch_p1, unsigned int hit_frame_air_punch_p1,
+        unsigned int current_frame_hi_kick_p2, unsigned int current_frame_lo_kick_p2, 
+        unsigned int current_frame_air_kick_p2, unsigned int current_frame_hi_punch_p2, 
+        unsigned int current_frame_lo_punch_p2, unsigned int current_frame_air_punch_p2,
         unsigned int hit_frame_hi_kick_p2, unsigned int hit_frame_lo_kick_p2,
         unsigned int hit_frame_air_kick_p2, unsigned int hit_frame_hi_punch_p2,
-        unsigned int hit_frame_lo_punch_p2, unsigned int hit_frame_air_punch_p2
+        unsigned int hit_frame_lo_punch_p2, unsigned int hit_frame_air_punch_p2,
+        ALLEGRO_SAMPLE *hit_sfx, ALLEGRO_SAMPLE_ID hit_sfx_id
 );
 
 /* Implementa lógica para um dos jogadores vencer */

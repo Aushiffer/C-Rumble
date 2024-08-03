@@ -324,6 +324,34 @@ void draw_lo_kick_animation(Fighter *player, float frame_duration, float *time_f
         }
 }
 
+void draw_air_kick_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int num_frames) {
+        if (player->is_blocking || player->is_punching || player->on_ground) {
+                player->is_kicking = 0;
+
+                return;
+        }
+
+        if ((*time_frame) >= frame_duration) {
+                (*time_frame) = 0;
+                (*current_frame) = ((*current_frame) + 1) % num_frames;
+
+                if ((*current_frame) == 0)
+                        player->is_kicking = 0;
+        }
+
+        if (player->direction_facing == 0) {
+                al_draw_bitmap(
+                        player->air_kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->air_kick_spriteset[(*current_frame)]) / 2,
+                        player->hitbox_upper->hitbox_y, 0
+                );
+        } else if (player->direction_facing == 1) {
+                al_draw_bitmap(
+                        player->air_kick_spriteset[(*current_frame)], player->hitbox_upper->hitbox_x - (float)al_get_bitmap_width(player->air_kick_spriteset[(*current_frame)]) / 2,
+                        player->hitbox_upper->hitbox_y, ALLEGRO_FLIP_HORIZONTAL
+                );
+        }  
+}
+
 void draw_running_animation(Fighter *player, float frame_duration, float *time_frame, unsigned int *current_frame, unsigned int *current_frame_idle, unsigned int num_frames) {
         if ((*time_frame) >= frame_duration) {
                 (*time_frame) = 0;

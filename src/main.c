@@ -13,7 +13,6 @@
 #include "fighter/fighter.h"
 #include "game_states/game_states.h"
 #include "draw/draw.h"
-#include "hitbox/hitbox.h"
 #include "load_spriteset/load_spriteset.h"
 #include "pause_menu/handle_pause.h"
 #include "selector/selector.h"
@@ -358,7 +357,15 @@ int main(void) {
         }
 
         insert_sample_array(sample_garbage_array, rumble_end_sample);
-        
+
+        ALLEGRO_SAMPLE_ID hit_sound_effect_sample_id;
+        ALLEGRO_SAMPLE *hit_sound_effect_sample = al_load_sample("sfx/hit_sfx.ogg");
+
+        if (!hit_sound_effect_sample) {
+                fprintf(stderr, "[-] main(): failed to load the hit sfx\n");
+                exit(AL_LOAD_SAMPLE_ERROR);
+        }
+
         ALLEGRO_EVENT event;
 
         al_register_event_source(event_queue, al_get_keyboard_event_source());
@@ -400,6 +407,13 @@ int main(void) {
 
         if (!ryu_lo_kick_spriteset) {
                 fprintf(stderr, "[-] main(): failed to load Ryu's lo kick sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **ryu_air_kick_spriteset = load_spriteset(NUM_RYU_AIR_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ryu/ryu_air_kick/ryu_air_kick", MAXLEN_SPRITE_PATH);
+
+        if (!ryu_air_kick_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ryu's air kick sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
@@ -465,8 +479,11 @@ int main(void) {
         float ryu_time_frame_hi_kick_p2 = 0.0;
         float ryu_time_frame_lo_kick_p1 = 0.0;
         float ryu_time_frame_lo_kick_p2 = 0.0;
+        float ryu_time_frame_air_kick_p1 = 0.0;
+        float ryu_time_frame_air_kick_p2 = 0.0;
         float ryu_time_frame_running = 0.0;
         float ryu_time_frame_jump_p1 = 0.0;
+        float ryu_time_frame_jump_p2 = 0.0;
         unsigned int ryu_current_frame_idle = 0;
         unsigned int ryu_current_frame_hi_punch_p1 = 0;
         unsigned int ryu_current_frame_lo_punch_p1 = 0;
@@ -476,10 +493,13 @@ int main(void) {
         unsigned int ryu_current_frame_air_punch_p2 = 0;
         unsigned int ryu_current_frame_hi_kick_p1 = 0;
         unsigned int ryu_current_frame_lo_kick_p1 = 0;
+        unsigned int ryu_current_frame_air_kick_p1 = 0;
         unsigned int ryu_current_frame_hi_kick_p2 = 0;
         unsigned int ryu_current_frame_lo_kick_p2 = 0;
+        unsigned int ryu_current_frame_air_kick_p2 = 0;
         unsigned int ryu_current_frame_running = 0;
         unsigned int ryu_current_frame_jump_p1 = 0;
+        unsigned int ryu_current_frame_jump_p2 = 0;
         char wins_text_p1[MAXLEN_PLAYER_WINS_STRING];
         char wins_text_p2[MAXLEN_PLAYER_WINS_STRING];
 
@@ -489,11 +509,11 @@ int main(void) {
                 al_get_display_width(display), al_get_display_height(display), 
                 ryu_idle_spriteset, ryu_hi_punch_spriteset, 
                 ryu_lo_punch_spriteset, ryu_air_punch_spriteset,
-                ryu_hi_kick_spriteset, ryu_lo_kick_spriteset, 
-                ryu_hi_block_spriteset, ryu_lo_block_spriteset, 
-                ryu_running_spriteset, ryu_crouch_spriteset, 
-                ryu_jump_spriteset, 0, 
-                (float)al_get_display_height(display) - 295.0
+                ryu_hi_kick_spriteset, ryu_lo_kick_spriteset,
+                ryu_air_kick_spriteset, ryu_hi_block_spriteset, 
+                ryu_lo_block_spriteset, ryu_running_spriteset, 
+                ryu_crouch_spriteset, ryu_jump_spriteset, 
+                0, (float)al_get_display_height(display) - 295.0
         );
 
         if (!player1_ryu) {
@@ -507,11 +527,11 @@ int main(void) {
                 al_get_display_width(display), al_get_display_height(display), 
                 ryu_idle_spriteset, ryu_hi_punch_spriteset, 
                 ryu_lo_punch_spriteset, ryu_air_punch_spriteset,
-                ryu_hi_kick_spriteset, ryu_lo_kick_spriteset, 
-                ryu_hi_block_spriteset, ryu_lo_block_spriteset, 
-                ryu_running_spriteset, ryu_crouch_spriteset, 
-                ryu_jump_spriteset, 1, 
-                (float)al_get_display_height(display) - 295.0
+                ryu_hi_kick_spriteset, ryu_lo_kick_spriteset,
+                ryu_air_kick_spriteset, ryu_hi_block_spriteset, 
+                ryu_lo_block_spriteset, ryu_running_spriteset, 
+                ryu_crouch_spriteset, ryu_jump_spriteset, 
+                1, (float)al_get_display_height(display) - 295.0
         );
 
         if (!player2_ryu) {
@@ -548,12 +568,15 @@ int main(void) {
                                                         ryu_time_frame_hi_punch_p1 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_lo_punch_p1 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_air_punch_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_air_kick_p2 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_hi_punch_p2 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_lo_punch_p2 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_hi_kick_p1 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_hi_kick_p2 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_lo_kick_p1 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_lo_kick_p2 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_air_kick_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                        ryu_time_frame_air_kick_p2 += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_running += 1.0 / FRAMES_PER_SECOND;
                                                         ryu_time_frame_jump_p1 += 1.0 / FRAMES_PER_SECOND;
 
@@ -561,6 +584,12 @@ int main(void) {
                                                                 ryu_time_frame_idle = 0;
                                                                 ryu_current_frame_idle = (ryu_current_frame_idle + 1) % NUM_RYU_IDLE_FRAMES;
                                                         }
+                                                } else if (game_states->rumble_fighter_p1 == 1 || game_states->rumble_fighter_p2 == 1) {
+
+                                                } else if (game_states->rumble_fighter_p1 == 2 || game_states->rumble_fighter_p2 == 2) {
+
+                                                } else if (game_states->rumble_fighter_p1 == 3 || game_states->rumble_fighter_p2 == 3) {
+
                                                 }
 
                                                 if (player2_ryu->health <= 0) {
@@ -579,31 +608,22 @@ int main(void) {
                                                 if (player1_ryu->stamina <= 0 && player1_ryu->is_blocking)
                                                         player1_ryu->is_blocking = 0;
                                                 
-                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 253.0 
-                                                && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
-                                                && player1_ryu->is_punching && ryu_current_frame_hi_punch_p1 == 2)
-                                                        player2_ryu->health -= 2.0;
-
-                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 253.0 
-                                                && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
-                                                && player1_ryu->is_punching && ryu_current_frame_lo_punch_p1 == 1 && player1_ryu->is_crouching && player2_ryu->on_ground)
-                                                        player2_ryu->health -= 2.0;
-
-                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 256.0 && (player2_ryu->hitbox_upper->hitbox_y - player1_ryu->hitbox_upper->hitbox_y <= 128.0)
-                                                && !(player1_ryu->is_blocking || player2_ryu->is_blocking)
-                                                && player1_ryu->is_punching && ryu_current_frame_air_punch_p1 == 2 && !player1_ryu->on_ground)
-                                                        player2_ryu->health -= 2.0;
-
-                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 213.0 
-                                                && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
-                                                && player1_ryu->is_kicking && ryu_current_frame_hi_kick_p1 == 2)
-                                                        player2_ryu->health -= 2.75;
-
-                                                if ((player2_ryu->hitbox_upper->hitbox_x - player1_ryu->hitbox_upper->hitbox_x) <= 213.0 
-                                                && !(player1_ryu->is_running_right || player1_ryu->is_running_left || player1_ryu->is_blocking || player2_ryu->is_blocking)
-                                                && player1_ryu->is_kicking && ryu_current_frame_lo_kick_p1 == 1 && player1_ryu->is_crouching && player2_ryu->on_ground)
-                                                        player2_ryu->health -= 2.75;
-                                                
+                                                compute_hit(
+                                                        player1_ryu, player2_ryu, 
+                                                        ryu_current_frame_hi_kick_p1, ryu_current_frame_lo_kick_p1, 
+                                                        ryu_current_frame_air_kick_p1, ryu_current_frame_hi_punch_p1, 
+                                                        ryu_current_frame_lo_punch_p1, ryu_current_frame_air_punch_p1, 
+                                                        2, 1, 
+                                                        2, 2, 
+                                                        1, 2,
+                                                        ryu_current_frame_hi_kick_p2, ryu_current_frame_lo_kick_p2,
+                                                        ryu_current_frame_air_kick_p2, ryu_current_frame_hi_punch_p2,
+                                                        ryu_current_frame_lo_punch_p2, ryu_current_frame_air_punch_p2,
+                                                        2, 1,
+                                                        2, 2,
+                                                        1, 2,
+                                                        hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                );
 
                                                 draw_stages(display, stage_ryu, stage_ken, stage_guile, stage_vega, game_states);
                                                 draw_health_bars(player1_ryu, player2_ryu, display);
@@ -618,6 +638,8 @@ int main(void) {
                                                         case 0:
                                                                 if (player1_ryu->is_crouching && player1_ryu->is_blocking && player1_ryu->on_ground) {
                                                                         draw_lo_blocking_animation(player1_ryu);
+                                                                } else if (player1_ryu->is_kicking && !player1_ryu->on_ground && ryu_current_frame_hi_kick_p1 == 0 && ryu_current_frame_lo_kick_p1 == 0) {
+                                                                        draw_air_kick_animation(player1_ryu, FRAME_DURATION_AIR_KICK, &ryu_time_frame_air_kick_p1, &ryu_current_frame_air_kick_p1, NUM_RYU_AIR_KICK_FRAMES);
                                                                 } else if (player1_ryu->is_kicking && player1_ryu->is_crouching && player1_ryu->on_ground && ryu_current_frame_hi_kick_p1 == 0) {
                                                                         draw_lo_kick_animation(player1_ryu, FRAME_DURATION_LO_KICK, &ryu_time_frame_hi_kick_p1, &ryu_current_frame_lo_kick_p1, NUM_RYU_LO_KICK_FRAMES);
                                                                 } else if (player1_ryu->is_punching && !player1_ryu->on_ground) {
@@ -922,42 +944,82 @@ int main(void) {
 
                                 /* Botões on-press */
                                 if (!game_states->rumble_pause) {
+                                        /* P1 */
                                         if (event.keyboard.keycode == ALLEGRO_KEY_Z) {
-                                                player1_ryu->is_punching = 1;
-                                                ryu_current_frame_hi_punch_p1 = 0;
-                                                ryu_time_frame_hi_punch_p1 = 0;
-                                                ryu_current_frame_lo_punch_p1 = 0;
-                                                ryu_time_frame_lo_punch_p1 = 0;    
-                                                ryu_current_frame_air_punch_p1 = 0;
-                                                ryu_time_frame_air_punch_p1 = 0;  
+                                                switch (game_states->rumble_fighter_p1) {
+                                                        case 0:
+                                                                player1_ryu->is_punching = 1;
+                                                                ryu_current_frame_hi_punch_p1 = 0;
+                                                                ryu_time_frame_hi_punch_p1 = 0;
+                                                                ryu_current_frame_lo_punch_p1 = 0;
+                                                                ryu_time_frame_lo_punch_p1 = 0;    
+                                                                ryu_current_frame_air_punch_p1 = 0;
+                                                                ryu_time_frame_air_punch_p1 = 0;
+
+                                                                break;
+                                                }  
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_X) {
-                                                player1_ryu->is_kicking = 1;
-                                                ryu_current_frame_hi_kick_p1 = 0;
-                                                ryu_time_frame_hi_kick_p1 = 0;
-                                                ryu_current_frame_lo_kick_p1 = 0;
-                                                ryu_time_frame_lo_kick_p1 = 0;
-                                                ryu_current_frame_air_punch_p2 = 0;
-                                                ryu_time_frame_air_punch_p2 = 0; 
+                                                switch (game_states->rumble_fighter_p1) {
+                                                        case 0:
+                                                                player1_ryu->is_kicking = 1;
+                                                                ryu_current_frame_hi_kick_p1 = 0;
+                                                                ryu_time_frame_hi_kick_p1 = 0;
+                                                                ryu_current_frame_lo_kick_p1 = 0;
+                                                                ryu_time_frame_lo_kick_p1 = 0;
+                                                                ryu_current_frame_air_kick_p1 = 0;
+                                                                ryu_time_frame_air_kick_p1 = 0;
+
+                                                                break;
+                                                }
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_W && player1_ryu->on_ground) {
-                                                player1_ryu->velocity_y = JUMP_STRENGTH;
-                                                player1_ryu->on_ground = 0;
-                                                ryu_current_frame_jump_p1 = 0;
-                                                ryu_time_frame_jump_p1 = 0.0;
+                                                switch (game_states->rumble_fighter_p1) {
+                                                        case 0:
+                                                                player1_ryu->velocity_y = JUMP_STRENGTH;
+                                                                player1_ryu->on_ground = 0;
+                                                                ryu_current_frame_jump_p1 = 0;
+                                                                ryu_time_frame_jump_p1 = 0;
+
+                                                                break;
+                                                }
                                         }
 
+                                        /* P2 */
                                         if (event.keyboard.keycode == ALLEGRO_KEY_K) {
-                                                player2_ryu->is_punching = 1;
-                                                ryu_current_frame_hi_punch_p2 = 0;
-                                                ryu_time_frame_hi_punch_p2 = 0;
-                                                ryu_current_frame_lo_punch_p2 = 0;
-                                                ryu_time_frame_lo_punch_p2 = 0;      
+                                                switch (game_states->rumble_fighter_p2) {
+                                                        case 0:
+                                                                player2_ryu->is_punching = 1;
+                                                                ryu_current_frame_hi_punch_p2 = 0;
+                                                                ryu_time_frame_hi_punch_p2 = 0;
+                                                                ryu_current_frame_lo_punch_p2 = 0;
+                                                                ryu_time_frame_lo_punch_p2 = 0;    
+                                                                ryu_current_frame_air_punch_p2 = 0;
+                                                                ryu_time_frame_air_punch_p2 = 0;
+
+                                                                break;
+                                                }   
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_L) {
-                                                player2_ryu->is_kicking = 1;
-                                                ryu_current_frame_hi_kick_p2 = 0;
-                                                ryu_time_frame_hi_kick_p2 = 0;
+                                                switch (game_states->rumble_fighter_p2) {
+                                                        case 0:
+                                                                player2_ryu->is_kicking = 1;
+                                                                ryu_current_frame_hi_kick_p2 = 0;
+                                                                ryu_time_frame_hi_kick_p2 = 0;
+                                                                ryu_current_frame_lo_kick_p2 = 0;
+                                                                ryu_time_frame_lo_kick_p2 = 0;
+                                                                ryu_current_frame_air_kick_p2 = 0;
+                                                                ryu_time_frame_air_kick_p2 = 0;
+
+                                                                break;
+                                                }
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_UP && player2_ryu->on_ground) {
-                                                player2_ryu->velocity_y = JUMP_STRENGTH;
-                                                player2_ryu->on_ground = 0;
+                                                switch (game_states->rumble_fighter_p2) {
+                                                        case 0:
+                                                                player2_ryu->velocity_y = JUMP_STRENGTH;
+                                                                player2_ryu->on_ground = 0;
+                                                                ryu_current_frame_jump_p2 = 0;
+                                                                ryu_time_frame_jump_p2 = 0;
+
+                                                                break;
+                                                }
                                         }
                                 }
                         }
