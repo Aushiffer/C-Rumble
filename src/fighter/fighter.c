@@ -249,6 +249,12 @@ void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_stat
                 player2->is_crouching = 0;
                 player1->is_blocking = 0;
                 player2->is_blocking = 0;
+                player1->hitbox_upper->hitbox_y = player1->absolute_height;
+                player1->velocity_y = 0.0;
+                player1->on_ground = 1;
+                player2->hitbox_upper->hitbox_y = player2->absolute_height;
+                player2->velocity_y = 0.0;
+                player2->on_ground = 1;
         }
 
         player2->health = MAX_HEALTH;

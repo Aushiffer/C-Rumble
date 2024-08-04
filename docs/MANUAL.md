@@ -1,7 +1,7 @@
 # Como jogar C-Rumble
 
 ## Controles
-- Player 1 -> Z: soco, X: chute, C: bloqueia, W: cima, A: esquerda, S: baixo, D: direita
+- Player 1 -> C: soco, V: chute, B: bloqueia, W: cima, A: esquerda, S: baixo, D: direita
 - Player 2 -> K: soco, L: chute, J: bloqueia, UP: cima, LEFT: esquerda, DOWN: baixo, RIGHT: direita
 
 ## Seleção nos menus
