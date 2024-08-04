@@ -557,87 +557,87 @@ int main(void) {
 
         /* Guile */
 
-        ALLEGRO_BITMAP **guile_idle_spriteset = load_spriteset(NUM_KEN_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Ken/ken_idle/ken_idle", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_idle_spriteset = load_spriteset(NUM_KEN_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_idle/guile_idle", MAXLEN_SPRITE_PATH);
 
         if (!guile_idle_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's idle sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's idle sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_running_spriteset = load_spriteset(NUM_KEN_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Ken/ken_running/ken_running", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_running_spriteset = load_spriteset(NUM_KEN_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_running/guile_running", MAXLEN_SPRITE_PATH);
 
         if (!guile_running_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's running sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's running sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }                                               
 
-        ALLEGRO_BITMAP **guile_hi_kick_spriteset = load_spriteset(NUM_KEN_HI_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/ken_hi_kick/ken_hi_kick", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_hi_kick_spriteset = load_spriteset(NUM_KEN_HI_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_hi_kick/guile_hi_kick", MAXLEN_SPRITE_PATH);
 
         if (!guile_hi_kick_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's hi kick sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's hi kick sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
         
-        ALLEGRO_BITMAP **guile_lo_kick_spriteset = load_spriteset(NUM_KEN_LO_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_lo_kick/guile_lo_kick", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_lo_kick_spriteset = load_spriteset(NUM_KEN_LO_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_lo_kick/guile_lo_kick", MAXLEN_SPRITE_PATH);
 
         if (!guile_lo_kick_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's lo kick sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's lo kick sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_air_kick_spriteset = load_spriteset(NUM_KEN_AIR_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_air_kick/guile_air_kick", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_air_kick_spriteset = load_spriteset(NUM_KEN_AIR_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_air_kick/guile_air_kick", MAXLEN_SPRITE_PATH);
 
         if (!guile_air_kick_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's air kick sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's air kick sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_hi_block_spriteset = load_spriteset(NUM_KEN_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_hi_block/guile_hi_block", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_hi_block_spriteset = load_spriteset(NUM_KEN_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_hi_block/guile_hi_block", MAXLEN_SPRITE_PATH);
 
         if (!guile_hi_block_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's hi block spriteset\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's hi block spriteset\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_lo_block_spriteset = load_spriteset(NUM_KEN_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_lo_block/guile_lo_block", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_lo_block_spriteset = load_spriteset(NUM_KEN_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_lo_block/guile_lo_block", MAXLEN_SPRITE_PATH);
 
-        if (!ken_lo_block_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's lo block spriteset\n");
+        if (!guile_lo_block_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Guile's lo block spriteset\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_hi_punch_spriteset = load_spriteset(NUM_KEN_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_hi_punch/guile_hi_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_hi_punch_spriteset = load_spriteset(NUM_KEN_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_hi_punch/guile_hi_punch", MAXLEN_SPRITE_PATH);
 
         if (!guile_hi_punch_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's hi punch sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's hi punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_lo_punch_spriteset = load_spriteset(NUM_KEN_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_lo_punch/guile_lo_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_lo_punch_spriteset = load_spriteset(NUM_KEN_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_lo_punch/guile_lo_punch", MAXLEN_SPRITE_PATH);
 
         if (!guile_lo_punch_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's lo punch sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's lo punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_air_punch_spriteset = load_spriteset(NUM_KEN_AIR_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_air_punch/guile_air_punch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_air_punch_spriteset = load_spriteset(NUM_KEN_AIR_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_air_punch/guile_air_punch", MAXLEN_SPRITE_PATH);
 
         if (!guile_air_punch_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's air punch sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's air punch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_crouch_spriteset = load_spriteset(NUM_KEN_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_crouch/guile_crouch", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_crouch_spriteset = load_spriteset(NUM_KEN_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_crouch/guile_crouch", MAXLEN_SPRITE_PATH);
 
         if (!guile_crouch_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's crouch sprite set\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's crouch sprite set\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
-        ALLEGRO_BITMAP **guile_jump_spriteset = load_spriteset(NUM_KEN_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_jumping/guile_jumping", MAXLEN_SPRITE_PATH);
+        ALLEGRO_BITMAP **guile_jump_spriteset = load_spriteset(NUM_KEN_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Guile/guile_jumping/guile_jumping", MAXLEN_SPRITE_PATH);
 
         if (!guile_jump_spriteset) {
-                fprintf(stderr, "[-] main(): failed to load Ken's jump spriteset\n");
+                fprintf(stderr, "[-] main(): failed to load Guile's jump spriteset\n");
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
@@ -718,6 +718,24 @@ int main(void) {
                 exit(INVALID_FIGHTER_ERROR);
         }
 
+        Fighter *player1_guile = create_fighter(
+                166.0, 256.0, 
+                player1_x, (float)al_get_display_height(display) - 295.0, 
+                al_get_display_width(display), al_get_display_height(display), 
+                guile_idle_spriteset, guile_hi_punch_spriteset, 
+                guile_lo_punch_spriteset, guile_air_punch_spriteset,
+                guile_hi_kick_spriteset, guile_lo_kick_spriteset,
+                guile_air_kick_spriteset, guile_hi_block_spriteset, 
+                guile_lo_block_spriteset, guile_running_spriteset, 
+                guile_crouch_spriteset, guile_jump_spriteset, 
+                0, (float)al_get_display_height(display) - 295.0
+        );
+
+        if (!player1_guile) {
+                fprintf(stderr, "[-] main(): failed to load player 1 (Guile)\n");
+                exit(INVALID_FIGHTER_ERROR);
+        }
+
         Fighter *player2_ryu = create_fighter(
                 166.0, 256.0, 
                 player2_x, (float)al_get_display_height(display) - 295.0, 
@@ -751,6 +769,24 @@ int main(void) {
 
         if (!player2_ken) {
                 fprintf(stderr, "[-] main(): failed to load player 2 (Ken)\n");
+                exit(INVALID_FIGHTER_ERROR);
+        }
+
+        Fighter *player2_guile = create_fighter(
+                166.0, 256.0, 
+                player2_x, (float)al_get_display_height(display) - 295.0, 
+                al_get_display_width(display), al_get_display_height(display), 
+                guile_idle_spriteset, guile_hi_punch_spriteset, 
+                guile_lo_punch_spriteset, guile_air_punch_spriteset,
+                guile_hi_kick_spriteset, guile_lo_kick_spriteset,
+                guile_air_kick_spriteset, guile_hi_block_spriteset, 
+                guile_lo_block_spriteset, guile_running_spriteset, 
+                guile_crouch_spriteset, guile_jump_spriteset, 
+                0, (float)al_get_display_height(display) - 295.0
+        );
+
+        if (!player2_guile) {
+                fprintf(stderr, "[-] main(): failed to load player 2 (Guile)\n");
                 exit(INVALID_FIGHTER_ERROR);
         }
 
@@ -1673,6 +1709,8 @@ int main(void) {
         }
 
         printf("\n[+] main(): exiting game...\n");
+
+        /* Chamando todos os destrutores! */
         destroy_font_garbage_array(font_garbage_array);
         destroy_bitmap_garbage_array(bitmap_garbage_array);
         destroy_sample_garbage_array(sample_garbage_array);
@@ -1696,6 +1734,16 @@ int main(void) {
         destroy_spriteset(player1_ken->hi_kick_spriteset, NUM_KEN_HI_KICK_FRAMES);
         destroy_spriteset(player1_ken->air_punch_spriteset, NUM_KEN_AIR_PUNCH_FRAMES);
         destroy_spriteset(player1_ken->air_kick_spriteset, NUM_KEN_AIR_KICK_FRAMES);
+        destroy_spriteset(player1_guile->idle_spriteset, NUM_GUILE_IDLE_FRAMES);
+        destroy_spriteset(player1_guile->running_spriteset, NUM_GUILE_RUNNING_FRAMES);
+        destroy_spriteset(player1_guile->crouch_spriteset, NUM_GUILE_CROUCH_FRAMES);
+        destroy_spriteset(player1_guile->hi_punch_spriteset, NUM_GUILE_HI_PUNCH_FRAMES);
+        destroy_spriteset(player1_guile->lo_punch_spriteset, NUM_GUILE_LO_PUNCH_FRAMES);
+        destroy_spriteset(player1_guile->hi_block_spriteset, NUM_GUILE_BLOCK_FRAMES);
+        destroy_spriteset(player1_guile->lo_block_spriteset, NUM_GUILE_BLOCK_FRAMES);
+        destroy_spriteset(player1_guile->hi_kick_spriteset, NUM_GUILE_HI_KICK_FRAMES);
+        destroy_spriteset(player1_guile->air_punch_spriteset, NUM_GUILE_AIR_PUNCH_FRAMES);
+        destroy_spriteset(player1_guile->air_kick_spriteset, NUM_GUILE_AIR_KICK_FRAMES);
         destroy_game_states(game_states);
         al_destroy_display(display);
         al_destroy_timer(timer);
