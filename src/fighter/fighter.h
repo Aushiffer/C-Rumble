@@ -25,12 +25,12 @@
 /* Macros do Ken */
 #define NUM_KEN_IDLE_FRAMES 4        
 #define NUM_KEN_RUNNING_FRAMES 5
-#define NUM_KEN_HI_KICK_FRAMES 3
+#define NUM_KEN_HI_KICK_FRAMES 2
 #define NUM_KEN_LO_KICK_FRAMES 2
-#define NUM_KEN_AIR_KICK_FRAMES 3
+#define NUM_KEN_AIR_KICK_FRAMES 2
 #define NUM_KEN_HI_PUNCH_FRAMES 3
 #define NUM_KEN_LO_PUNCH_FRAMES 2
-#define NUM_KEN_AIR_PUNCH_FRAMES 3
+#define NUM_KEN_AIR_PUNCH_FRAMES 2
 #define NUM_KEN_CROUCH_FRAMES 1
 #define NUM_KEN_BLOCK_FRAMES 1
 #define NUM_KEN_JUMP_FRAMES 6
@@ -156,8 +156,5 @@ void update_fighter_pos(Fighter *player1, Fighter *player2, unsigned short max_x
 
 /* Atualiza os seletores de personagem */
 void update_fighter_selectors(GameStates *game_states);
-
-/* Destrói um lutador */
-void destroy_fighter_sprites(Fighter *fighter);
 
 #endif // __FIGHTER__
