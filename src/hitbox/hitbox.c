@@ -21,10 +21,10 @@ unsigned char calc_collision(Hitbox *hitbox1, Hitbox *hitbox2) {
         if (!hitbox1 || !hitbox2)
                 return 2;
 
-        if ((((hitbox1->hitbox_x + hitbox1->hitbox_width / 2 - 4 >= hitbox2->hitbox_x - hitbox2->hitbox_width / 2 - 4) && (hitbox2->hitbox_x - hitbox2->hitbox_width / 2 - 4 >= hitbox1->hitbox_x - hitbox1->hitbox_width / 2 - 4)) 
-        || ((hitbox2->hitbox_x + hitbox2->hitbox_width / 2 - 4 >= hitbox1->hitbox_x - hitbox1->hitbox_width / 2 - 4) && (hitbox1->hitbox_x - hitbox1->hitbox_width / 2 - 4 >= hitbox2->hitbox_x - hitbox2->hitbox_width / 2 - 4))) 
-        && (((hitbox1->hitbox_y + hitbox1->hitbox_height / 2 - 4 >= hitbox2->hitbox_y - hitbox2->hitbox_height / 2 - 4) && (hitbox2->hitbox_y - hitbox2->hitbox_height / 2 - 4 >= hitbox1->hitbox_y - hitbox1->hitbox_height / 2 - 4)) 
-        || ((hitbox2->hitbox_y + hitbox2->hitbox_height / 2 - 4 >= hitbox1->hitbox_y - hitbox1->hitbox_height / 2 - 4) && (hitbox1->hitbox_y - hitbox1->hitbox_height / 2 - 4 >= hitbox2->hitbox_y - hitbox2->hitbox_height / 2 - 4))))
+        if ((((hitbox1->hitbox_x + hitbox1->hitbox_width / 2 >= hitbox2->hitbox_x - hitbox2->hitbox_width / 2 + 4) && (hitbox2->hitbox_x - hitbox2->hitbox_width / 2 >= hitbox1->hitbox_x - hitbox1->hitbox_width / 2 + 4)) 
+        || ((hitbox2->hitbox_x + hitbox2->hitbox_width / 2 >= hitbox1->hitbox_x - hitbox1->hitbox_width / 2 + 4) && (hitbox1->hitbox_x - hitbox1->hitbox_width / 2 >= hitbox2->hitbox_x - hitbox2->hitbox_width / 2 + 4))) 
+        && (((hitbox1->hitbox_y + hitbox1->hitbox_height / 2 >= hitbox2->hitbox_y - hitbox2->hitbox_height / 2) && (hitbox2->hitbox_y - hitbox2->hitbox_height / 2 >= hitbox1->hitbox_y - hitbox1->hitbox_height / 2)) 
+        || ((hitbox2->hitbox_y + hitbox2->hitbox_height / 2 >= hitbox1->hitbox_y - hitbox1->hitbox_height / 2) && (hitbox1->hitbox_y - hitbox1->hitbox_height / 2 >= hitbox2->hitbox_y - hitbox2->hitbox_height / 2))))
                 return 1;
 
         return 0;
