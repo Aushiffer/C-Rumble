@@ -9,6 +9,17 @@
 #include "../controller/controller.h"
 #include "../game_states/game_states.h"
 
+/* Durações de frames para cada animação */
+#define FRAME_DURATION_IDLE 0.066666
+#define FRAME_DURATION_JUMP 0.20
+#define FRAME_DURATION_RUNNING 0.066666
+#define FRAME_DURATION_HI_PUNCH 0.125
+#define FRAME_DURATION_LO_PUNCH 0.125
+#define FRAME_DURATION_AIR_PUNCH 0.150
+#define FRAME_DURATION_HI_KICK 0.165
+#define FRAME_DURATION_LO_KICK 0.165
+#define FRAME_DURATION_AIR_KICK 0.145
+
 /* Macros do Ryu */
 #define NUM_RYU_IDLE_FRAMES 5        
 #define NUM_RYU_RUNNING_FRAMES 5

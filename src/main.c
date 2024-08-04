@@ -25,15 +25,6 @@
 #define NUM_STAGES 4
 #define NUM_PAUSE_OPTIONS 3
 #define FRAMES_PER_SECOND 30.0
-#define FRAME_DURATION_IDLE 0.066666
-#define FRAME_DURATION_JUMP 0.20
-#define FRAME_DURATION_RUNNING 0.066666
-#define FRAME_DURATION_HI_PUNCH 0.125
-#define FRAME_DURATION_LO_PUNCH 0.125
-#define FRAME_DURATION_AIR_PUNCH 0.150
-#define FRAME_DURATION_HI_KICK 0.165
-#define FRAME_DURATION_LO_KICK 0.165
-#define FRAME_DURATION_AIR_KICK 0.145
 #define MAXLEN_SPRITE_PATH 65
 #define MAXLEN_PLAYER_WINS_STRING 17
 
@@ -641,6 +632,92 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
+        /* Vega */
+
+        ALLEGRO_BITMAP **vega_idle_spriteset = load_spriteset(NUM_VEGA_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_idle/vega_idle", MAXLEN_SPRITE_PATH);
+
+        if (!vega_idle_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's idle sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_running_spriteset = load_spriteset(NUM_VEGA_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_running/vega_running", MAXLEN_SPRITE_PATH);
+
+        if (!vega_running_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's running sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }                                               
+
+        ALLEGRO_BITMAP **vega_hi_kick_spriteset = load_spriteset(NUM_VEGA_HI_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_hi_kick/vega_hi_kick", MAXLEN_SPRITE_PATH);
+
+        if (!vega_hi_kick_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's hi kick sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+        
+        ALLEGRO_BITMAP **vega_lo_kick_spriteset = load_spriteset(NUM_VEGA_LO_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_lo_kick/vega_lo_kick", MAXLEN_SPRITE_PATH);
+
+        if (!vega_lo_kick_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's lo kick sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_air_kick_spriteset = load_spriteset(NUM_VEGA_AIR_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_air_kick/vega_air_kick", MAXLEN_SPRITE_PATH);
+
+        if (!vega_air_kick_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's air kick sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_hi_block_spriteset = load_spriteset(NUM_VEGA_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_hi_block/vega_hi_block", MAXLEN_SPRITE_PATH);
+
+        if (!vega_hi_block_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's hi block spriteset\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_lo_block_spriteset = load_spriteset(NUM_VEGA_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_lo_block/vega_lo_block", MAXLEN_SPRITE_PATH);
+
+        if (!vega_lo_block_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's lo block spriteset\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_hi_punch_spriteset = load_spriteset(NUM_VEGA_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_hi_punch/vega_hi_punch", MAXLEN_SPRITE_PATH);
+
+        if (!vega_hi_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's hi punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_lo_punch_spriteset = load_spriteset(NUM_VEGA_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_lo_punch/vega_lo_punch", MAXLEN_SPRITE_PATH);
+
+        if (!vega_lo_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's lo punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_air_punch_spriteset = load_spriteset(NUM_VEGA_AIR_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_air_punch/vega_air_punch", MAXLEN_SPRITE_PATH);
+
+        if (!vega_air_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's air punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_crouch_spriteset = load_spriteset(NUM_VEGA_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_crouch/vega_crouch", MAXLEN_SPRITE_PATH);
+
+        if (!vega_crouch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's crouch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **vega_jump_spriteset = load_spriteset(NUM_VEGA_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Vega/vega_jumping/vega_jumping", MAXLEN_SPRITE_PATH);
+
+        if (!vega_jump_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Vega's jump spriteset\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
         float player1_x = 94.5;
         float player2_x = al_get_display_width(display) - 94.5;
         float time_frame_idle_p1 = 0.0;
@@ -736,6 +813,24 @@ int main(void) {
                 exit(INVALID_FIGHTER_ERROR);
         }
 
+        Fighter *player1_vega = create_fighter(
+                166.0, 256.0, 
+                player1_x, (float)al_get_display_height(display) - 295.0, 
+                al_get_display_width(display), al_get_display_height(display), 
+                vega_idle_spriteset, vega_hi_punch_spriteset, 
+                vega_lo_punch_spriteset, vega_air_punch_spriteset,
+                vega_hi_kick_spriteset, vega_lo_kick_spriteset,
+                vega_air_kick_spriteset, vega_hi_block_spriteset, 
+                vega_lo_block_spriteset, vega_running_spriteset, 
+                vega_crouch_spriteset, vega_jump_spriteset, 
+                0, (float)al_get_display_height(display) - 295.0
+        );
+
+        if (!player1_vega) {
+                fprintf(stderr, "[-] main(): failed to load player 1 (Vega)\n");
+                exit(INVALID_FIGHTER_ERROR);
+        }
+
         Fighter *player2_ryu = create_fighter(
                 166.0, 256.0, 
                 player2_x, (float)al_get_display_height(display) - 295.0, 
@@ -787,6 +882,24 @@ int main(void) {
 
         if (!player2_guile) {
                 fprintf(stderr, "[-] main(): failed to load player 2 (Guile)\n");
+                exit(INVALID_FIGHTER_ERROR);
+        }
+
+        Fighter *player2_vega = create_fighter(
+                166.0, 256.0, 
+                player2_x, (float)al_get_display_height(display) - 295.0, 
+                al_get_display_width(display), al_get_display_height(display), 
+                vega_idle_spriteset, vega_hi_punch_spriteset, 
+                vega_lo_punch_spriteset, vega_air_punch_spriteset,
+                vega_hi_kick_spriteset, vega_lo_kick_spriteset,
+                vega_air_kick_spriteset, vega_hi_block_spriteset, 
+                vega_lo_block_spriteset, vega_running_spriteset, 
+                vega_crouch_spriteset, vega_jump_spriteset, 
+                1, (float)al_get_display_height(display) - 295.0
+        );
+
+        if (!player2_vega) {
+                fprintf(stderr, "[-] main(): failed to load player 2 (Vega)\n");
                 exit(INVALID_FIGHTER_ERROR);
         }
 
