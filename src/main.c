@@ -555,6 +555,92 @@ int main(void) {
                 exit(AL_LOAD_SPRITE_ERROR);
         }
 
+        /* Guile */
+
+        ALLEGRO_BITMAP **guile_idle_spriteset = load_spriteset(NUM_KEN_IDLE_FRAMES, sprite_path_buf, "imgs/sprites/Ken/ken_idle/ken_idle", MAXLEN_SPRITE_PATH);
+
+        if (!guile_idle_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's idle sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_running_spriteset = load_spriteset(NUM_KEN_RUNNING_FRAMES, sprite_path_buf, "imgs/sprites/Ken/ken_running/ken_running", MAXLEN_SPRITE_PATH);
+
+        if (!guile_running_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's running sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }                                               
+
+        ALLEGRO_BITMAP **guile_hi_kick_spriteset = load_spriteset(NUM_KEN_HI_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/ken_hi_kick/ken_hi_kick", MAXLEN_SPRITE_PATH);
+
+        if (!guile_hi_kick_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's hi kick sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+        
+        ALLEGRO_BITMAP **guile_lo_kick_spriteset = load_spriteset(NUM_KEN_LO_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_lo_kick/guile_lo_kick", MAXLEN_SPRITE_PATH);
+
+        if (!guile_lo_kick_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's lo kick sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_air_kick_spriteset = load_spriteset(NUM_KEN_AIR_KICK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_air_kick/guile_air_kick", MAXLEN_SPRITE_PATH);
+
+        if (!guile_air_kick_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's air kick sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_hi_block_spriteset = load_spriteset(NUM_KEN_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_hi_block/guile_hi_block", MAXLEN_SPRITE_PATH);
+
+        if (!guile_hi_block_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's hi block spriteset\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_lo_block_spriteset = load_spriteset(NUM_KEN_BLOCK_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_lo_block/guile_lo_block", MAXLEN_SPRITE_PATH);
+
+        if (!ken_lo_block_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's lo block spriteset\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_hi_punch_spriteset = load_spriteset(NUM_KEN_HI_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_hi_punch/guile_hi_punch", MAXLEN_SPRITE_PATH);
+
+        if (!guile_hi_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's hi punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_lo_punch_spriteset = load_spriteset(NUM_KEN_LO_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_lo_punch/guile_lo_punch", MAXLEN_SPRITE_PATH);
+
+        if (!guile_lo_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's lo punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_air_punch_spriteset = load_spriteset(NUM_KEN_AIR_PUNCH_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_air_punch/guile_air_punch", MAXLEN_SPRITE_PATH);
+
+        if (!guile_air_punch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's air punch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_crouch_spriteset = load_spriteset(NUM_KEN_CROUCH_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_crouch/guile_crouch", MAXLEN_SPRITE_PATH);
+
+        if (!guile_crouch_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's crouch sprite set\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
+        ALLEGRO_BITMAP **guile_jump_spriteset = load_spriteset(NUM_KEN_JUMP_FRAMES, sprite_path_buf, "imgs/sprites/Ken/guile_jumping/guile_jumping", MAXLEN_SPRITE_PATH);
+
+        if (!guile_jump_spriteset) {
+                fprintf(stderr, "[-] main(): failed to load Ken's jump spriteset\n");
+                exit(AL_LOAD_SPRITE_ERROR);
+        }
+
         float player1_x = 94.5;
         float player2_x = al_get_display_width(display) - 94.5;
         float time_frame_idle_p1 = 0.0;
@@ -571,7 +657,8 @@ int main(void) {
         float time_frame_lo_kick_p2 = 0.0;
         float time_frame_air_kick_p1 = 0.0;
         float time_frame_air_kick_p2 = 0.0;
-        float time_frame_running = 0.0;
+        float time_frame_running_p1 = 0.0;
+        float time_frame_running_p2 = 0.0;
         float time_frame_jump_p1 = 0.0;
         float time_frame_jump_p2 = 0.0;
         unsigned int current_frame_idle_p1 = 0;
@@ -588,7 +675,8 @@ int main(void) {
         unsigned int current_frame_hi_kick_p2 = 0;
         unsigned int current_frame_lo_kick_p2 = 0;
         unsigned int current_frame_air_kick_p2 = 0;
-        unsigned int current_frame_running = 0;
+        unsigned int current_frame_running_p1 = 0;
+        unsigned int current_frame_running_p2 = 0;
         unsigned int current_frame_jump_p1 = 0;
         unsigned int current_frame_jump_p2 = 0;
         char wins_text_p1[MAXLEN_PLAYER_WINS_STRING];
@@ -703,7 +791,8 @@ int main(void) {
                                         if (!game_states->rumble_pause) {
                                                 time_frame_idle_p1 += 1.0 / FRAMES_PER_SECOND;
                                                 time_frame_idle_p2 += 1.0 / FRAMES_PER_SECOND;
-                                                time_frame_running += 1.0 / FRAMES_PER_SECOND;
+                                                time_frame_running_p1 += 1.0 / FRAMES_PER_SECOND;
+                                                time_frame_running_p2 += 1.0 / FRAMES_PER_SECOND;
                                                 time_frame_hi_punch_p1 += 1.0 / FRAMES_PER_SECOND;
                                                 time_frame_lo_punch_p1 += 1.0 / FRAMES_PER_SECOND;
                                                 time_frame_air_punch_p1 += 1.0 / FRAMES_PER_SECOND;
@@ -888,7 +977,7 @@ int main(void) {
                                                                 } else if (player1_ryu->is_kicking && player1_ryu->on_ground) {
                                                                         draw_hi_kick_animation(player1_ryu, FRAME_DURATION_HI_KICK, &time_frame_hi_kick_p1, &current_frame_hi_kick_p1, NUM_RYU_HI_KICK_FRAMES);
                                                                 } else if ((player1_ryu->is_running_right || player1_ryu->is_running_left) && player1_ryu->on_ground) {
-                                                                        draw_running_animation(player1_ryu, FRAME_DURATION_RUNNING, &time_frame_running, &current_frame_running, FRAME_DURATION_IDLE, &time_frame_idle_p1, &current_frame_idle_p1, NUM_RYU_RUNNING_FRAMES, NUM_RYU_IDLE_FRAMES);
+                                                                        draw_running_animation(player1_ryu, FRAME_DURATION_RUNNING, &time_frame_running_p1, &current_frame_running_p1, FRAME_DURATION_IDLE, &time_frame_idle_p1, &current_frame_idle_p1, NUM_RYU_RUNNING_FRAMES, NUM_RYU_IDLE_FRAMES);
                                                                 } else if (player1_ryu->is_crouching && !player1_ryu->is_blocking && player1_ryu->on_ground) {
                                                                         draw_crouching_animation(player1_ryu);
                                                                 } else if (player1_ryu->is_blocking && player1_ryu->on_ground) {
@@ -917,7 +1006,7 @@ int main(void) {
                                                                 } else if (player1_ken->is_kicking && player1_ken->on_ground) {
                                                                         draw_hi_kick_animation(player1_ken, FRAME_DURATION_HI_KICK, &time_frame_hi_kick_p1, &current_frame_hi_kick_p1, NUM_KEN_HI_KICK_FRAMES);
                                                                 } else if ((player1_ken->is_running_right || player1_ken->is_running_left) && player1_ken->on_ground) {
-                                                                        draw_running_animation(player1_ken, FRAME_DURATION_RUNNING, &time_frame_running, &current_frame_running, FRAME_DURATION_IDLE, &time_frame_idle_p1, &current_frame_idle_p1, NUM_KEN_RUNNING_FRAMES, NUM_KEN_IDLE_FRAMES);
+                                                                        draw_running_animation(player1_ken, FRAME_DURATION_RUNNING, &time_frame_running_p1, &current_frame_running_p1, FRAME_DURATION_IDLE, &time_frame_idle_p1, &current_frame_idle_p1, NUM_KEN_RUNNING_FRAMES, NUM_KEN_IDLE_FRAMES);
                                                                 } else if (player1_ken->is_crouching && !player1_ken->is_blocking && player1_ken->on_ground) {
                                                                         draw_crouching_animation(player1_ken);
                                                                 } else if (player1_ken->is_blocking && player1_ken->on_ground) {
@@ -948,7 +1037,7 @@ int main(void) {
                                                                 } else if (player2_ryu->is_kicking && player2_ryu->on_ground) {
                                                                         draw_hi_kick_animation(player2_ryu, FRAME_DURATION_HI_KICK, &time_frame_hi_kick_p2, &current_frame_hi_kick_p2, NUM_RYU_HI_KICK_FRAMES);
                                                                 } else if ((player2_ryu->is_running_right || player2_ryu->is_running_left) && player2_ryu->on_ground) {
-                                                                        draw_running_animation(player2_ryu, FRAME_DURATION_RUNNING, &time_frame_running, &current_frame_running, FRAME_DURATION_IDLE, &time_frame_idle_p1, &current_frame_idle_p1, NUM_RYU_RUNNING_FRAMES, NUM_RYU_IDLE_FRAMES);
+                                                                        draw_running_animation(player2_ryu, FRAME_DURATION_RUNNING, &time_frame_running_p2, &current_frame_running_p2, FRAME_DURATION_IDLE, &time_frame_idle_p2, &current_frame_idle_p2, NUM_RYU_RUNNING_FRAMES, NUM_RYU_IDLE_FRAMES);
                                                                 } else if (player2_ryu->is_crouching && !player2_ryu->is_blocking && player2_ryu->on_ground) {
                                                                         draw_crouching_animation(player2_ryu);
                                                                 } else if (player2_ryu->is_blocking && player2_ryu->on_ground) {
@@ -977,7 +1066,7 @@ int main(void) {
                                                                 } else if (player2_ken->is_kicking && player2_ken->on_ground) {
                                                                         draw_hi_kick_animation(player2_ken, FRAME_DURATION_HI_KICK, &time_frame_hi_kick_p2, &current_frame_hi_kick_p2, NUM_KEN_HI_KICK_FRAMES);
                                                                 } else if ((player2_ken->is_running_right || player2_ken->is_running_left) && player2_ken->on_ground) {
-                                                                        draw_running_animation(player2_ken, FRAME_DURATION_RUNNING, &time_frame_running, &current_frame_running, FRAME_DURATION_IDLE, &time_frame_idle_p2, &current_frame_idle_p2, NUM_KEN_RUNNING_FRAMES, NUM_KEN_IDLE_FRAMES);
+                                                                        draw_running_animation(player2_ken, FRAME_DURATION_RUNNING, &time_frame_running_p2, &current_frame_running_p2, FRAME_DURATION_IDLE, &time_frame_idle_p2, &current_frame_idle_p2, NUM_KEN_RUNNING_FRAMES, NUM_KEN_IDLE_FRAMES);
                                                                 } else if (player2_ken->is_crouching && !player2_ken->is_blocking && player2_ken->on_ground) {
                                                                         draw_crouching_animation(player2_ken);
                                                                 } else if (player2_ken->is_blocking && player2_ken->on_ground) {
