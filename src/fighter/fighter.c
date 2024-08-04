@@ -2,7 +2,6 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/bitmap.h>
 #include <allegro5/display.h>
-#include "../destroy_resources/destroy_resources.h"
 
 Fighter *create_fighter(
         float fighter_width, float fighter_height, 
@@ -140,7 +139,7 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) <= 100.0
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) <= 128.0
         && !player1->is_blocking && !player2->is_blocking
         && player1->is_punching && current_frame_air_punch_p1 == hit_frame_air_punch_p1 
         && !player1->on_ground) {
@@ -170,7 +169,7 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y <= 100.0)
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y <= 128.0)
         && !player1->is_blocking && !player2->is_blocking
         && player1->is_kicking && current_frame_air_kick_p1 == hit_frame_air_kick_p1 
         && !player1->on_ground) {
@@ -200,7 +199,7 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) >= -100.0
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) >= -128.0
         && !player2->is_blocking && !player1->is_blocking
         && player2->is_punching && current_frame_air_punch_p2 == hit_frame_air_punch_p2 
         && !player2->on_ground) {
@@ -230,7 +229,7 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y >= -100.0)
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y >= -128.0)
         && !player2->is_blocking && !player1->is_blocking
         && player2->is_kicking && current_frame_air_kick_p2 == hit_frame_air_kick_p2 
         && !player2->on_ground) {
@@ -243,11 +242,13 @@ void compute_hit(
 void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_states) {
         player1->rounds_won++;
 
-        if ((player1->rounds_won == 2 && player2->rounds_won == 1) || (player1->rounds_won == 2 && player2->rounds_won == 0)) {
+        if (player1->rounds_won == 2) {
                 game_states->rumble_end = 1;
                 game_states->play_rumble_end_sample = 1;
                 player1->is_crouching = 0;
                 player2->is_crouching = 0;
+                player1->is_blocking = 0;
+                player2->is_blocking = 0;
         }
 
         player2->health = MAX_HEALTH;
@@ -340,25 +341,5 @@ void update_fighter_selectors(GameStates *game_states) {
                         game_states->rumble_fighter_p2 = 3;
 
                         break;
-        }
-}
-
-void destroy_fighter_sprites(Fighter *fighter) {
-        if (fighter) {
-                destroy_hitbox(fighter->hitbox_upper);
-                destroy_hitbox(fighter->hitbox_lower);
-                destroy_controller(fighter->controller);
-                destroy_spriteset(fighter->idle_spriteset, NUM_RYU_IDLE_FRAMES);
-                destroy_spriteset(fighter->running_spriteset, NUM_RYU_RUNNING_FRAMES);
-                destroy_spriteset(fighter->crouch_spriteset, NUM_RYU_CROUCH_FRAMES);
-                destroy_spriteset(fighter->hi_punch_spriteset, NUM_RYU_HI_PUNCH_FRAMES);
-                destroy_spriteset(fighter->lo_punch_spriteset, NUM_RYU_LO_PUNCH_FRAMES);
-                destroy_spriteset(fighter->hi_block_spriteset, NUM_RYU_BLOCK_FRAMES);
-                destroy_spriteset(fighter->lo_block_spriteset, NUM_RYU_BLOCK_FRAMES);
-                destroy_spriteset(fighter->hi_kick_spriteset, NUM_RYU_HI_KICK_FRAMES);
-                destroy_spriteset(fighter->air_punch_spriteset, NUM_RYU_AIR_PUNCH_FRAMES);
-                destroy_spriteset(fighter->air_kick_spriteset, NUM_RYU_AIR_KICK_FRAMES);
-
-                free(fighter);
         }
 }
