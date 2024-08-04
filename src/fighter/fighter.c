@@ -139,7 +139,7 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) <= 100.0
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) <= 128.0
         && !player1->is_blocking && !player2->is_blocking
         && player1->is_punching && current_frame_air_punch_p1 == hit_frame_air_punch_p1 
         && !player1->on_ground) {
@@ -169,7 +169,7 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y <= 100.0)
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y <= 128.0)
         && !player1->is_blocking && !player2->is_blocking
         && player1->is_kicking && current_frame_air_kick_p1 == hit_frame_air_kick_p1 
         && !player1->on_ground) {
@@ -199,7 +199,7 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) >= -100.0
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y) >= -128.0
         && !player2->is_blocking && !player1->is_blocking
         && player2->is_punching && current_frame_air_punch_p2 == hit_frame_air_punch_p2 
         && !player2->on_ground) {
@@ -229,7 +229,7 @@ void compute_hit(
         }
 
         if ((player2->hitbox_upper->hitbox_x - player1->hitbox_upper->hitbox_x) <= 213.0 
-        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y >= -100.0)
+        && (player2->hitbox_upper->hitbox_y - player1->hitbox_upper->hitbox_y >= -128.0)
         && !player2->is_blocking && !player1->is_blocking
         && player2->is_kicking && current_frame_air_kick_p2 == hit_frame_air_kick_p2 
         && !player2->on_ground) {
@@ -247,6 +247,8 @@ void handle_rumble_end(Fighter *player1, Fighter *player2, GameStates *game_stat
                 game_states->play_rumble_end_sample = 1;
                 player1->is_crouching = 0;
                 player2->is_crouching = 0;
+                player1->is_blocking = 0;
+                player2->is_blocking = 0;
         }
 
         player2->health = MAX_HEALTH;
