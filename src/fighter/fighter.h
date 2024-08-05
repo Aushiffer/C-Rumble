@@ -9,6 +9,17 @@
 #include "../controller/controller.h"
 #include "../game_states/game_states.h"
 
+/* Durações de frames para cada animação */
+#define FRAME_DURATION_IDLE 0.066666
+#define FRAME_DURATION_JUMP 0.20
+#define FRAME_DURATION_RUNNING 0.066666
+#define FRAME_DURATION_HI_PUNCH 0.125
+#define FRAME_DURATION_LO_PUNCH 0.125
+#define FRAME_DURATION_AIR_PUNCH 0.150
+#define FRAME_DURATION_HI_KICK 0.165
+#define FRAME_DURATION_LO_KICK 0.165
+#define FRAME_DURATION_AIR_KICK 0.145
+
 /* Macros do Ryu */
 #define NUM_RYU_IDLE_FRAMES 5        
 #define NUM_RYU_RUNNING_FRAMES 5
@@ -49,14 +60,14 @@
 #define NUM_GUILE_JUMP_FRAMES 6
 
 /* Macros do Vega */
-#define NUM_VEGA_IDLE_FRAMES 5        
-#define NUM_VEGA_RUNNING_FRAMES 5
+#define NUM_VEGA_IDLE_FRAMES 3        
+#define NUM_VEGA_RUNNING_FRAMES 4
 #define NUM_VEGA_HI_KICK_FRAMES 3
 #define NUM_VEGA_LO_KICK_FRAMES 2
-#define NUM_VEGA_AIR_KICK_FRAMES 3
+#define NUM_VEGA_AIR_KICK_FRAMES 2
 #define NUM_VEGA_HI_PUNCH_FRAMES 3
 #define NUM_VEGA_LO_PUNCH_FRAMES 2
-#define NUM_VEGA_AIR_PUNCH_FRAMES 3
+#define NUM_VEGA_AIR_PUNCH_FRAMES 2
 #define NUM_VEGA_CROUCH_FRAMES 1
 #define NUM_VEGA_BLOCK_FRAMES 1
 #define NUM_VEGA_JUMP_FRAMES 6

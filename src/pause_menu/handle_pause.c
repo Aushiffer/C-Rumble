@@ -45,6 +45,14 @@ void handle_pause_selection(
 
                         player1->is_crouching = 0;
                         player2->is_crouching = 0;
+                        player1->is_blocking = 0;
+                        player2->is_blocking = 0;
+                        player1->hitbox_upper->hitbox_y = player1->absolute_height;
+                        player1->velocity_y = 0.0;
+                        player1->on_ground = 1;
+                        player2->hitbox_upper->hitbox_y = player2->absolute_height;
+                        player2->velocity_y = 0.0;
+                        player2->on_ground = 1;
                 }
         }
 }
