@@ -928,6 +928,20 @@ int main(void) {
                                         draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_guile, player2_ken);
                                 else if (game_states->rumble_fighter_p1 == 2 && game_states->rumble_fighter_p2 == 0)
                                         draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_guile, player2_ryu);
+                                else if (game_states->rumble_fighter_p1 == 2 && game_states->rumble_fighter_p2 == 3)
+                                        draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_guile, player2_vega);
+                                else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 3)
+                                        draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_vega, player2_vega);
+                                else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 0)
+                                        draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_vega, player2_ryu);
+                                else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 1)
+                                        draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_vega, player2_ken);
+                                else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 2)
+                                        draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_vega, player2_guile);
+                                else if (game_states->rumble_fighter_p1 == 0 && game_states->rumble_fighter_p2 == 3)
+                                        draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_ryu, player2_vega);
+                                else if (game_states->rumble_fighter_p1 == 1 && game_states->rumble_fighter_p2 == 3)
+                                        draw_rumble_end(game_states, display, menu_header_font, menu_options_font, player1_ken, player2_vega);
                         } else {
                                 if (game_states->menu) {
                                         draw_menu(menu_header_font, menu_options_font, display, game_states);
@@ -958,6 +972,20 @@ int main(void) {
                                                 reset_players_x(player1_guile, player2_ryu, display);
                                         else if (game_states->rumble_fighter_p1 == 2 && game_states->rumble_fighter_p2 == 1)
                                                 reset_players_x(player1_guile, player2_ken, display);
+                                        else if (game_states->rumble_fighter_p1 == 2 && game_states->rumble_fighter_p2 == 3)
+                                                reset_players_x(player1_guile, player2_vega, display);
+                                        else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 3)
+                                                reset_players_x(player1_vega, player2_vega, display);
+                                        else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 2)
+                                                reset_players_x(player1_vega, player2_guile, display);
+                                        else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 1)
+                                                reset_players_x(player1_vega, player2_ken, display);
+                                        else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 0)
+                                                reset_players_x(player1_vega, player2_ryu, display);
+                                        else if (game_states->rumble_fighter_p1 == 0 && game_states->rumble_fighter_p2 == 3)
+                                                reset_players_x(player1_ryu, player2_vega, display);
+                                        else if (game_states->rumble_fighter_p1 == 1 && game_states->rumble_fighter_p2 == 3)
+                                                reset_players_x(player1_ken, player2_vega, display);
                                 } else if (game_states->stage_select) {
                                         draw_stage_select(character_select_header_font, stage_display_name_font, display, stage_select_arrow_icon, game_states);
                                 } else if (game_states->rumble) {
@@ -1224,6 +1252,141 @@ int main(void) {
                                                                 1, 1,
                                                                 hit_sound_effect_sample, hit_sound_effect_sample_id
                                                         );
+                                                } else if (game_states->rumble_fighter_p1 == 2 && game_states->rumble_fighter_p2 == 3) {
+                                                        if (player1_guile->health <= 0) {
+                                                                handle_rumble_end(player2_vega, player1_guile, game_states);
+                                                                reset_players_x(player1_guile, player2_vega, display);
+                                                        }
+                                                        
+                                                        if (player2_vega->health <= 0) {
+                                                                handle_rumble_end(player1_guile, player2_vega, game_states);
+                                                                reset_players_x(player1_guile, player2_vega, display);
+                                                        }
+
+                                                        compute_hit(
+                                                                player1_guile, player2_vega, 
+                                                                current_frame_hi_kick_p1, current_frame_lo_kick_p1, 
+                                                                current_frame_air_kick_p1, current_frame_hi_punch_p1, 
+                                                                current_frame_lo_punch_p1, current_frame_air_punch_p1, 
+                                                                2, 1,
+                                                                2, 2,
+                                                                1, 2,
+                                                                current_frame_hi_kick_p2, current_frame_lo_kick_p2,
+                                                                current_frame_air_kick_p2, current_frame_hi_punch_p2,
+                                                                current_frame_lo_punch_p2, current_frame_air_punch_p2,
+                                                                2, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                        );
+                                                } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 3) {
+                                                        if (player1_vega->health <= 0) {
+                                                                handle_rumble_end(player2_vega, player1_vega, game_states);
+                                                                reset_players_x(player1_vega, player2_vega, display);
+                                                        }
+                                                        
+                                                        if (player2_vega->health <= 0) {
+                                                                handle_rumble_end(player1_vega, player2_vega, game_states);
+                                                                reset_players_x(player1_vega, player2_vega, display);
+                                                        }
+
+                                                        compute_hit(
+                                                                player1_vega, player2_vega, 
+                                                                current_frame_hi_kick_p1, current_frame_lo_kick_p1, 
+                                                                current_frame_air_kick_p1, current_frame_hi_punch_p1, 
+                                                                current_frame_lo_punch_p1, current_frame_air_punch_p1, 
+                                                                2, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                current_frame_hi_kick_p2, current_frame_lo_kick_p2,
+                                                                current_frame_air_kick_p2, current_frame_hi_punch_p2,
+                                                                current_frame_lo_punch_p2, current_frame_air_punch_p2,
+                                                                2, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                        );
+                                                } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 2) {
+                                                        if (player1_vega->health <= 0) {
+                                                                handle_rumble_end(player2_guile, player1_vega, game_states);
+                                                                reset_players_x(player1_vega, player2_guile, display);
+                                                        }
+                                                        
+                                                        if (player2_guile->health <= 0) {
+                                                                handle_rumble_end(player1_vega, player2_guile, game_states);
+                                                                reset_players_x(player1_vega, player2_guile, display);
+                                                        }
+
+                                                        compute_hit(
+                                                                player1_vega, player2_guile, 
+                                                                current_frame_hi_kick_p1, current_frame_lo_kick_p1, 
+                                                                current_frame_air_kick_p1, current_frame_hi_punch_p1, 
+                                                                current_frame_lo_punch_p1, current_frame_air_punch_p1, 
+                                                                2, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                current_frame_hi_kick_p2, current_frame_lo_kick_p2,
+                                                                current_frame_air_kick_p2, current_frame_hi_punch_p2,
+                                                                current_frame_lo_punch_p2, current_frame_air_punch_p2,
+                                                                2, 1,
+                                                                2, 2,
+                                                                1, 2,
+                                                                hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                        );
+                                                } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 1) {
+                                                        if (player1_vega->health <= 0) {
+                                                                handle_rumble_end(player2_ken, player1_vega, game_states);
+                                                                reset_players_x(player1_vega, player2_ken, display);
+                                                        }
+                                                        
+                                                        if (player2_ken->health <= 0) {
+                                                                handle_rumble_end(player1_vega, player2_ken, game_states);
+                                                                reset_players_x(player1_vega, player2_ken, display);
+                                                        }
+
+                                                        compute_hit(
+                                                                player1_vega, player2_ken, 
+                                                                current_frame_hi_kick_p1, current_frame_lo_kick_p1, 
+                                                                current_frame_air_kick_p1, current_frame_hi_punch_p1, 
+                                                                current_frame_lo_punch_p1, current_frame_air_punch_p1, 
+                                                                2, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                current_frame_hi_kick_p2, current_frame_lo_kick_p2,
+                                                                current_frame_air_kick_p2, current_frame_hi_punch_p2,
+                                                                current_frame_lo_punch_p2, current_frame_air_punch_p2,
+                                                                1, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                        );
+                                                } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 0) {
+                                                        if (player1_vega->health <= 0) {
+                                                                handle_rumble_end(player2_ryu, player1_vega, game_states);
+                                                                reset_players_x(player1_vega, player2_ryu, display);
+                                                        }
+                                                        
+                                                        if (player2_ryu->health <= 0) {
+                                                                handle_rumble_end(player1_vega, player2_ryu, game_states);
+                                                                reset_players_x(player1_vega, player2_ryu, display);
+                                                        }
+
+                                                        compute_hit(
+                                                                player1_vega, player2_ryu, 
+                                                                current_frame_hi_kick_p1, current_frame_lo_kick_p1, 
+                                                                current_frame_air_kick_p1, current_frame_hi_punch_p1, 
+                                                                current_frame_lo_punch_p1, current_frame_air_punch_p1, 
+                                                                2, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                current_frame_hi_kick_p2, current_frame_lo_kick_p2,
+                                                                current_frame_air_kick_p2, current_frame_hi_punch_p2,
+                                                                current_frame_lo_punch_p2, current_frame_air_punch_p2,
+                                                                2, 1,
+                                                                2, 2,
+                                                                1, 2,
+                                                                hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                        );
                                                 }
 
                                                 draw_stages(display, stage_ryu, stage_ken, stage_guile, stage_vega, game_states);
@@ -1255,6 +1418,27 @@ int main(void) {
                                                 } else if (game_states->rumble_fighter_p1 == 2 && game_states->rumble_fighter_p2 == 1) {
                                                         draw_health_bars(player1_guile, player2_ken, display);
                                                         update_fighter_pos(player1_guile, player2_ken, al_get_display_width(display));
+                                                } else if (game_states->rumble_fighter_p1 == 2 && game_states->rumble_fighter_p2 == 3) {
+                                                        draw_health_bars(player1_guile, player2_vega, display);
+                                                        update_fighter_pos(player1_guile, player2_vega, al_get_display_width(display));
+                                                } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 3) {
+                                                        draw_health_bars(player1_vega, player2_vega, display);
+                                                        update_fighter_pos(player1_vega, player2_vega, al_get_display_width(display));
+                                                } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 0) {
+                                                        draw_health_bars(player1_vega, player2_ryu, display);
+                                                        update_fighter_pos(player1_vega, player2_ryu, al_get_display_width(display));
+                                                } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 1) {
+                                                        draw_health_bars(player1_vega, player2_ken, display);
+                                                        update_fighter_pos(player1_vega, player2_ken, al_get_display_width(display));
+                                                } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 2) {
+                                                        draw_health_bars(player1_vega, player2_guile, display);
+                                                        update_fighter_pos(player1_vega, player2_guile, al_get_display_width(display));
+                                                } else if (game_states->rumble_fighter_p1 == 0 && game_states->rumble_fighter_p2 == 3) {
+                                                        draw_health_bars(player1_ryu, player2_vega, display);
+                                                        update_fighter_pos(player1_ryu, player2_vega, al_get_display_width(display));
+                                                } else if (game_states->rumble_fighter_p1 == 1 && game_states->rumble_fighter_p2 == 3) {
+                                                        draw_health_bars(player1_ken, player2_vega, display);
+                                                        update_fighter_pos(player1_ken, player2_vega, al_get_display_width(display));
                                                 }
 
                                                 switch (game_states->rumble_fighter_p1) {
@@ -1272,6 +1456,11 @@ int main(void) {
                                                                 snprintf(wins_text_p1, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player1_guile->rounds_won);
 
                                                                 break;
+
+                                                        case 3:
+                                                                snprintf(wins_text_p1, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player1_vega->rounds_won);
+
+                                                                break;
                                                 }
 
                                                 switch (game_states->rumble_fighter_p2) {
@@ -1287,6 +1476,11 @@ int main(void) {
 
                                                         case 2:
                                                                 snprintf(wins_text_p2, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player2_guile->rounds_won);
+
+                                                                break;
+
+                                                        case 3:
+                                                                snprintf(wins_text_p2, MAXLEN_PLAYER_WINS_STRING, "WINS: %d", player2_vega->rounds_won);
 
                                                                 break;
                                                 }
@@ -1380,6 +1574,35 @@ int main(void) {
                                                                 }
 
                                                                 break;
+
+                                                        case 3:
+                                                                if (player1_vega->is_crouching && player1_vega->is_blocking && player1_vega->on_ground) {
+                                                                        draw_lo_blocking_animation(player1_vega);
+                                                                } else if (player1_vega->is_kicking && !player1_vega->on_ground && current_frame_hi_kick_p1 == 0 && current_frame_lo_kick_p1 == 0) {
+                                                                        draw_air_kick_animation(player1_vega, FRAME_DURATION_AIR_KICK, &time_frame_air_kick_p1, &current_frame_air_kick_p1, NUM_VEGA_AIR_KICK_FRAMES);
+                                                                } else if (player1_vega->is_kicking && player1_vega->is_crouching && player1_vega->on_ground && current_frame_hi_kick_p1 == 0) {
+                                                                        draw_lo_kick_animation(player1_vega, FRAME_DURATION_LO_KICK, &time_frame_lo_kick_p1, &current_frame_lo_kick_p1, NUM_VEGA_LO_KICK_FRAMES);
+                                                                } else if (player1_vega->is_punching && !player1_vega->on_ground) {
+                                                                        draw_air_punch_animation(player1_vega, FRAME_DURATION_AIR_PUNCH, &time_frame_air_punch_p1, &current_frame_air_punch_p1, NUM_VEGA_AIR_PUNCH_FRAMES);
+                                                                } else if (player1_vega->is_punching && player1_vega->is_crouching && player1_vega->on_ground && current_frame_hi_punch_p1 == 0 && player1_vega->on_ground && current_frame_air_punch_p1 == 0) {
+                                                                        draw_lo_punch_animation(player1_vega, FRAME_DURATION_LO_PUNCH, &time_frame_lo_punch_p1, &current_frame_lo_punch_p1, NUM_VEGA_LO_PUNCH_FRAMES);
+                                                                } else if (player1_vega->is_punching && current_frame_lo_punch_p1 == 0 && player1_vega->on_ground && current_frame_air_punch_p1 == 0) {
+                                                                        draw_hi_punch_animation(player1_vega, FRAME_DURATION_HI_PUNCH, &time_frame_hi_punch_p1, &current_frame_hi_punch_p1, NUM_VEGA_HI_PUNCH_FRAMES);
+                                                                } else if (player1_vega->is_kicking && player1_vega->on_ground) {
+                                                                        draw_hi_kick_animation(player1_vega, FRAME_DURATION_HI_KICK, &time_frame_hi_kick_p1, &current_frame_hi_kick_p1, NUM_VEGA_HI_KICK_FRAMES);
+                                                                } else if ((player1_vega->is_running_right || player1_vega->is_running_left) && player1_vega->on_ground) {
+                                                                        draw_running_animation(player1_vega, FRAME_DURATION_RUNNING, &time_frame_running_p1, &current_frame_running_p1, FRAME_DURATION_IDLE, &time_frame_idle_p1, &current_frame_idle_p1, NUM_VEGA_RUNNING_FRAMES, NUM_VEGA_IDLE_FRAMES);
+                                                                } else if (player1_vega->is_crouching && !player1_vega->is_blocking && player1_vega->on_ground) {
+                                                                        draw_crouching_animation(player1_vega);
+                                                                } else if (player1_vega->is_blocking && player1_vega->on_ground) {
+                                                                        draw_blocking_animation(player1_vega);
+                                                                } else if (!player1_vega->on_ground && !(player1_vega->is_punching || player1_vega->is_kicking)) {
+                                                                        draw_jumping_animation(player1_vega, FRAME_DURATION_JUMP, &time_frame_jump_p1, &current_frame_jump_p1, NUM_VEGA_JUMP_FRAMES);
+                                                                } else {
+                                                                        draw_idle_animation(player1_vega, FRAME_DURATION_IDLE, &time_frame_idle_p1, &current_frame_idle_p1, NUM_VEGA_IDLE_FRAMES);
+                                                                }
+
+                                                                break;
                                                 }
                                                 
                                                 switch (game_states->rumble_fighter_p2) {
@@ -1452,7 +1675,7 @@ int main(void) {
                                                                         draw_air_punch_animation(player2_guile, FRAME_DURATION_AIR_PUNCH, &time_frame_air_punch_p2, &current_frame_air_punch_p2, NUM_GUILE_AIR_PUNCH_FRAMES);
                                                                 } else if (player2_guile->is_punching && player2_guile->is_crouching && player2_guile->on_ground && current_frame_hi_punch_p2 == 0 && player2_guile->on_ground && current_frame_air_punch_p2 == 0) {
                                                                         draw_lo_punch_animation(player2_guile, FRAME_DURATION_LO_PUNCH, &time_frame_lo_punch_p2, &current_frame_lo_punch_p2, NUM_GUILE_LO_PUNCH_FRAMES);
-                                                                } else if (player2_guile->is_punching && current_frame_lo_punch_p1 == 0 && player2_guile->on_ground && current_frame_air_punch_p2 == 0) {
+                                                                } else if (player2_guile->is_punching && current_frame_lo_punch_p2 == 0 && player2_guile->on_ground && current_frame_air_punch_p2 == 0) {
                                                                         draw_hi_punch_animation(player2_guile, FRAME_DURATION_HI_PUNCH, &time_frame_hi_punch_p2, &current_frame_hi_punch_p2, NUM_GUILE_HI_PUNCH_FRAMES);
                                                                 } else if (player2_guile->is_kicking && player2_guile->on_ground) {
                                                                         draw_hi_kick_animation(player2_guile, FRAME_DURATION_HI_KICK, &time_frame_hi_kick_p2, &current_frame_hi_kick_p2, NUM_GUILE_HI_KICK_FRAMES);
@@ -1466,6 +1689,35 @@ int main(void) {
                                                                         draw_jumping_animation(player2_guile, FRAME_DURATION_JUMP, &time_frame_jump_p2, &current_frame_jump_p2, NUM_GUILE_JUMP_FRAMES);
                                                                 } else {
                                                                         draw_idle_animation(player2_guile, FRAME_DURATION_IDLE, &time_frame_idle_p2, &current_frame_idle_p2, NUM_GUILE_IDLE_FRAMES);
+                                                                }
+
+                                                                break;
+
+                                                        case 3:
+                                                                if (player2_vega->is_crouching && player2_vega->is_blocking && player2_vega->on_ground) {
+                                                                        draw_lo_blocking_animation(player2_vega);
+                                                                } else if (player2_vega->is_kicking && !player2_vega->on_ground && current_frame_hi_kick_p2 == 0 && current_frame_lo_kick_p2 == 0) {
+                                                                        draw_air_kick_animation(player2_vega, FRAME_DURATION_AIR_KICK, &time_frame_air_kick_p2, &current_frame_air_kick_p2, NUM_VEGA_AIR_KICK_FRAMES);
+                                                                } else if (player2_vega->is_kicking && player2_vega->is_crouching && player2_vega->on_ground && current_frame_hi_kick_p2 == 0) {
+                                                                        draw_lo_kick_animation(player2_vega, FRAME_DURATION_LO_KICK, &time_frame_lo_kick_p2, &current_frame_lo_kick_p2, NUM_VEGA_LO_KICK_FRAMES);
+                                                                } else if (player2_vega->is_punching && !player2_vega->on_ground) {
+                                                                        draw_air_punch_animation(player2_vega, FRAME_DURATION_AIR_PUNCH, &time_frame_air_punch_p2, &current_frame_air_punch_p2, NUM_VEGA_AIR_PUNCH_FRAMES);
+                                                                } else if (player2_vega->is_punching && player2_vega->is_crouching && player2_vega->on_ground && current_frame_hi_punch_p2 == 0 && player2_vega->on_ground && current_frame_air_punch_p2 == 0) {
+                                                                        draw_lo_punch_animation(player2_vega, FRAME_DURATION_LO_PUNCH, &time_frame_lo_punch_p2, &current_frame_lo_punch_p2, NUM_VEGA_LO_PUNCH_FRAMES);
+                                                                } else if (player2_vega->is_punching && current_frame_lo_punch_p2 == 0 && player2_vega->on_ground && current_frame_air_punch_p2 == 0) {
+                                                                        draw_hi_punch_animation(player2_vega, FRAME_DURATION_HI_PUNCH, &time_frame_hi_punch_p2, &current_frame_hi_punch_p2, NUM_VEGA_HI_PUNCH_FRAMES);
+                                                                } else if (player2_vega->is_kicking && player2_vega->on_ground) {
+                                                                        draw_hi_kick_animation(player2_vega, FRAME_DURATION_HI_KICK, &time_frame_hi_kick_p2, &current_frame_hi_kick_p2, NUM_VEGA_HI_KICK_FRAMES);
+                                                                } else if ((player2_vega->is_running_right || player2_vega->is_running_left) && player2_vega->on_ground) {
+                                                                        draw_running_animation(player2_vega, FRAME_DURATION_RUNNING, &time_frame_running_p2, &current_frame_running_p2, FRAME_DURATION_IDLE, &time_frame_idle_p2, &current_frame_idle_p2, NUM_VEGA_RUNNING_FRAMES, NUM_VEGA_IDLE_FRAMES);
+                                                                } else if (player2_vega->is_crouching && !player2_vega->is_blocking && player2_vega->on_ground) {
+                                                                        draw_crouching_animation(player2_vega);
+                                                                } else if (player2_vega->is_blocking && player2_vega->on_ground) {
+                                                                        draw_blocking_animation(player2_vega);
+                                                                } else if (!player2_vega->on_ground && !(player2_vega->is_punching || player2_vega->is_kicking)) {
+                                                                        draw_jumping_animation(player2_vega, FRAME_DURATION_JUMP, &time_frame_jump_p2, &current_frame_jump_p2, NUM_VEGA_JUMP_FRAMES);
+                                                                } else {
+                                                                        draw_idle_animation(player2_vega, FRAME_DURATION_IDLE, &time_frame_idle_p2, &current_frame_idle_p2, NUM_VEGA_IDLE_FRAMES);
                                                                 }
 
                                                                 break;
@@ -1558,6 +1810,12 @@ int main(void) {
                                         player1_guile->health = MAX_HEALTH;
 
                                         break;
+
+                                case 3:
+                                        player1_vega->rounds_won = 0;
+                                        player1_vega->health = MAX_HEALTH;
+
+                                        break;
                         }
 
                         switch (game_states->rumble_fighter_p2) {
@@ -1576,6 +1834,12 @@ int main(void) {
                                 case 2:
                                         player2_guile->rounds_won = 0;
                                         player2_guile->health = MAX_HEALTH;
+
+                                        break;
+
+                                case 3:
+                                        player2_vega->rounds_won = 0;
+                                        player2_vega->health = MAX_HEALTH;
 
                                         break;
                         }
@@ -1808,6 +2072,62 @@ int main(void) {
                                                         player1_ken, player2_guile,
                                                         game_states
                                                 );
+                                        } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 0) {
+                                                handle_pause_selection(
+                                                        menu_confirm_sample, menu_confirm_sample_id, 
+                                                        ryu_theme_sample_id, ken_theme_sample_id, 
+                                                        guile_theme_sample_id, vega_theme_sample_id, 
+                                                        player1_vega, player2_ryu,
+                                                        game_states
+                                                );
+                                        } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 1) {
+                                                handle_pause_selection(
+                                                        menu_confirm_sample, menu_confirm_sample_id, 
+                                                        ryu_theme_sample_id, ken_theme_sample_id, 
+                                                        guile_theme_sample_id, vega_theme_sample_id, 
+                                                        player1_vega, player2_ken,
+                                                        game_states
+                                                );
+                                        } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 2) {
+                                                handle_pause_selection(
+                                                        menu_confirm_sample, menu_confirm_sample_id, 
+                                                        ryu_theme_sample_id, ken_theme_sample_id, 
+                                                        guile_theme_sample_id, vega_theme_sample_id, 
+                                                        player1_vega, player2_guile,
+                                                        game_states
+                                                );
+                                        } else if (game_states->rumble_fighter_p1 == 3 && game_states->rumble_fighter_p2 == 3) {
+                                                handle_pause_selection(
+                                                        menu_confirm_sample, menu_confirm_sample_id, 
+                                                        ryu_theme_sample_id, ken_theme_sample_id, 
+                                                        guile_theme_sample_id, vega_theme_sample_id, 
+                                                        player1_vega, player2_vega,
+                                                        game_states
+                                                );
+                                        } else if (game_states->rumble_fighter_p1 == 0 && game_states->rumble_fighter_p2 == 3) {
+                                                handle_pause_selection(
+                                                        menu_confirm_sample, menu_confirm_sample_id, 
+                                                        ryu_theme_sample_id, ken_theme_sample_id, 
+                                                        guile_theme_sample_id, vega_theme_sample_id, 
+                                                        player1_ryu, player2_vega,
+                                                        game_states
+                                                );
+                                        } else if (game_states->rumble_fighter_p1 == 1 && game_states->rumble_fighter_p2 == 3) {
+                                                handle_pause_selection(
+                                                        menu_confirm_sample, menu_confirm_sample_id, 
+                                                        ryu_theme_sample_id, ken_theme_sample_id, 
+                                                        guile_theme_sample_id, vega_theme_sample_id, 
+                                                        player1_ken, player2_vega,
+                                                        game_states
+                                                );
+                                        } else if (game_states->rumble_fighter_p1 == 2 && game_states->rumble_fighter_p2 == 3) {
+                                                handle_pause_selection(
+                                                        menu_confirm_sample, menu_confirm_sample_id, 
+                                                        ryu_theme_sample_id, ken_theme_sample_id, 
+                                                        guile_theme_sample_id, vega_theme_sample_id, 
+                                                        player1_guile, player2_vega,
+                                                        game_states
+                                                );
                                         }
                                 }
 
@@ -1840,6 +2160,17 @@ int main(void) {
 
                                                         case 2:
                                                                 player1_guile->is_punching = 1;
+                                                                current_frame_hi_punch_p1 = 0;
+                                                                time_frame_hi_punch_p1 = 0;
+                                                                current_frame_lo_punch_p1 = 0;
+                                                                time_frame_lo_punch_p1 = 0;    
+                                                                current_frame_air_punch_p1 = 0;
+                                                                time_frame_air_punch_p1 = 0;
+
+                                                                break;
+
+                                                        case 3:
+                                                                player1_vega->is_punching = 1;
                                                                 current_frame_hi_punch_p1 = 0;
                                                                 time_frame_hi_punch_p1 = 0;
                                                                 current_frame_lo_punch_p1 = 0;
@@ -1883,8 +2214,19 @@ int main(void) {
                                                                 time_frame_air_kick_p1 = 0;
 
                                                                 break;
+
+                                                        case 3:
+                                                                player1_vega->is_kicking = 1;
+                                                                current_frame_hi_kick_p1 = 0;
+                                                                time_frame_hi_kick_p1 = 0;
+                                                                current_frame_lo_kick_p1 = 0;
+                                                                time_frame_lo_kick_p1 = 0;
+                                                                current_frame_air_kick_p1 = 0;
+                                                                time_frame_air_kick_p1 = 0;
+
+                                                                break;
                                                 }
-                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_W && player1_ryu->on_ground && player1_ken->on_ground) {
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_W && player1_ryu->on_ground && player1_ken->on_ground && player1_guile->on_ground && player1_vega->on_ground) {
                                                 switch (game_states->rumble_fighter_p1) {
                                                         case 0:
                                                                 player1_ryu->velocity_y = JUMP_STRENGTH;
@@ -1905,6 +2247,14 @@ int main(void) {
                                                         case 2:
                                                                 player1_guile->velocity_y = JUMP_STRENGTH;
                                                                 player1_guile->on_ground = 0;
+                                                                current_frame_jump_p1 = 0;
+                                                                time_frame_jump_p1 = 0;
+
+                                                                break;
+
+                                                        case 3:
+                                                                player1_vega->velocity_y = JUMP_STRENGTH;
+                                                                player1_vega->on_ground = 0;
                                                                 current_frame_jump_p1 = 0;
                                                                 time_frame_jump_p1 = 0;
 
@@ -1939,6 +2289,17 @@ int main(void) {
 
                                                         case 2:
                                                                 player2_guile->is_punching = 1;
+                                                                current_frame_hi_punch_p2 = 0;
+                                                                time_frame_hi_punch_p2 = 0;
+                                                                current_frame_lo_punch_p2 = 0;
+                                                                time_frame_lo_punch_p2 = 0;    
+                                                                current_frame_air_punch_p2 = 0;
+                                                                time_frame_air_punch_p2 = 0;
+
+                                                                break;
+
+                                                        case 3:
+                                                                player2_vega->is_punching = 1;
                                                                 current_frame_hi_punch_p2 = 0;
                                                                 time_frame_hi_punch_p2 = 0;
                                                                 current_frame_lo_punch_p2 = 0;
@@ -1982,8 +2343,19 @@ int main(void) {
                                                                 time_frame_air_kick_p2 = 0;
 
                                                                 break;
+
+                                                        case 3:
+                                                                player2_vega->is_kicking = 1;
+                                                                current_frame_hi_kick_p2 = 0;
+                                                                time_frame_hi_kick_p2 = 0;
+                                                                current_frame_lo_kick_p2 = 0;
+                                                                time_frame_lo_kick_p2 = 0;
+                                                                current_frame_air_kick_p2 = 0;
+                                                                time_frame_air_kick_p2 = 0;
+
+                                                                break;
                                                 }
-                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_UP && player2_ryu->on_ground && player2_ken->on_ground) {
+                                        } else if (event.keyboard.keycode == ALLEGRO_KEY_UP && player2_ryu->on_ground && player2_ken->on_ground && player2_guile->on_ground && player2_vega->on_ground) {
                                                 switch (game_states->rumble_fighter_p2) {
                                                         case 0:
                                                                 player2_ryu->velocity_y = JUMP_STRENGTH;
@@ -2004,6 +2376,14 @@ int main(void) {
                                                         case 2:
                                                                 player2_guile->velocity_y = JUMP_STRENGTH;
                                                                 player2_guile->on_ground = 0;
+                                                                current_frame_jump_p2 = 0;
+                                                                time_frame_jump_p2 = 0;
+
+                                                                break;
+
+                                                        case 3:
+                                                                player2_vega->velocity_y = JUMP_STRENGTH;
+                                                                player2_vega->on_ground = 0;
                                                                 current_frame_jump_p2 = 0;
                                                                 time_frame_jump_p2 = 0;
 
@@ -2040,6 +2420,13 @@ int main(void) {
                                                                 player1_guile->is_running_right ^= 1;
 
                                                                 break;
+
+                                                        case 3:
+                                                                move_controller_right(player1_vega->controller);
+
+                                                                player1_vega->is_running_right ^= 1;
+
+                                                                break;
                                                 }
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_A) {
                                                 switch (game_states->rumble_fighter_p1) {
@@ -2063,6 +2450,13 @@ int main(void) {
                                                                 player1_guile->is_running_left ^= 1;
 
                                                                 break;
+                                                        
+                                                        case 3:
+                                                                move_controller_left(player1_vega->controller);
+
+                                                                player1_vega->is_running_left ^= 1;
+
+                                                                break;
                                                 }
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
                                                 switch (game_states->rumble_fighter_p1) {
@@ -2080,6 +2474,11 @@ int main(void) {
                                                                 player1_guile->is_crouching ^= 1;
 
                                                                 break;
+
+                                                        case 3:
+                                                                player1_vega->is_crouching ^= 1;
+
+                                                                break;
                                                 }
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_B) {
                                                 switch (game_states->rumble_fighter_p1) {
@@ -2095,6 +2494,11 @@ int main(void) {
 
                                                         case 2:
                                                                 player1_guile->is_blocking ^= 1;
+
+                                                                break;
+
+                                                        case 3:
+                                                                player1_vega->is_blocking ^= 1;
 
                                                                 break;
                                                 }
@@ -2122,6 +2526,13 @@ int main(void) {
                                                                 player2_guile->is_running_right ^= 1;
 
                                                                 break;
+
+                                                        case 3:
+                                                                move_controller_right(player2_vega->controller);
+
+                                                                player2_vega->is_running_right ^= 1;
+
+                                                                break;
                                                 }
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
                                                 switch (game_states->rumble_fighter_p2) {
@@ -2145,6 +2556,13 @@ int main(void) {
                                                                 player2_guile->is_running_left ^= 1;
 
                                                                 break;
+
+                                                        case 3:
+                                                                move_controller_left(player2_vega->controller);
+
+                                                                player2_vega->is_running_left ^= 1;
+
+                                                                break;
                                                 }
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
                                                 switch (game_states->rumble_fighter_p2) {
@@ -2162,6 +2580,11 @@ int main(void) {
                                                                 player2_guile->is_crouching ^= 1;
 
                                                                 break;
+
+                                                        case 3:
+                                                                player2_vega->is_crouching ^= 1;
+
+                                                                break;
                                                 }
                                         } else if (event.keyboard.keycode == ALLEGRO_KEY_J) {
                                                 switch (game_states->rumble_fighter_p2) {
@@ -2177,6 +2600,11 @@ int main(void) {
                                                         
                                                         case 2:
                                                                 player2_guile->is_blocking ^= 1;
+
+                                                                break;
+
+                                                        case 3:
+                                                                player2_vega->is_blocking ^= 1;
 
                                                                 break;
                                                 }
@@ -2259,6 +2687,16 @@ int main(void) {
         destroy_spriteset(player1_guile->hi_kick_spriteset, NUM_GUILE_HI_KICK_FRAMES);
         destroy_spriteset(player1_guile->air_punch_spriteset, NUM_GUILE_AIR_PUNCH_FRAMES);
         destroy_spriteset(player1_guile->air_kick_spriteset, NUM_GUILE_AIR_KICK_FRAMES);
+        destroy_spriteset(player1_vega->idle_spriteset, NUM_VEGA_IDLE_FRAMES);
+        destroy_spriteset(player1_vega->running_spriteset, NUM_VEGA_RUNNING_FRAMES);
+        destroy_spriteset(player1_vega->crouch_spriteset, NUM_VEGA_CROUCH_FRAMES);
+        destroy_spriteset(player1_vega->hi_punch_spriteset, NUM_VEGA_HI_PUNCH_FRAMES);
+        destroy_spriteset(player1_vega->lo_punch_spriteset, NUM_VEGA_LO_PUNCH_FRAMES);
+        destroy_spriteset(player1_vega->hi_block_spriteset, NUM_VEGA_BLOCK_FRAMES);
+        destroy_spriteset(player1_vega->lo_block_spriteset, NUM_VEGA_BLOCK_FRAMES);
+        destroy_spriteset(player1_vega->hi_kick_spriteset, NUM_VEGA_HI_KICK_FRAMES);
+        destroy_spriteset(player1_vega->air_punch_spriteset, NUM_VEGA_AIR_PUNCH_FRAMES);
+        destroy_spriteset(player1_vega->air_kick_spriteset, NUM_VEGA_AIR_KICK_FRAMES);
         destroy_game_states(game_states);
         al_destroy_display(display);
         al_destroy_timer(timer);
