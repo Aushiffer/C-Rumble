@@ -954,6 +954,9 @@ int main(void) {
                                                 game_states
                                         );
 
+                                        current_frame_idle_p1 = 0;
+                                        current_frame_idle_p2 = 0;
+
                                         if (game_states->rumble_fighter_p1 == 0 && game_states->rumble_fighter_p2 == 0)
                                                 reset_players_x(player1_ryu, player2_ryu, display);
                                         else if (game_states->rumble_fighter_p1 == 1 && game_states->rumble_fighter_p2 == 0)
@@ -1387,6 +1390,60 @@ int main(void) {
                                                                 1, 2,
                                                                 hit_sound_effect_sample, hit_sound_effect_sample_id
                                                         );
+                                                } else if (game_states->rumble_fighter_p1 == 0 && game_states->rumble_fighter_p2 == 3) {
+                                                        if (player1_ryu->health <= 0) {
+                                                                handle_rumble_end(player2_vega, player1_ryu, game_states);
+                                                                reset_players_x(player1_ryu, player2_vega, display);
+                                                        }
+                                                        
+                                                        if (player2_vega->health <= 0) {
+                                                                handle_rumble_end(player1_ryu, player2_vega, game_states);
+                                                                reset_players_x(player1_ryu, player2_vega, display);
+                                                        }
+
+                                                        compute_hit(
+                                                                player1_ryu, player2_vega, 
+                                                                current_frame_hi_kick_p1, current_frame_lo_kick_p1, 
+                                                                current_frame_air_kick_p1, current_frame_hi_punch_p1, 
+                                                                current_frame_lo_punch_p1, current_frame_air_punch_p1, 
+                                                                2, 1,
+                                                                2, 2,
+                                                                1, 2,
+                                                                current_frame_hi_kick_p2, current_frame_lo_kick_p2,
+                                                                current_frame_air_kick_p2, current_frame_hi_punch_p2,
+                                                                current_frame_lo_punch_p2, current_frame_air_punch_p2,
+                                                                2, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                        );
+                                                } else if (game_states->rumble_fighter_p1 == 1 && game_states->rumble_fighter_p2 == 3) {
+                                                        if (player1_ken->health <= 0) {
+                                                                handle_rumble_end(player2_vega, player1_ken, game_states);
+                                                                reset_players_x(player1_ken, player2_vega, display);
+                                                        }
+                                                        
+                                                        if (player2_vega->health <= 0) {
+                                                                handle_rumble_end(player1_ken, player2_vega, game_states);
+                                                                reset_players_x(player1_ken, player2_vega, display);
+                                                        }
+
+                                                        compute_hit(
+                                                                player1_ken, player2_vega, 
+                                                                current_frame_hi_kick_p1, current_frame_lo_kick_p1, 
+                                                                current_frame_air_kick_p1, current_frame_hi_punch_p1, 
+                                                                current_frame_lo_punch_p1, current_frame_air_punch_p1, 
+                                                                1, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                current_frame_hi_kick_p2, current_frame_lo_kick_p2,
+                                                                current_frame_air_kick_p2, current_frame_hi_punch_p2,
+                                                                current_frame_lo_punch_p2, current_frame_air_punch_p2,
+                                                                2, 1,
+                                                                1, 2,
+                                                                1, 1,
+                                                                hit_sound_effect_sample, hit_sound_effect_sample_id
+                                                        );
                                                 }
 
                                                 draw_stages(display, stage_ryu, stage_ken, stage_guile, stage_vega, game_states);
@@ -1736,7 +1793,7 @@ int main(void) {
 
                 if (game_states->menu) {
                         if (game_states->play_menu_sample)
-                                al_play_sample(menu_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
+                                al_play_sample(menu_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &menu_sample_id);
                         
                         game_states->play_menu_sample = 0;
                         game_states->play_character_select_welcome_sample = 1;
@@ -1763,26 +1820,26 @@ int main(void) {
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
                                         if (game_states->menu_select == 0) {
                                                 al_stop_sample(&menu_sample_id);
-                                                al_play_sample(menu_confirm_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                                al_play_sample(menu_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
                                                 game_states->menu = 0;
                                                 game_states->menu_select = 0;
                                                 game_states->character_select = 1;
                                         } else {
-                                                al_play_sample(menu_confirm_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                                al_play_sample(menu_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
 
                                                 break;
                                         }
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
-                                        al_play_sample(cancel_sound_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
 
                                         break;
                                 }
                         }
                 } else if (game_states->character_select) {
                         if (game_states->play_character_select_welcome_sample && game_states->play_character_select_sample) {
-                                al_play_sample(character_select_welcome_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
-                                al_play_sample(character_select_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
+                                al_play_sample(character_select_welcome_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_select_welcome_sample_id);
+                                al_play_sample(character_select_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         }
 
                         game_states->play_character_select_welcome_sample = 0;
@@ -1849,7 +1906,7 @@ int main(void) {
                                         game_states->menu = 1;
                                         game_states->character_select = 0;
 
-                                        al_play_sample(cancel_sound_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_stop_sample(&character_select_sample_id);
                                 }
                                 
@@ -1866,7 +1923,7 @@ int main(void) {
                                                 menu_select_sample_id
                                         );
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER && !game_states->character_select_nav_p1_confirm) {
-                                        al_play_sample(character_select_confirm_sample, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
+                                        al_play_sample(character_select_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
                                         
                                         game_states->character_select_nav_p1_confirm = 1;
                                 }
@@ -1884,7 +1941,7 @@ int main(void) {
                                                 menu_select_sample_id
                                         );
                                 } else if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && !game_states->character_select_nav_p2_confirm) {
-                                        al_play_sample(character_select_confirm_sample, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
+                                        al_play_sample(character_select_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &character_confirm_sample_id);
                                         
                                         game_states->character_select_nav_p2_confirm = 1;
                                 }
@@ -1900,7 +1957,7 @@ int main(void) {
                         }
                 } else if (game_states->stage_select) {
                         if (game_states->play_stage_select_sample)
-                                al_play_sample(character_select_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
+                                al_play_sample(character_select_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &character_select_sample_id);
                         
                         game_states->play_stage_select_sample = 0;
                         game_states->character_select_nav_p1 = 0;
@@ -1918,7 +1975,7 @@ int main(void) {
                                         game_states->stage_select = 0;
                                         game_states->character_select = 1;
 
-                                        al_play_sample(cancel_sound_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
+                                        al_play_sample(cancel_sound_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &cancel_sound_sample_id);
                                         al_stop_sample(&character_select_sample_id);
                                 }
                                 
@@ -1945,22 +2002,22 @@ int main(void) {
                         if (game_states->play_rumble_sample) {
                                 switch (game_states->stage_select_nav) {
                                         case 0:
-                                                al_play_sample(ryu_theme_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ryu_theme_sample_id);
+                                                al_play_sample(ryu_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ryu_theme_sample_id);
 
                                                 break;
 
                                         case 1:
-                                                al_play_sample(ken_theme_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ken_theme_sample_id);
+                                                al_play_sample(ken_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &ken_theme_sample_id);
 
                                                 break;
 
                                         case 2:
-                                                al_play_sample(guile_theme_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &guile_theme_sample_id);
+                                                al_play_sample(guile_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &guile_theme_sample_id);
 
                                                 break;
 
                                         case 3:
-                                                al_play_sample(vega_theme_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &vega_theme_sample_id);
+                                                al_play_sample(vega_theme_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &vega_theme_sample_id);
 
                                                 break;
                                 }
@@ -1980,7 +2037,7 @@ int main(void) {
                                 if (event.keyboard.keycode == ALLEGRO_KEY_DELETE) {
                                         game_states->rumble_pause ^= 1;
                                         
-                                        al_play_sample(pause_sound_effect, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &pause_sound_effect_id);
+                                        al_play_sample(pause_sound_effect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &pause_sound_effect_id);
                                 }
 
                                 if (event.keyboard.keycode == ALLEGRO_KEY_S) {
@@ -2635,13 +2692,13 @@ int main(void) {
                         }
 
                         if (game_states->play_rumble_end_sample)
-                                al_play_sample(rumble_end_sample, 4.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &rumble_end_sample_id);
+                                al_play_sample(rumble_end_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, &rumble_end_sample_id);
 
                         game_states->play_menu_sample = 1;
                         game_states->play_rumble_end_sample = 0;
 
                         if (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-                                al_play_sample(menu_confirm_sample, 3.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
+                                al_play_sample(menu_confirm_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &menu_confirm_sample_id);
                                 al_stop_sample(&rumble_end_sample_id);
 
                                 game_states->rumble_end = 0;
@@ -2697,6 +2754,14 @@ int main(void) {
         destroy_spriteset(player1_vega->hi_kick_spriteset, NUM_VEGA_HI_KICK_FRAMES);
         destroy_spriteset(player1_vega->air_punch_spriteset, NUM_VEGA_AIR_PUNCH_FRAMES);
         destroy_spriteset(player1_vega->air_kick_spriteset, NUM_VEGA_AIR_KICK_FRAMES);
+        destroy_fighter(player1_ryu);
+        destroy_fighter(player2_ryu);
+        destroy_fighter(player1_ken);
+        destroy_fighter(player2_ken);
+        destroy_fighter(player1_guile);
+        destroy_fighter(player2_guile);
+        destroy_fighter(player1_vega);
+        destroy_fighter(player2_vega);
         destroy_game_states(game_states);
         al_destroy_display(display);
         al_destroy_timer(timer);
