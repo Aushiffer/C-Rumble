@@ -4,14 +4,14 @@ void handle_selection(char *selector_ptr, char num_options, unsigned char increa
         if (increase) {
                 (*selector_ptr)++;
                                 
-                al_play_sample(select_sample, 1.75, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &select_sample_id);
+                al_play_sample(select_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &select_sample_id);
 
                 if ((*selector_ptr) > num_options - 1)
                         (*selector_ptr) = 0;
         } else {
                 (*selector_ptr)--;
 
-                al_play_sample(select_sample, 1.75, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &select_sample_id);
+                al_play_sample(select_sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &select_sample_id);
 
                 if ((*selector_ptr) < 0)
                         (*selector_ptr) = num_options - 1;

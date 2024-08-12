@@ -123,7 +123,7 @@ void compute_hit(
         && !player1->is_blocking && !player2->is_blocking 
         && !player2->is_crouching && player1->is_punching 
         && current_frame_hi_punch_p1 == hit_frame_hi_punch_p1) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player2->health -= 2.0;
         }
@@ -133,7 +133,7 @@ void compute_hit(
         && !player1->is_blocking && !(player2->is_blocking && player2->is_crouching)
         && player1->is_punching && current_frame_lo_punch_p1 == hit_frame_lo_punch_p1 
         && player1->is_crouching && player2->on_ground) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
 
                 player2->health -= 2.0;
         }
@@ -143,7 +143,7 @@ void compute_hit(
         && !player1->is_blocking && !player2->is_blocking
         && player1->is_punching && current_frame_air_punch_p1 == hit_frame_air_punch_p1 
         && !player1->on_ground) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player2->health -= 2.0;
         }
@@ -153,7 +153,7 @@ void compute_hit(
         && !player1->is_blocking && !player2->is_blocking
         && player1->is_kicking && current_frame_hi_kick_p1 == hit_frame_hi_kick_p1
         && !player2->is_crouching) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player2->health -= 2.75;
         }
@@ -163,7 +163,7 @@ void compute_hit(
         && !player1->is_blocking && !(player2->is_blocking && player2->is_crouching)
         && player1->is_kicking && current_frame_lo_kick_p1 == hit_frame_lo_kick_p1 
         && player1->is_crouching && player2->on_ground) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player2->health -= 2.75;
         }
@@ -173,7 +173,7 @@ void compute_hit(
         && !player1->is_blocking && !player2->is_blocking
         && player1->is_kicking && current_frame_air_kick_p1 == hit_frame_air_kick_p1 
         && !player1->on_ground) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player2->health -= 2.75;
         }
@@ -183,7 +183,7 @@ void compute_hit(
         && !player2->is_blocking && !player1->is_blocking 
         && !player1->is_crouching && player2->is_punching 
         && current_frame_hi_punch_p2 == hit_frame_hi_punch_p2) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.0;
         }
@@ -193,7 +193,7 @@ void compute_hit(
         && !player2->is_blocking && !(player1->is_blocking && player1->is_crouching)
         && player2->is_punching && current_frame_lo_punch_p2 == hit_frame_lo_punch_p2 
         && player2->is_crouching && player1->on_ground) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
 
                 player1->health -= 2.0;
         }
@@ -203,7 +203,7 @@ void compute_hit(
         && !player2->is_blocking && !player1->is_blocking
         && player2->is_punching && current_frame_air_punch_p2 == hit_frame_air_punch_p2 
         && !player2->on_ground) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.0;
         }
@@ -213,7 +213,7 @@ void compute_hit(
         && !player2->is_blocking && !player1->is_blocking
         && player2->is_kicking && current_frame_hi_kick_p2 == hit_frame_hi_kick_p2
         && !player1->is_crouching) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.75;
         }
@@ -223,7 +223,7 @@ void compute_hit(
         && !player2->is_blocking && !(player1->is_blocking && player1->is_crouching)
         && player2->is_kicking && current_frame_lo_kick_p2 == hit_frame_lo_kick_p2 
         && player2->is_crouching && player1->on_ground) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.75;
         }
@@ -233,7 +233,7 @@ void compute_hit(
         && !player2->is_blocking && !player1->is_blocking
         && player2->is_kicking && current_frame_air_kick_p2 == hit_frame_air_kick_p2 
         && !player2->on_ground) {
-                al_play_sample(hit_sfx, 2.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
+                al_play_sample(hit_sfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, &hit_sfx_id);
                 
                 player1->health -= 2.75;
         }
@@ -347,5 +347,14 @@ void update_fighter_selectors(GameStates *game_states) {
                         game_states->rumble_fighter_p2 = 3;
 
                         break;
+        }
+}
+
+void destroy_fighter(Fighter *fighter) {
+        if (fighter) {
+                destroy_controller(fighter->controller);
+                destroy_hitbox(fighter->hitbox_lower);
+                destroy_hitbox(fighter->hitbox_upper);
+                free(fighter);
         }
 }
