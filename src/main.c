@@ -1,5 +1,3 @@
-#include <allegro5/display.h>
-#include <allegro5/keycodes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/allegro5.h>
